@@ -1,0 +1,55 @@
+.Checkbox {
+  box-sizing: border-box;
+
+  position: relative;
+
+  display: inline-block;
+
+  appearance: none;
+
+  width: 20px;
+
+  height: 20px;
+
+  background-color: var(--component-background-color);
+
+  border: 1px solid var(--component-border-color);
+
+  border-radius: 4px;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  &:checked:before {
+    content: "✔";
+
+    color: var(--app-info-color);
+
+    line-height: 20px;
+  }
+
+  &:indeterminate:before {
+    content: "⎯";
+
+    color: var(--app-info-color);
+
+    line-height: 18px;
+
+    font-size: 18px;
+  }
+
+  &:focus {
+    outline: 2px solid var(--app-info-color);
+
+    outline-offset: -1px;
+
+    z-index: 2;
+  }
+
+  &:disabled {
+    background-color: var(--component-border-color);
+
+    cursor: default;
+  }
+}

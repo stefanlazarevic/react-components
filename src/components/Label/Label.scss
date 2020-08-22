@@ -1,0 +1,11 @@
+.Label {
+  box-sizing: border-box;
+
+  position: relative;
+
+  display: block;
+
+  color: currentColor;
+
+  font-size: var(--app-base-font-size);
+}

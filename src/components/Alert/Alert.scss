@@ -1,0 +1,39 @@
+.Alert {
+  box-sizing: border-box;
+
+  position: relative;
+
+  display: block;
+
+  padding: 15px 30px;
+
+  color: var(--app-text-color);
+
+  background-color: var(--component-background-color);
+
+  border: 1px solid var(--component-border-color);
+
+  font-size: var(--app-base-font-size);
+
+  &[dir="rtl"] {
+    direction: rtl;
+
+    text-align: right;
+  }
+
+  &[data-kind="info"] {
+    border-color: var(--app-info-color);
+  }
+
+  &[data-kind="warning"] {
+    border-color: var(--app-warning-color);
+  }
+
+  &[data-kind="error"] {
+    border-color: var(--app-error-color);
+  }
+
+  &[data-kind="success"] {
+    border-color: var(--app-success-color);
+  }
+}

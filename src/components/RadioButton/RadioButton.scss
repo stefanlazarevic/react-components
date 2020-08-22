@@ -1,0 +1,40 @@
+.RadioButton {
+  display: inline-flex;
+
+  justify-items: center;
+
+  align-items: center;
+
+  & > .Button {
+    display: inline-flex;
+  }
+
+  & > input {
+    // @todo Move to visually-hidden class
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  & > input:checked + .Button {
+    color: var(--app-info-color);
+
+    border-color: var(--app-info-color);
+  }
+
+  & > input:focus + .Button {
+    outline: 2px solid var(--app-info-color);
+
+    outline-offset: -1px;
+
+    z-index: 2;
+  }
+
+  & > input:disabled + .Button {
+    opacity: 0.5;
+  }
+}

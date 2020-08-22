@@ -1,0 +1,41 @@
+.Textarea {
+  box-sizing: border-box;
+
+  position: relative;
+
+  display: block;
+
+  background-color: var(--component-form-background-color);
+
+  border: 1px solid var(--component-border-color);
+
+  color: var(--form-text-color);
+
+  min-height: 40px;
+
+  padding: 10px 16px;
+
+  width: 100%;
+
+  font-size: var(--app-base-font-size);
+
+  border-radius: 4px;
+
+  resize: vertical;
+
+  &::placeholder {
+    color: var(--form-placeholder-color);
+  }
+
+  &:focus {
+    outline: 2px solid var(--app-info-color);
+
+    outline-offset: -1px;
+
+    z-index: 2;
+  }
+
+  &:disabled {
+    background-color: var(--component-border-color);
+  }
+}

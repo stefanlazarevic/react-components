@@ -1,0 +1,53 @@
+.Radio {
+  box-sizing: border-box;
+
+  position: relative;
+
+  display: inline-flex;
+
+  appearance: none;
+
+  width: 20px;
+
+  height: 20px;
+
+  background-color: var(--component-background-color);
+
+  border: 1px solid var(--component-border-color);
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  &:checked:before {
+    content: '';
+
+    position: absolute;
+
+    top: 4px;
+
+    left: 4px;
+
+    display: block;
+
+    width: 10px;
+
+    height: 10px;
+
+    background-color: var(--app-info-color);
+
+    border-radius: 50%;
+  }
+
+  &:focus {
+    outline: 2px solid var(--app-info-color);
+
+    outline-offset: -1px;
+
+    z-index: 2;
+  }
+
+  &:disabled {
+    background-color: var(--component-border-color);
+  }
+}

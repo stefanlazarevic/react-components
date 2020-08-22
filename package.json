@@ -1,0 +1,64 @@
+{
+  "name": "@stefanlazarevic/library",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "start": "rollup -c -w",
+    "test": "jest",
+    "prepublishOnly": "rm -rf dist && yarn build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "files": [
+    "/dist"
+  ],
+  "author": "Stefan Lazarevic",
+  "license": "ISC",
+  "devDependencies": {
+    "@storybook/addon-actions": "^6.0.12",
+    "@storybook/addon-essentials": "^6.0.12",
+    "@storybook/addon-links": "^6.0.12",
+    "@storybook/preset-scss": "^1.0.2",
+    "@storybook/react": "^6.0.12",
+    "@testing-library/jest-dom": "^5.9.0",
+    "@testing-library/react": "^10.2.1",
+    "@testing-library/user-event": "^11.2.1",
+    "@types/jest": "^25.2.3",
+    "@types/node": "^14.0.11",
+    "@types/prop-types": "^15.7.3",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "babel-core": "^7.0.0-0",
+    "babel-loader": "^7.1.5",
+    "babel-runtime": "^6.26.0",
+    "chromatic": "^5.1.0",
+    "concurrently": "^5.2.0",
+    "css-loader": "^4.2.1",
+    "jest": "^26.0.1",
+    "jest-transform-stub": "^2.0.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-is": "^16.13.1",
+    "rollup": "^2.15.0",
+    "rollup-plugin-sass": "^1.2.2",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "rollup-plugin-uglify": "^6.0.4",
+    "sass-loader": "^9.0.3",
+    "style-loader": "^1.2.1",
+    "ts-jest": "^26.1.0",
+    "typescript": "^3.9.5"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {}
+}

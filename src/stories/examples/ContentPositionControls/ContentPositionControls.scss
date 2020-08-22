@@ -1,0 +1,7 @@
+.ContentPositionControls {
+  display: flex;
+
+  & > .RadioGroup:first-child {
+    margin-right: 10px;
+  }
+}

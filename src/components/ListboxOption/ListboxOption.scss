@@ -1,0 +1,37 @@
+.ListboxOption {
+	box-sizing: border-box;
+
+	position: relative;
+
+	display: block;
+
+  padding: 5px 10px;
+  
+	cursor: pointer;
+	
+	color: #999FA9;
+
+	&[aria-selected="true"] {
+		background-color: var(--app-info-color);
+
+		color: #fff;
+	}
+
+	&:focus {
+		color: #fff;
+
+		outline: 2px solid var(--app-info-color);
+
+		outline-offset: -1px;
+
+		z-index: 2;
+	}
+
+	&:not([aria-disabled="true"]):hover {
+		color: #fff;
+	}
+
+	&[aria-disabled="true"] {
+		opacity: 0.5;
+	}
+}

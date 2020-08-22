@@ -1,0 +1,39 @@
+.Progress {
+  box-sizing: border-box;
+
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+
+  background-color: var(--component-background-color);
+
+  border-radius: 14px;
+
+  height: 10px;
+
+  &[value] {
+    -webkit-appearance: none;
+
+    appearance: none;
+  }
+
+  &[value]::-webkit-progress-bar {
+    background-color: var(--component-background-color);
+
+    border-radius: 2px;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+
+    border: 1px solid var(--component-border-color);
+
+    border-radius: 14px;
+  }
+
+  &[value]::-webkit-progress-value {
+    background-color: var(--app-info-color);
+
+    border-radius: 14px;
+  }
+}

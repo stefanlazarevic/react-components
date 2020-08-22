@@ -1,0 +1,35 @@
+.Heading {
+  box-sizing: border-box;
+
+  position: relative;
+
+  display: block;
+
+  margin: 0;
+
+  color: currentColor;
+
+  &[aria-level="1"] {
+    font-size: 2rem;
+  }
+
+  &[aria-level="2"] {
+    font-size: 1.75rem;
+  }
+
+  &[aria-level="3"] {
+    font-size: 1.6rem;
+  }
+
+  &[aria-level="4"] {
+    font-size: 1.4rem;
+  }
+
+  &[aria-level="5"] {
+    font-size: 1.2rem;
+  }
+
+  &[aria-level="6"] {
+    font-size: 1rem;
+  }
+}

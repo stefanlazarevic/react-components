@@ -1,0 +1,32 @@
+:root {
+  --app-text-color: #FFFFFF;
+  --app-info-color: #1F72F2;
+  --app-warning-color: #ffb209;
+  --app-error-color: #FF0000;
+  --app-success-color: #0AB3A0;
+
+  --app-base-font-size: 14px;
+
+  --component-background-color: #1F2229;
+  --component-form-background-color: #24262C;
+  --component-border-color: #4A4D55;
+
+  --form-placeholder-color: #999FA9;
+  --form-text-color: #fff;
+}
+
+html {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  color: white;
+
+  font-size: var(--app-base-font-size);
+}
+
+abbr {
+  text-decoration: none;
+
+  cursor: help;
+}
+
+// import {Select} from '@stefanlazarevic/react-components'

@@ -1,0 +1,11 @@
+export { default as AlignBottomIcon } from "./icons/AlignBottom";
+export { default as AlignCenterIcon } from "./icons/AlignCenter";
+export { default as AlignLeftIcon } from "./icons/AlignLeft";
+export { default as AlignMiddleIcon } from "./icons/AlignMiddle";
+export { default as AlignRightIcon } from "./icons/AlignRight";
+export { default as AlignTopIcon } from "./icons/AlignTop";
+export { default as CloseIcon } from "./icons/Close";
+export { default as FormatCenterIcon } from "./icons/FormatCenter";
+export { default as FormatLeftIcon } from "./icons/FormatLeft";
+export { default as FormatRightIcon } from "./icons/FormatRight";
+export { default as PlusIcon } from "./icons/Plus";
