@@ -9,7 +9,8 @@ const inputPath = 'src/index.ts';
 const external = [
   'react',
   'react-dom',
-  'prop-types'
+  'prop-types',
+  'highlight.js'
 ];
 
 const globals = {

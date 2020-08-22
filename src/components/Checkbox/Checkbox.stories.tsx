@@ -2,24 +2,24 @@ import React from "react";
 import { Checkbox } from "./index";
 
 export default {
-  title: "Checkbox",
-  component: Checkbox,
+	title: "Checkbox",
+	component: Checkbox,
 };
 
-export const Template = (args: any) => <Checkbox {...args} />;
-Template.argTypes = { onChange: { action: "onChange" } };
+export const Default = (args: any) => <Checkbox {...args} />;
+Default.argTypes = { onChange: { action: "onChange" } };
 
-export const Checked = Template.bind({});
+export const Checked = Default.bind({});
 Checked.args = {
   checked: true,
 };
 
-export const Mixed = Template.bind({});
+export const Mixed = Default.bind({});
 Mixed.args = {
   checked: "mixed",
 };
 
-export const Disabled = Template.bind({});
+export const Disabled = Default.bind({});
 Disabled.args = {
   disabled: true,
 };

@@ -2,6 +2,7 @@ export * from "./Alert";
 export * from "./AlertDialog";
 export * from "./Button";
 export * from "./Checkbox";
+export * from "./CodeBlock";
 export * from "./Dialog";
 export * from './DialogHeader';
 export * from "./Heading";
