@@ -7,7 +7,7 @@ import { useClassNames } from "../../hooks";
 import { AlertDialogProps } from "./AlertDialogProps";
 
 import { Alert } from "../Alert";
-import { Button } from "../Button";
+import { IconButton } from "../IconButton";
 import { CloseIcon } from "../Icon";
 
 import { KeyCode } from "../../helpers";
@@ -16,7 +16,7 @@ const AlertDialog = forwardRef(function AlertDialogComponent(
   props: AlertDialogProps,
   ref: MutableRefObject<HTMLDivElement>
 ) {
-  const className = useClassNames("AlertDialog", props.className);
+  const className = useClassNames("Alert AlertDialog", props.className);
 
   const onKeyDown = useCallback(function AlertKeyDownCallback(event: React.KeyboardEvent<HTMLDivElement>) {
     const {keyCode} = event;
@@ -30,9 +30,9 @@ const AlertDialog = forwardRef(function AlertDialogComponent(
     <Alert ref={ref} {...props} className={className} role="alertdialog" onKeyDown={onKeyDown}>
       {props.children || props.content || <div />}
       {typeof props.onClose === 'function' && (
-        <Button onClick={props.onClose}>
+        <IconButton onClick={props.onClose}>
           <CloseIcon size={16} />
-        </Button>
+        </IconButton>
       )}
     </Alert>
   );
