@@ -3,9 +3,11 @@
 
   position: relative;
 
-  display: block;
+  display: flex;
 
-  padding: 15px 30px;
+  align-items: center;
+
+  padding: 0 16px;
 
   color: var(--app-text-color);
 
@@ -13,7 +15,13 @@
 
   border: 1px solid var(--component-border-color);
 
+  border-radius: 4px;
+
   font-size: var(--app-base-font-size);
+
+  min-height: 60px;
+
+  min-width: 290px;
 
   &[dir="rtl"] {
     direction: rtl;
