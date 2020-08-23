@@ -4,7 +4,7 @@ import "./Label.scss";
 
 import { useClassNames } from "../../hooks";
 
-import { LabelProps, LabelPropTypes } from "./LabelProps";
+import { LabelProps } from "./LabelProps";
 
 const Label = forwardRef(function LabelComponent(
   props: LabelProps,
@@ -25,11 +25,10 @@ const Label = forwardRef(function LabelComponent(
       title={props.title}
     >
       {props.children || props.content}
+      {props.required && <span>*</span>}
     </label>
   );
 });
-
-Label.propTypes = LabelPropTypes;
 
 Label.defaultProps = {
   dir: "auto"
