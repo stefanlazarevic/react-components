@@ -5,47 +5,79 @@
 
   display: flex;
 
-  & > code {
-    box-sizing: border-box;
+  flex-direction: column;
 
-    position: relative;
+  margin: 0;
 
-    display: block;
+  border: 1px solid var(--component-border-color);
 
-    background-color: var(--hljs-background-color);
+  border-radius: 4px;
 
-    color: var(--hljs-color);
-
-    overflow-x: auto;
-
-    flex: 1;
-
-    padding: 5px 10px;
-
-    &:empty {
-      padding: 0;
-    }
-  }
-
-  & > .CodeBlockLines {
+  & > pre {
     box-sizing: border-box;
 
     position: relative;
 
     display: flex;
 
-    flex-direction: column;
-
     background-color: var(--hljs-background-color);
 
     color: var(--hljs-color);
 
+    border-radius: 4px;
+
+    margin: 0;
+
+    & > code {
+      box-sizing: border-box;
+
+      overflow-x: auto;
+
+      padding: 10px;
+    }
+
+    & > .CodeBlockLines {
+      box-sizing: border-box;
+
+      position: relative;
+
+      display: flex;
+
+      flex-direction: column;
+
+      background-color: var(--hljs-background-color);
+
+      color: var(--hljs-color);
+
+      padding: 5px 10px;
+
+      user-select: none;
+
+      & + code {
+        padding: 10px 10px 0;
+      }
+    }
+  }
+
+  & > .CodeBlockFooter {
+    box-sizing: border-box;
+
+    position: relative;
+
+    display: flex;
+
+    background-color: #2E3541;
+
     padding: 5px 10px;
 
-    user-select: none;
+    border-top: 1px solid var(--component-border-color);
 
-    & + code {
-      padding: 5px 10px 5px 0;
+    & > .IconButton {
+      width: 24px;
+
+      height: 24px;
+
+      min-height: unset;
     }
   }
 

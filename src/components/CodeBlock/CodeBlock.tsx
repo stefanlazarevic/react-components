@@ -1,4 +1,9 @@
-import React, { useMemo, forwardRef, MutableRefObject } from "react";
+import React, {
+	useMemo,
+	forwardRef,
+	MutableRefObject,
+	useCallback,
+} from "react";
 
 import "./CodeBlock.scss";
 
@@ -7,9 +12,11 @@ import { CodeBlockProps } from "./CodeBlockProps";
 import highlightjs from "highlight.js";
 
 import { useClassNames } from "../../hooks";
+import { IconButton } from "../IconButton";
+import { ClipboardIcon, TerminalIcon } from "../Icon";
 
 const CodeBlock = forwardRef(
-	(props: CodeBlockProps, ref: MutableRefObject<HTMLPreElement>) => {
+	(props: CodeBlockProps, ref: MutableRefObject<HTMLDivElement>) => {
 		const classNames = useClassNames("CodeBlock", props.className);
 
 		const languageClassName = useMemo(() => {
@@ -31,6 +38,19 @@ const CodeBlock = forwardRef(
 			[props.content, languageClassName]
 		);
 
+		const copyToClipboard = useCallback(async () => {
+			if (!navigator.clipboard) {
+				return;
+			}
+
+			 try {
+				const text = props.content!.trim();
+				await navigator.clipboard.writeText(text);
+			} catch (error) {
+				console.error("Copy to clipboard error:", error);
+			}
+		}, [props.content]);
+
 		const getLines = useMemo(
 			() =>
 				function CodeBlockLines() {
@@ -48,21 +68,28 @@ const CodeBlock = forwardRef(
 		);
 
 		return (
-			<pre
+			<div 
 				ref={ref}
 				id={props.id}
 				data-testid={props.testid}
 				className={classNames}
 				style={props.style}
 			>
-				{props.showLines && typeof props.content === "string"
-					? getLines()
-					: undefined}
-				<code
-					className={languageClassName}
-					dangerouslySetInnerHTML={{ __html: content }}
-				/>
-			</pre>
+				<pre>
+					{props.showLines && typeof props.content === "string"
+						? getLines()
+						: undefined}
+					<code
+						className={languageClassName}
+						dangerouslySetInnerHTML={{ __html: content }}
+					/>
+				</pre>
+				<div className="CodeBlockFooter">
+					<IconButton onClick={copyToClipboard} title="Copy to clipboard">
+						<ClipboardIcon size={18} />
+					</IconButton>
+				</div>
+			</div>
 		);
 	}
 );
