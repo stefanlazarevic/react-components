@@ -1,10 +1,10 @@
 import React, {
-  forwardRef,
-  MutableRefObject,
-  useMemo,
-  useRef,
-  useLayoutEffect,
-  useCallback,
+	forwardRef,
+	MutableRefObject,
+	useMemo,
+	useRef,
+	useLayoutEffect,
+	useCallback,
 } from "react";
 
 import "./Dialog.scss";
@@ -48,8 +48,6 @@ const Dialog = forwardRef(function DialogComponent(
       elements.current = Array.from(
         dialog.current.querySelectorAll<HTMLElement>(selector)
       ) as HTMLElement[];
-
-      console.log(elements.current)
     },
     [props.children, selector]
   );
