@@ -1,2 +1,9 @@
 .ErrorDialog {
+	padding: 0;
+
+	& > .CodeBlock,
+	& > .Heading,
+	& > .Paragraph {
+		margin: 16px;
+	}
 }

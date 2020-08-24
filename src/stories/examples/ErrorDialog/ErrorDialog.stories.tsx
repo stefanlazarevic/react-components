@@ -20,16 +20,16 @@ Error: Internal Server Error
 `;
 
 export default {
-    title: 'Example/ErrorDialog'
+    title: 'Example/Exception Dialog'
 }
 
-export const Example = () => {
+export const Preview = () => {
     return (
         <Dialog className="ErrorDialog">
             <DialogHeader content="Application crash" />
             <Heading level={5} content="Internal server error" className="error-text" />
             <Paragraph content="For further assistance, please contact your Project Manager." />
-            <CodeBlock content={errorMessage} />
+            <CodeBlock content={errorMessage} showLines={true} />
         </Dialog>
     )
 }

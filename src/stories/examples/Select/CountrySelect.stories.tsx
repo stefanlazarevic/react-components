@@ -1,23 +1,20 @@
 import React, { useState, useCallback } from "react";
+
+import countries from "./countries";
+
 import { Select } from "../../../components";
 
 export default {
-	title: "Example/Select/Country select",
+	title: "Example/Select/Country Select",
 };
 
-export const Template = (args) => {
-  const options = [
-		{ value: "open", label: "Open" },
-		{ value: "reopened", label: "Reopened" },
-		{ value: "progress", label: "In progress" },
-		{ value: "hold", label: "On hold" },
-		{ value: "completed", label: "Completed" },
-  ];
+export const Preview = () => {
+  const options: any = countries;
   
   const [selected, setSelected] = useState(options[0]);
 
 	const onChange = useCallback((event, selectedValue) => {
-		setSelected(options.find(option => option.value === selectedValue)!);
+		setSelected(options.find((option: any) => option.value === selectedValue)!);
   }, [options]);
 
 	return <Select options={options} value={selected.value} label={selected.label} onChange={onChange} />;
