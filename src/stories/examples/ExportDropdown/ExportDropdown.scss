@@ -1,0 +1,17 @@
+.ExportDropdown {
+	box-sizing: border-box;
+
+	display: inline-block;
+
+  position: relative;
+  
+  & > .Dropdown {
+    position: absolute;
+
+    top: calc(100% + 6px);
+
+    left: 0;
+
+    min-width: 200px;
+  }
+}
