@@ -14,30 +14,13 @@ import { useClassNames, useCombinedRefs } from "../../hooks";
 import { DialogProps, DialogPropTypes } from "./DialogProps";
 
 import { KeyCode, array_empty, array_lastIndex } from "../../helpers";
+import { getTabbableElementsQuery } from "../../helpers/string";
 
 const Dialog = forwardRef(function DialogComponent(
   props: DialogProps,
   ref: MutableRefObject<HTMLDivElement>
 ) {
   const className = useClassNames("Dialog", props.className);
-
-  const selector = useMemo(
-    () =>
-      [
-        'a[href]:not([inert])',
-        'area[href]:not([inert])',
-        'input:not([disabled]):not([inert])',
-        'select:not([disabled]):not([inert])',
-        'textarea:not([disabled]):not([inert])',
-        'button:not([disabled]):not([inert])',
-        'iframe:not([inert])',
-        'audio:not([inert])',
-        'video:not([inert])',
-        '[contenteditable]:not([inert])',
-        '[tabindex]:not([inert])'
-      ].join(","),
-    []
-  );
 
   const dialog: MutableRefObject<HTMLDivElement> = useCombinedRefs(ref);
 
@@ -46,10 +29,10 @@ const Dialog = forwardRef(function DialogComponent(
   useLayoutEffect(
     function ModalDidRender() {
       elements.current = Array.from(
-        dialog.current.querySelectorAll<HTMLElement>(selector)
+        dialog.current.querySelectorAll<HTMLElement>(getTabbableElementsQuery())
       ) as HTMLElement[];
     },
-    [props.children, selector]
+    [props.children]
   );
 
   const onKeyDown = useCallback(
