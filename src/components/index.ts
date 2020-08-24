@@ -20,5 +20,6 @@ export * from './RadioButton';
 export * from './RadioGroup';
 export * from './Select';
 export * from './Slider';
+export * from "./Swatch";
 export * from "./Switch";
 export * from './Textarea';
