@@ -1,0 +1,19 @@
+.DropdownOption {
+	box-sizing: border-box;
+
+	position: relative;
+
+	display: block;
+
+	cursor: pointer;
+
+	padding: 5px 10px;
+
+	&:focus-within {
+		outline: none;
+
+		background-color: var(--app-info-color);
+
+		z-index: 2;
+	}
+}
