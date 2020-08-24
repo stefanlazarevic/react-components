@@ -1,3 +1,19 @@
 .RadioGroup {
   box-sizing: border-box;
+
+  & > .RadioButton {
+    &:not(:first-child):not(:last-child) .Button {
+      border-radius: 0;
+    }
+
+    &:first-child > .Button {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:last-child > .Button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
 }
