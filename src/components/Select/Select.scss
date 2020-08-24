@@ -24,6 +24,8 @@
 
     color: currentColor;
 
+    user-select: none;
+
     &:focus {
       outline: 2px solid var(--app-info-color);
 
@@ -36,7 +38,7 @@
   & > .Listbox {
     position: absolute;
 
-    top: calc(100% + 10px);
+    top: calc(100% + 6px);
 
     left: 0;
 

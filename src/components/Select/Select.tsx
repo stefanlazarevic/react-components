@@ -82,7 +82,7 @@ const Select = forwardRef(function SelectComponent(
 				placeholder={props.placeholder}
 				name={props.name}
 				readOnly={true}
-				disabled={props.disabled}
+				disabled={props.disabled || props.options!.length === 0}
 				onKeyDown={onKeyDown}
 			/>
 			{expanded && (

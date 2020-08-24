@@ -20,7 +20,7 @@ export interface SelectProps {
 	/**
 	 *
 	 */
-	value: string;
+	value?: string;
 	/**
 	 *
 	 */
