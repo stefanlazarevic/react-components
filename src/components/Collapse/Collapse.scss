@@ -1,0 +1,33 @@
+:root {
+  --collapse-background-color: #1F2229;
+  --collapse-border-color: #4A4D55;
+  --collapse-text-color: #FFFFFF;
+}
+
+.Collapse {
+	box-sizing: border-box;
+
+	position: relative;
+
+  display: block;
+  
+  background-color: var(--collapse-background-color);
+
+  border: 1px solid var(--collapse-border-color);
+
+  border-radius: 4px;
+
+  color: var(--collapse-text-color);
+
+  overflow: hidden;
+
+  &[aria-hidden="true"] {
+    height: 0 !important;
+
+    visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}

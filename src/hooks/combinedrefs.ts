@@ -1,26 +1,26 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, MutableRefObject } from "react";
 
 /**
  * @source https://itnext.io/reusing-the-ref-from-forwardref-with-react-hooks-4ce9df693dd
  */
 export default function useCombinedRefs<T>(
   ...refs: Array<
-    React.MutableRefObject<T> | ((ref: React.MutableRefObject<T>) => void)
+    MutableRefObject<T> | ((ref: MutableRefObject<T>) => void)
   >
-) {
-  const localRef = useRef<any>(null);
+): MutableRefObject<T> {
+  const localRef = useRef<T>({} as T);
 
   useEffect(() => {
     refs.forEach(
       (
         ref:
-          | React.MutableRefObject<any>
-          | ((ref: React.MutableRefObject<any>) => void)
+          | MutableRefObject<T>
+          | ((ref: MutableRefObject<T>) => void)
       ) => {
         if (!ref) return;
 
         if (typeof ref === "function") {
-          ref(localRef.current);
+          ref(localRef);
         } else {
           ref.current = localRef.current;
         }
