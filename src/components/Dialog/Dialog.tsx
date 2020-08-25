@@ -110,7 +110,7 @@ const Dialog = forwardRef(function DialogComponent(
         props.onKeyDown(event);
       }
     },
-    [props.onEscape, props.onKeyDown]
+    [props.children, props.onEscape, props.onKeyDown]
   );
 
   return (

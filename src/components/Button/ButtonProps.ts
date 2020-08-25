@@ -93,6 +93,14 @@ export interface ButtonProps {
 	/**
 	 *
 	 */
+	controls?: string;
+	/**
+	 *
+	 */
+	"aria-controls"?: string;
+	/**
+	 *
+	 */
 	onClick?: (
 		event: React.MouseEvent<HTMLButtonElement>,
 		index?: number
