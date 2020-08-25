@@ -1,0 +1,29 @@
+.ExceptionDialog {
+	padding: 0;
+
+	& .AccordionHeader > .Button > span  {
+		flex: 1;
+	}
+
+	& .AccordionHeader > .Button[aria-expanded="true"] {
+    border-bottom-left-radius: 0;
+
+    border-bottom-right-radius: 0;
+
+    border-bottom-color: transparent;
+  }
+
+  & .Collapse {
+    border-top-left-radius: 0;
+
+    border-top-right-radius: 0;
+
+    padding: 16px;
+  }
+
+	& > .CodeBlockAccordion,
+	& > .Heading,
+	& > .Paragraph {
+		margin: 16px;
+	}
+}
