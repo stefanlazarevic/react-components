@@ -31,7 +31,7 @@ const Collapse = forwardRef(function CollapseComponent(
 			aria-hidden={props.hidden}
 			role={props.role}
 		>
-			{props.children || props.content}
+			{!props.hidden && (props.children || props.content)}
 		</div>
 	);
 });
