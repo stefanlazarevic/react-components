@@ -1,0 +1,24 @@
+:root {
+  --badge-background-color: #24262C;
+  --badge-border-color: #4A4D55;
+  --badge-text-color: #fff;
+}
+
+
+.Badge {
+	box-sizing: border-box;
+
+	position: relative;
+
+  display: inline-block;
+  
+  border: 1px solid var(--badge-border-color);
+
+  border-radius: 4px;
+
+  text-align: center;
+
+  background-color: var(--badge-background-color);
+
+  padding: 4px 16px;
+}
