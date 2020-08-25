@@ -1,0 +1,35 @@
+.SimpleAccordion {
+	box-sizing: border-box;
+
+	position: relative;
+
+  display: block;
+  
+  & > .AccordionHeader > .Button {
+    width: 100%;
+
+    text-align: left;
+
+    justify-content: flex-start;
+
+    span {
+      flex: 1;
+    }
+  }
+
+  & > .AccordionHeader > .Button[aria-expanded="true"] {
+    border-bottom-left-radius: 0;
+
+    border-bottom-right-radius: 0;
+
+    border-bottom-color: transparent;
+  }
+
+  & > .Collapse {
+    border-top-left-radius: 0;
+
+    border-top-right-radius: 0;
+
+    padding: 16px;
+  }
+}
