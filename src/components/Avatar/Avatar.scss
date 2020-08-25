@@ -1,0 +1,33 @@
+:root {
+  --avatar-background-color: #24262C;
+  --avatar-border-color: #4A4D55;
+  --avatar-text-color: #fff;
+}
+
+.Avatar {
+	box-sizing: border-box;
+
+	position: relative;
+
+  display: inline-flex;
+
+  width: 40px;
+
+  height: 40px;
+
+  border-radius: 50%;
+
+  justify-content: center;
+
+  align-items: center;
+
+  background-color: var(--avatar-background-color);
+
+  border: 1px solid var(--avatar-border-color);
+
+  color: var(--avatar-text-color);
+
+  font-size: 16px;
+
+  font-weight: bold;
+}

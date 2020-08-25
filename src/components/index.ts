@@ -1,8 +1,8 @@
 export * from "./AccordionHeader";
 export * from "./Alert";
 export * from "./AlertDialog";
+export * from "./Avatar";
 export * from "./Button";
-
 export * from "./Checkbox";
 export * from "./CodeBlock";
 export * from "./Collapse";
