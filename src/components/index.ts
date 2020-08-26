@@ -1,6 +1,7 @@
 export * from "./AccordionHeader";
 export * from "./Alert";
 export * from "./AlertDialog";
+export * from "./AlphaChannelSlider";
 export * from "./Avatar";
 export * from "./Badge";
 export * from "./Button";

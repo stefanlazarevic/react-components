@@ -1,0 +1,11 @@
+.ColoredSlider {
+	display: flex;
+
+	width: 400px;
+
+	& > .AlphaChannelSlider {
+    height: 25px;
+    
+    margin-right: 10px;
+	}
+}
