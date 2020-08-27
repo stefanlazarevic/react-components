@@ -13,7 +13,7 @@ import highlightjs from "highlight.js";
 
 import { useClassNames } from "../../hooks";
 import { IconButton } from "../IconButton";
-import { ClipboardIcon, TerminalIcon } from "../Icon";
+import { ClipboardIcon } from "../Icon";
 
 const CodeBlock = forwardRef(
 	(props: CodeBlockProps, ref: MutableRefObject<HTMLDivElement>) => {
@@ -30,7 +30,11 @@ const CodeBlock = forwardRef(
 		const content = useMemo(
 			function CodeBlockHighlightedContent() {
 				if (typeof props.content === "string") {
-					return highlightjs.highlight(languageClassName, props.content.trim()).value;
+					if (highlightjs.getLanguage(languageClassName)) {
+						return highlightjs.highlight(languageClassName, props.content.trim()).value;
+					}
+
+					return props.content.trim();
 				}
 
 				return "";
