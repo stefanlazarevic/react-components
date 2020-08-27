@@ -3,6 +3,7 @@ export * from "./Alert";
 export * from "./AlertDialog";
 export * from "./AlphaChannelSlider";
 export * from "./Avatar";
+export * from "./AvatarGroup";
 export * from "./Badge";
 export * from "./Button";
 export * from "./Checkbox";

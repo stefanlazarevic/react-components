@@ -1,0 +1,40 @@
+import React, { forwardRef, MutableRefObject, useCallback } from "react";
+
+import "./AvatarGroup.scss";
+
+import { useClassNames } from "../../hooks";
+
+import AvatarGroupProps from "./AvatarGroupProps";
+
+const AvatarGroup = forwardRef(function AvatarGroupComponent(
+	props: AvatarGroupProps,
+	ref: MutableRefObject<HTMLUListElement>
+) {
+	const className = useClassNames("AvatarGroup", props.className);
+
+	const renderChildren = useCallback(() => {
+		return React.Children.map(props.children, (child) => {
+			return <li>{child}</li>;
+		});
+	}, [props.children]);
+
+	return (
+		<ul
+			ref={ref}
+			id={props.id}
+			data-testid={props.testid}
+			className={className}
+			style={props.style}
+		>
+			{renderChildren()}
+		</ul>
+	);
+});
+
+AvatarGroup.defaultProps = {
+	children: []
+};
+
+AvatarGroup.displayName = "AvatarGroup";
+
+export default AvatarGroup;
