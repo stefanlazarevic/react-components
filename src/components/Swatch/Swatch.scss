@@ -43,8 +43,28 @@
     background-size: 10px;
 
     background-repeat: repeat;
+  }
 
-    z-index: -1;
+  &::after {
+    content: "";
+
+    box-sizing: border-box;
+
+    position: absolute;
+
+    display: block;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    border-radius: 4px;
+
+    background-color: currentColor;
   }
 
   &:focus {

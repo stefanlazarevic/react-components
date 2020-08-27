@@ -19,7 +19,7 @@ const Swatch = forwardRef(function SwatchComponent(
 ) {
 	const className = useClassNames("Swatch", props.className);
 	
-	const style = useMemo(() => ({ backgroundColor: props.color, ...props.style }), [props.color, props.style]);
+	const style = useMemo(() => ({ color: props.color, ...props.style }), [props.color, props.style]);
   
   const onClick = useCallback((event: React.SyntheticEvent) => {
     props.onClick!(event, props.color);
