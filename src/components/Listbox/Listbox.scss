@@ -30,4 +30,24 @@
 
     border-bottom-right-radius: 4px;
   }
+
+  & > .ListboxOption > div {
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+  }
+
+  &[aria-multiselectable="true"] > .ListboxOption > div {
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    & > .Checkbox {
+      margin-right: 10px;
+    }
+  }
 }

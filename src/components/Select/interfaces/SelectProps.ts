@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
+import { SelectDataModel } from ".";
 
-export interface SelectProps {
+export default interface SelectProps {
 	/**
 	 *
 	 */
@@ -18,7 +19,7 @@ export interface SelectProps {
 	 */
 	style?: CSSProperties;
 	/**
-	 *
+	 * Selected value.
 	 */
 	value?: string;
 	/**
@@ -30,7 +31,7 @@ export interface SelectProps {
 	 */
 	disabled?: boolean;
 	/**
-	 *
+	 * Content which will replace selected value on screen.
 	 */
 	label?: string;
 	/**
@@ -40,7 +41,11 @@ export interface SelectProps {
 	/**
 	 *
 	 */
-	options?: { label: string; value: string; disabled?: boolean }[];
+	multiselectable?: boolean;
+	/**
+	 *
+	 */
+	options?: SelectDataModel[];
 	/**
 	 *
 	 */

@@ -12,7 +12,7 @@ import "./Select.scss";
 import { useClassNames } from "../../hooks";
 import { withOutsideClick } from "../../hoc";
 
-import { SelectProps } from "./SelectProps";
+import { SelectProps } from "./interfaces";
 
 import { Listbox } from "../Listbox";
 import { ListboxOption } from "../ListboxOption";
@@ -49,7 +49,7 @@ const Select = forwardRef(function SelectComponent(
 	const Options = useMemo(() => {
 		const SelectOptions = forwardRef((props: SelectProps, ref: any) => {
 			return (
-				<Listbox ref={ref} selectedValue={props.value} onSelect={props.onChange} autoFocus={true}>
+				<Listbox ref={ref} selectedValue={props.value} onSelect={props.onChange} autoFocus={true} multiselectable={props.multiselectable}>
 					{props.options!.map((option: any) => {
 						return (
 							<ListboxOption value={option.value} disabled={option.disabled}>{option.label}</ListboxOption>
@@ -64,7 +64,7 @@ const Select = forwardRef(function SelectComponent(
 		};
 
 		return withOutsideClick(SelectOptions);
-	}, [props.options, props.value, props.onChange]);
+	}, [props.options, props.value, props.onChange, props.multiselectable]);
 
 	return (
 		<div
@@ -91,6 +91,7 @@ const Select = forwardRef(function SelectComponent(
 					value={props.value}
 					onOutsideClick={close}
 					onChange={props.onChange}
+					multiselectable={props.multiselectable}
 				/>
 			)}
 		</div>
@@ -98,7 +99,8 @@ const Select = forwardRef(function SelectComponent(
 });
 
 Select.defaultProps = {
-  placeholder: 'Select...'
+	placeholder: 'Select...',
+	options: []
 }
 
 Select.displayName = "Select";

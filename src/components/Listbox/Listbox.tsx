@@ -11,6 +11,7 @@ import "./Listbox.scss";
 
 import { useClassNames, useCombinedRefs } from "../../hooks";
 import { generateRandomString, KeyCode, array_lastIndex } from "../../helpers";
+import { Checkbox } from "../Checkbox";
 
 const Listbox = forwardRef(function ListboxComponent(
 	props: any,
@@ -127,9 +128,6 @@ const Listbox = forwardRef(function ListboxComponent(
 	const onKeyDown = useCallback((event: React.KeyboardEvent) => {
 		const {keyCode, key} = event;
 
-		event.preventDefault();
-		event.stopPropagation();
-
 		let currentIndex = focusedIndex.current;
 
 		const lastOptionIndex = array_lastIndex(options.current);
@@ -140,6 +138,8 @@ const Listbox = forwardRef(function ListboxComponent(
 		}
 
 		if (keyCode === KeyCode.HOME) {
+			event.preventDefault();
+
 			currentIndex = 0;
 
 			while (currentIndex < options.current.length) {	
@@ -165,6 +165,8 @@ const Listbox = forwardRef(function ListboxComponent(
 		}
 
 		if (keyCode === KeyCode.END) {
+			event.preventDefault();
+
 			currentIndex = lastOptionIndex;
 
 			while (currentIndex > 0) {
@@ -190,6 +192,8 @@ const Listbox = forwardRef(function ListboxComponent(
 		}
 
 		if (keyCode === KeyCode.ARROW_UP) {
+			event.preventDefault();
+
 			currentIndex -= 1;
 			
 			while (currentIndex !== focusedIndex.current) {
@@ -219,6 +223,8 @@ const Listbox = forwardRef(function ListboxComponent(
 		}
 
 		if (keyCode === KeyCode.ARROW_DOWN) {
+			event.preventDefault();
+
 			currentIndex += 1;
 
 			while (currentIndex !== focusedIndex.current) {
@@ -262,6 +268,23 @@ const Listbox = forwardRef(function ListboxComponent(
 
 	const renderChildren = useCallback(() => {
 		return React.Children.map(props.children, (child, index) => {
+			if (props.multiselectable) {
+				const children = (
+					<div>
+						<Checkbox readOnly={true} checked={props.selectedValue === child.props.value} tabIndex={-1} hidden={true} />
+						{child.children || child.props.value}
+					</div>
+				)
+
+				return React.cloneElement(child, {
+					id: `${id}-option-${index}`,
+					tabIndex: -1,
+					selected: props.selectedValue === child.props.value,
+					onSelect
+				}, children);
+			}
+
+
 			return React.cloneElement(child, {
         id: `${id}-option-${index}`,
 				tabIndex: -1,
@@ -269,7 +292,7 @@ const Listbox = forwardRef(function ListboxComponent(
 				onSelect
 			});
 		});
-	}, [props.children, id, props.selectedValue, onSelect]);
+	}, [props.children, id, props.selectedValue, onSelect, props.multiselectable]);
 
 	return (
 		<ul
