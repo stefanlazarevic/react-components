@@ -150,7 +150,7 @@ AlphaChannelSlider.defaultProps = {
 	min: 0,
 	max: 100,
 	role: "slider",
-	value: 0,
+	value: 50,
 	orientation: "horizontal",
 	readOnly: false,
 	red: 31,

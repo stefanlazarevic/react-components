@@ -8,3 +8,10 @@ export default {
 };
 
 export const Default = (args: any) => <AlphaChannelSlider />;
+Default.parameters = {
+	docs: {
+		source: {
+			code: "<AlphaChannelSlider />",
+		},
+	},
+};
