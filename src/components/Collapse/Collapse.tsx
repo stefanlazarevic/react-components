@@ -1,11 +1,4 @@
-import React, {
-	forwardRef,
-	MutableRefObject,
-	useLayoutEffect,
-	useRef,
-	useCallback,
-	useMemo,
-} from "react";
+import React, { forwardRef, MutableRefObject } from "react";
 
 import "./Collapse.scss";
 

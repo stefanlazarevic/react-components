@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, MutableRefObject } from "react";
+import { useEffect, useRef, MutableRefObject } from "react";
 
 /**
  * @source https://itnext.io/reusing-the-ref-from-forwardref-with-react-hooks-4ce9df693dd

@@ -1,7 +1,6 @@
 import React, {
 	forwardRef,
 	MutableRefObject,
-	useMemo,
 	useRef,
 	useLayoutEffect,
 	useCallback,
