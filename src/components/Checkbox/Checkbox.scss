@@ -52,4 +52,8 @@
 
     cursor: default;
   }
+
+  &[tabIndex="-1"][hidden] {
+    pointer-events: none;
+  }
 }

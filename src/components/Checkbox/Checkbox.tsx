@@ -4,7 +4,7 @@ import "./Checkbox.scss";
 
 import { useClassNames, useCombinedRefs } from "../../hooks";
 
-import { CheckboxProps, CheckboxPropTypes } from "./CheckboxProps";
+import CheckboxProps from "./CheckboxProps";
 
 const Checkbox = forwardRef(function CheckboxComponent(
   props: CheckboxProps,
@@ -34,15 +34,16 @@ const Checkbox = forwardRef(function CheckboxComponent(
       disabled={props.disabled}
       title={props.title}
       name={props.name}
+      readOnly={props.readOnly}
       autoFocus={props.autoFocus}
+      tabIndex={props.tabIndex}
+      hidden={props.hidden}
       onChange={props.onChange}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
     />
   );
 });
-
-Checkbox.propTypes = CheckboxPropTypes;
 
 Checkbox.defaultProps = {
   type: "checkbox",
