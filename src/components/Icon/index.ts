@@ -7,6 +7,8 @@ export { default as AlignTopIcon } from "./icons/AlignTop";
 export { default as ClipboardIcon } from "./icons/Clipboard";
 export { default as CloseIcon } from "./icons/Close";
 export { default as ExportIcon } from "./icons/Export";
+export { default as EyeIcon } from "./icons/Eye";
+export { default as EyeAltIcon } from "./icons/EyeAlt";
 export { default as FormatCenterIcon } from "./icons/FormatCenter";
 export { default as FormatLeftIcon } from "./icons/FormatLeft";
 export { default as FormatRightIcon } from "./icons/FormatRight";
