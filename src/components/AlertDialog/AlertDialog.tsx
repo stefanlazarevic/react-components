@@ -27,11 +27,11 @@ const AlertDialog = forwardRef(function AlertDialogComponent(
   }, []);
 
   return (
-    <Alert ref={ref} {...props} className={className} role="alertdialog" onKeyDown={onKeyDown}>
+    <Alert ref={ref} {...props} className={className} role={props.role} onKeyDown={onKeyDown}>
       {props.children || props.content || <div />}
       {typeof props.onClose === 'function' && (
         <IconButton onClick={props.onClose}>
-          <CloseIcon size={16} />
+          <CloseIcon size={18} />
         </IconButton>
       )}
     </Alert>
@@ -39,7 +39,8 @@ const AlertDialog = forwardRef(function AlertDialogComponent(
 });
 
 AlertDialog.defaultProps = {
-  content: "AlertDialog Content"
+  content: "AlertDialog Content",
+  role: "alertdialog"
 };
 
 AlertDialog.displayName = "AlertDialog";

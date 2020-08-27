@@ -1,9 +1,14 @@
 import React from "react";
 import { AlertDialog } from "./index";
+import { Alert } from "../Alert";
 
 export default {
-  title: "AlertDialog",
-  component: AlertDialog,
+	title: "AlertDialog",
+	component: AlertDialog,
+	parameters: {
+		componentSubtitle: "Dismissable Alert component.",
+		subcomponents: { Alert },
+	},
 };
 
 export const Template = (args: any) => <AlertDialog {...args} />;
