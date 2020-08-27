@@ -101,6 +101,14 @@ export interface ButtonProps {
 	/**
 	 *
 	 */
+	label?: string;
+	/**
+	 *
+	 */
+	"aria-label"?: string;
+	/**
+	 *
+	 */
 	onClick?: (
 		event: React.MouseEvent<HTMLButtonElement>,
 		index?: number

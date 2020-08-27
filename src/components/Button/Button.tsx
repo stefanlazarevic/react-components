@@ -41,6 +41,7 @@ const Button = forwardRef(function ButtonComponent(
       }
       aria-expanded={typeof props.expanded === 'boolean' ? props.expanded : props['aria-expanded']}
       aria-haspopup={typeof props.haspopup === 'boolean' ? props.haspopup : props['aria-haspopup']}
+      aria-label={props.label || props['aria-label']}
       autoFocus={props.autoFocus}
       onClick={onClick}
       onFocus={props.onFocus}
