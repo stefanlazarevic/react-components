@@ -20,6 +20,7 @@ export * from './Label';
 export * from './Listbox';
 export * from './ListboxOption';
 export * from "./Paragraph";
+export * from "./PasswordField";
 export * from "./Progress";
 export * from './Radio';
 export * from './RadioButton';
