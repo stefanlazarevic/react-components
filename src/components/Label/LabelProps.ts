@@ -45,5 +45,5 @@ export interface LabelProps {
 	/**
 	 *
 	 */
-	required?: boolean;
+	native?: boolean;
 };

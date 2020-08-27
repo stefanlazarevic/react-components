@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject } from "react";
+import React, { forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./Label.scss";
 
@@ -12,6 +12,16 @@ const Label = forwardRef(function LabelComponent(
 ) {
   const className = useClassNames("Label", props.className);
 
+  const onClick = useCallback(() => {
+    if (document && typeof props.htmlFor === 'string') {
+      const connectedElement = document.getElementById(props.htmlFor);
+
+      if (connectedElement) {
+        connectedElement.focus();
+      }
+    }
+  }, []);
+
   return (
     <label
       ref={ref}
@@ -23,15 +33,16 @@ const Label = forwardRef(function LabelComponent(
       dir={props.dir}
       htmlFor={props.htmlFor}
       title={props.title}
+      onClick={props.native ? undefined : onClick}
     >
       {props.children || props.content}
-      {props.required && <span>*</span>}
     </label>
   );
 });
 
 Label.defaultProps = {
-  dir: "auto"
+  dir: "auto",
+  native: true
 };
 
 Label.displayName = "Label";
