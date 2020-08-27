@@ -4,8 +4,10 @@ import "./Avatar.scss";
 
 import { useClassNames } from "../../hooks";
 
+import { AvatarProps } from "./AvatarProps";
+
 const Avatar = forwardRef(function AvatarComponent(
-	props: any,
+	props: AvatarProps,
 	ref: MutableRefObject<HTMLDivElement>
 ) {
 	const className = useClassNames("Avatar", props.className);
@@ -17,16 +19,16 @@ const Avatar = forwardRef(function AvatarComponent(
 			data-testid={props.testid}
 			className={className}
 			style={props.style}
-			title={props.title}
-			aria-label={props.name}
+			title={props.title || props.label}
+			aria-label={props.label}
 		>
-      <span>{props.name.charAt(0)}</span>
+			<span>{props.content || props.label!.charAt(0)}</span>
 		</div>
 	);
 });
 
 Avatar.defaultProps = {
-  name: '',
+	label: "",
 };
 
 Avatar.displayName = "Avatar";
