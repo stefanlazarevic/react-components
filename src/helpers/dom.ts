@@ -11,7 +11,7 @@
  * A Boolean value that specifies whether the event should be executed in the capturing or in the bubbling phase. 
  * @param useCapture 
  */
-export function addEventListener(target: HTMLElement | Document | Window, event: string, handler: EventListenerOrEventListenerObject, useCapture = false) {
+function addEventListener(target: HTMLElement | Document | Window, event: string, handler: EventListenerOrEventListenerObject, useCapture = false) {
   target.addEventListener(event, handler, useCapture);
 
   return {
@@ -19,4 +19,8 @@ export function addEventListener(target: HTMLElement | Document | Window, event:
       target.removeEventListener(event, handler);
     }
   }
+}
+
+export default {
+  addEventListener
 }

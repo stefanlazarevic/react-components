@@ -1,15 +1,22 @@
-export function array_lastIndex<T>(array: T[] = []): number {
-  return array.length - 1;
+function lastIndex<T>(array: T[] = []): number {
+	return array ? array.length - 1 : -1;
 }
 
-export function array_last<T>(array: T[] = []): T {
-  return array[array_lastIndex(array)];
+function last<T>(array: T[] = []): T {
+	return array[lastIndex(array)];
 }
 
-export function array_first<T>(array: T[] = []): T {
-  return array[0];
+function first<T>(array: T[] = []): T {
+	return array[0];
 }
 
-export function array_empty<T>(array: T[] = []): boolean {
-  return array.length === 0;
+function isEmpty<T>(array: T[] = []): boolean {
+	return !array || array.length === 0;
 }
+
+export default {
+	lastIndex,
+	last,
+	first,
+	isEmpty,
+};
