@@ -83,22 +83,50 @@ const SubMenu = forwardRef(function SubMenuComponent(
 	}, [expanded, collapseAndFocusCaller]);
 
 	const onArrowLeft = useCallback((event: React.KeyboardEvent, details: any) => {
-		if (expanded) {
-			event.stopPropagation();
-			collapseAndFocusCaller();
-		} else {
+		if (!expanded && props.orientation === 'horizontal') {
+			// Do nothing, just bubble event.
 			props.onArrowLeft(event, details);
+
+			return;
+		}
+
+		if (expanded && props.orientation === 'vertical') {
+			event.stopPropagation();
+
+			collapseAndFocusCaller();
+
+			return;
 		}
 	}, [expanded, collapseAndFocusCaller, props.onArrowLeft]);
 
 	const onArrowRight = useCallback((event: React.KeyboardEvent, details: any) => {
-		if (expanded) {
-			event.stopPropagation();
-			collapseAndFocusCaller();
-		} else {
+		if (!expanded && props.orientation === 'horizontal') {
+			// Do nothing, just bubble event.
 			props.onArrowRight(event, details);
+
+			return;
 		}
-	}, [expanded, collapseAndFocusCaller, props.onArrowRight]);
+
+		if (!expanded && props.orientation === 'vertical') {
+			event.stopPropagation();
+
+			expand();
+
+			return;
+		}
+	}, [expanded, expand, props.orientation, collapseAndFocusCaller, props.onArrowRight]);
+
+	const onArrowDown = useCallback(function SubMenuArrowDownCallback(event: React.KeyboardEvent, details: any) {
+		if (!expanded && props.orientation === 'horizontal') {
+			event.stopPropagation();
+			
+			expand();
+		}
+
+		if (props.orientation === 'vertical') {
+			props.onArrowDown(event, details);
+		}
+	}, [expanded, props.orientation, expand]);
 
 	const onClick = useCallback((event: React.MouseEvent, details: any) => {
 		if (event.target === menuItem.current) {
@@ -138,6 +166,7 @@ const SubMenu = forwardRef(function SubMenuComponent(
 			onEscape={onEscape}
 			onArrowLeft={onArrowLeft}
 			onArrowRight={onArrowRight}
+			onArrowDown={onArrowDown}
 			controls={id}
 			expanded={expanded}
 		>
