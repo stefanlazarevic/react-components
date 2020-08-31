@@ -4,6 +4,8 @@ export { default as AlignLeftIcon } from "./icons/AlignLeft";
 export { default as AlignMiddleIcon } from "./icons/AlignMiddle";
 export { default as AlignRightIcon } from "./icons/AlignRight";
 export { default as AlignTopIcon } from "./icons/AlignTop";
+export { default as ChevronDownIcon } from "./icons/ChevronDown";
+export { default as ChevronRightIcon } from "./icons/ChevronRight";
 export { default as ClipboardIcon } from "./icons/Clipboard";
 export { default as CloseIcon } from "./icons/Close";
 export { default as ExportIcon } from "./icons/Export";

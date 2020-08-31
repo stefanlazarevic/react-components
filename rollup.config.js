@@ -15,7 +15,8 @@ const external = [
 
 const globals = {
   react: "React",
-  "prop-types": "PropTypes"
+  "prop-types": "PropTypes",
+  highlightjs: 'highlightjs'
 }
 
 const name = "@stefanlazarevic/library";
