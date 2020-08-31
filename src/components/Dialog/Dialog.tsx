@@ -12,8 +12,7 @@ import { useClassNames, useCombinedRefs } from "../../hooks";
 
 import { DialogProps, DialogPropTypes } from "./DialogProps";
 
-import { KeyCode, array_empty, array_lastIndex } from "../../helpers";
-import { getTabbableElementsQuery } from "../../helpers/string";
+import { keyboard, array, string } from "../../helpers";
 
 const Dialog = forwardRef(function DialogComponent(
   props: DialogProps,
@@ -28,7 +27,7 @@ const Dialog = forwardRef(function DialogComponent(
   useLayoutEffect(
     function ModalDidRender() {
       elements.current = Array.from(
-        dialog.current.querySelectorAll<HTMLElement>(getTabbableElementsQuery())
+        dialog.current.querySelectorAll<HTMLElement>(string.getTabbableElementsQuery())
       ) as HTMLElement[];
     },
     [props.children]
@@ -38,7 +37,7 @@ const Dialog = forwardRef(function DialogComponent(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       const { keyCode, shiftKey } = event;
 
-      if (keyCode === KeyCode.ESC && typeof props.onEscape === "function") {
+      if (keyCode === keyboard.KeyCode.ESC && typeof props.onEscape === "function") {
         props.onEscape(event);
 
         return;
@@ -49,8 +48,8 @@ const Dialog = forwardRef(function DialogComponent(
 
       if (
         shiftKey &&
-        keyCode === KeyCode.TAB &&
-        !array_empty(elements.current)
+        keyCode === keyboard.KeyCode.TAB &&
+        !array.isEmpty(elements.current)
       ) {
         event.preventDefault();
 
@@ -58,7 +57,7 @@ const Dialog = forwardRef(function DialogComponent(
 
         while (currentIndex !== focusedIndex) {
           if (currentIndex < 0) {
-            currentIndex = array_lastIndex(elements.current);
+            currentIndex = array.lastIndex(elements.current);
           }
 
           const element = elements.current[currentIndex];
@@ -78,15 +77,15 @@ const Dialog = forwardRef(function DialogComponent(
 
       if (
         !shiftKey &&
-        keyCode === KeyCode.TAB &&
-        !array_empty(elements.current)
+        keyCode === keyboard.KeyCode.TAB &&
+        !array.isEmpty(elements.current)
       ) {
         event.preventDefault();
 
         currentIndex++;
 
         while (currentIndex !== focusedIndex) {
-          if (currentIndex > array_lastIndex(elements.current)) {
+          if (currentIndex > array.lastIndex(elements.current)) {
             currentIndex = 0;
           }
 

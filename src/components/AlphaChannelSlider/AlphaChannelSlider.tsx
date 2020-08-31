@@ -12,7 +12,7 @@ import "./AlphaChannelSlider.scss";
 import { useClassNames, useCombinedRefs } from "../../hooks";
 
 import { AlphaChannelSliderProps } from "./AlphaChannelSliderProps";
-import { KeyCode, helpers } from "../../helpers";
+import { keyboard, dom } from "../../helpers";
 
 const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
 	props: AlphaChannelSliderProps,
@@ -51,19 +51,19 @@ const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
     const {keyCode} = event;
     let value = props.value!;
 
-    if (keyCode === KeyCode.ARROW_DOWN) {
+    if (keyCode === keyboard.KeyCode.ARROW_DOWN) {
       value = Math.max(props.min!, value - 1);
     }
 
-    if (keyCode === KeyCode.ARROW_UP) {
+    if (keyCode === keyboard.KeyCode.ARROW_UP) {
       value = Math.min(props.max!, value + 1);
     }
 
-    if (keyCode === KeyCode.HOME) {
+    if (keyCode === keyboard.KeyCode.HOME) {
       value = props.min!;
     }
 
-    if (keyCode === KeyCode.END) {
+    if (keyCode === keyboard.KeyCode.END) {
       value = props.max!;
     }
 
@@ -107,8 +107,8 @@ const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
     onDrag(event);
 
     if (document) {
-      dragListener.current = helpers.dom.addEventListener(document, 'mousemove', onDrag);
-      dropListener.current = helpers.dom.addEventListener(document, 'mouseup', onDrop);
+      dragListener.current = dom.addEventListener(document, 'mousemove', onDrag);
+      dropListener.current = dom.addEventListener(document, 'mouseup', onDrop);
     }
   }, [onDrag, onDrop]);
 

@@ -6,7 +6,7 @@ import React, {
 } from "react";
 
 import { useCombinedRefs } from "../hooks";
-import { KeyCode } from "../helpers";
+import { keyboard } from "../helpers";
 
 export interface IOutsideClickListenerProps {
 	onOutsideClick: (event: Event) => void;
@@ -39,7 +39,7 @@ export function withOutsideClick<IOutsideClickListenerProps>(
 			const handleKeyDown = useCallback((event: KeyboardEvent) => {
 				const {keyCode} = event;
 
-				if (keyCode === KeyCode.ESC && typeof props.onOutsideClick === "function") {
+				if (keyCode === keyboard.KeyCode.ESC && typeof props.onOutsideClick === "function") {
 					props.onOutsideClick(event)
 				}
 			}, [props.onOutsideClick]);

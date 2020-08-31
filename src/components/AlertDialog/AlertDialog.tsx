@@ -10,7 +10,7 @@ import { Alert } from "../Alert";
 import { IconButton } from "../IconButton";
 import { CloseIcon } from "../Icon";
 
-import { KeyCode } from "../../helpers";
+import {keyboard} from "../../helpers";
 
 const AlertDialog = forwardRef(function AlertDialogComponent(
   props: AlertDialogProps,
@@ -21,7 +21,7 @@ const AlertDialog = forwardRef(function AlertDialogComponent(
   const onKeyDown = useCallback(function AlertKeyDownCallback(event: React.KeyboardEvent<HTMLDivElement>) {
     const {keyCode} = event;
 
-    if (typeof props.onClose === 'function' && keyCode === KeyCode.ESC) {
+    if (typeof props.onClose === 'function' && keyCode === keyboard.KeyCode.ESC) {
       props.onClose(event as React.SyntheticEvent);
     }
   }, []);

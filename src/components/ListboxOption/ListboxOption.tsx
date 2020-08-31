@@ -10,7 +10,7 @@ import "./ListboxOption.scss";
 import { ListboxOptionProps } from "./ListboxOptionProps";
 
 import { useClassNames } from "../../hooks";
-import { KeyCode } from "../../helpers";
+import { keyboard } from "../../helpers";
 
 const ListboxOption = forwardRef(function ListboxOptionComponent(
 	props: ListboxOptionProps,
@@ -39,7 +39,7 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 		(event: React.KeyboardEvent) => {
 			const { keyCode } = event;
 
-			if (typeof props.onSelect === "function" && keyCode === KeyCode.ENTER) {
+			if (typeof props.onSelect === "function" && keyCode === keyboard.KeyCode.ENTER) {
 				props.onSelect(event, props.value);
 			}
 		},

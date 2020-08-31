@@ -10,7 +10,7 @@ import "./RadioGroup.scss";
 
 import { RadioGroupProps } from "./RadioGroupProps";
 
-import { generateRandomString } from "../../helpers";
+import { random } from "../../helpers";
 import { useClassNames } from "../../hooks";
 
 const RadioGroup = forwardRef(function RadioGroupComponent(
@@ -19,7 +19,7 @@ const RadioGroup = forwardRef(function RadioGroupComponent(
 ) {
 	const className = useClassNames("RadioGroup", props.className);
 
-	const name = useMemo(() => props.name || generateRandomString(5), [
+	const name = useMemo(() => props.name || random.getString(5), [
 		props.name,
 	]);
 

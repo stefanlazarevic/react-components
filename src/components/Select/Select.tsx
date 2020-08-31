@@ -16,7 +16,7 @@ import { SelectProps } from "./interfaces";
 
 import { Listbox } from "../Listbox";
 import { ListboxOption } from "../ListboxOption";
-import { KeyCode } from "../../helpers";
+import { keyboard} from "../../helpers";
 
 const Select = forwardRef(function SelectComponent(
 	props: SelectProps,
@@ -39,7 +39,7 @@ const Select = forwardRef(function SelectComponent(
 	const onKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
 		const {keyCode} = event;
 
-		if (keyCode === KeyCode.SPACE || keyCode == KeyCode.ENTER || keyCode === KeyCode.ARROW_DOWN) {
+		if (keyCode === keyboard.KeyCode.SPACE || keyCode == keyboard.KeyCode.ENTER || keyCode === keyboard.KeyCode.ARROW_DOWN) {
 			open();
 		}
 	}, [open]);

@@ -10,8 +10,7 @@ import "./Dropdown.scss";
 
 import { useClassNames, useCombinedRefs } from "../../hooks";
 
-import { getTabbableElementsQuery } from "../../helpers/string";
-import { KeyCode, array_lastIndex, array_empty } from "../../helpers";
+import { string, array, keyboard } from "../../helpers";
 
 const Dropdown = forwardRef(function DropdownComponent(
 	props: any,
@@ -24,11 +23,11 @@ const Dropdown = forwardRef(function DropdownComponent(
   const items =  useRef<HTMLElement[]>([]);
 
   const focusNext = useCallback((startIndex?: number) => {
-    if (array_empty(items.current)) {
+    if (array.isEmpty(items.current)) {
       return;
     }
 
-    const lastIndex = array_lastIndex(items.current);
+    const lastIndex = array.lastIndex(items.current);
 
     if (typeof startIndex === 'number') {
       if (startIndex > lastIndex) {
@@ -66,11 +65,11 @@ const Dropdown = forwardRef(function DropdownComponent(
   }, []);
 
   const focusPrevious = useCallback((startIndex?: number) => {
-    if (array_empty(items.current)) {
+    if (array.isEmpty(items.current)) {
       return;
     }
 
-    const lastIndex = array_lastIndex(items.current);
+    const lastIndex = array.lastIndex(items.current);
 
     if (typeof startIndex === 'number') {
       if (startIndex > lastIndex) {
@@ -108,7 +107,7 @@ const Dropdown = forwardRef(function DropdownComponent(
 
   useLayoutEffect(() => {
     if (list.current) {
-      items.current = Array.from(list.current.querySelectorAll(getTabbableElementsQuery()));
+      items.current = Array.from(list.current.querySelectorAll(string.getTabbableElementsQuery()));
 
       if (props.autoFocus) {
         focusNext(0);
@@ -119,20 +118,20 @@ const Dropdown = forwardRef(function DropdownComponent(
   const onKeyDown = useCallback((event: React.KeyboardEvent<HTMLUListElement>) => {
     const {keyCode} = event;
 
-    if (keyCode === KeyCode.ARROW_UP) {
+    if (keyCode === keyboard.KeyCode.ARROW_UP) {
       focusPrevious();
     }
 
-    if (keyCode === KeyCode.ARROW_DOWN) {
+    if (keyCode === keyboard.KeyCode.ARROW_DOWN) {
       focusNext();
     }
 
-    if (keyCode === KeyCode.HOME) {
+    if (keyCode === keyboard.KeyCode.HOME) {
       focusNext(0)
     }
 
-    if (keyCode === KeyCode.END) {
-      focusPrevious(array_lastIndex(items.current));
+    if (keyCode === keyboard.KeyCode.END) {
+      focusPrevious(array.lastIndex(items.current));
     }
   }, [focusNext]);
 

@@ -10,7 +10,7 @@ import React, {
 import "./Listbox.scss";
 
 import { useClassNames, useCombinedRefs } from "../../hooks";
-import { generateRandomString, KeyCode, array_lastIndex } from "../../helpers";
+import { random, keyboard, array } from "../../helpers";
 import { Checkbox } from "../Checkbox";
 
 const Listbox = forwardRef(function ListboxComponent(
@@ -23,7 +23,7 @@ const Listbox = forwardRef(function ListboxComponent(
 
 	const options = useRef<HTMLLIElement[]>([]);
 
-	const id = useMemo(() => props.id || generateRandomString(6), [props.id]);
+	const id = useMemo(() => props.id || random.getString(6), [props.id]);
 
 	const focusedIndex = useRef<number>(-1);
 
@@ -130,14 +130,14 @@ const Listbox = forwardRef(function ListboxComponent(
 
 		let currentIndex = focusedIndex.current;
 
-		const lastOptionIndex = array_lastIndex(options.current);
+		const lastOptionIndex = array.lastIndex(options.current);
 
 		if (currentIndex < 0 || currentIndex > lastOptionIndex) {
 			console.warn('All options are disabled.');
 			return;
 		}
 
-		if (keyCode === KeyCode.HOME) {
+		if (keyCode === keyboard.KeyCode.HOME) {
 			event.preventDefault();
 
 			currentIndex = 0;
@@ -164,7 +164,7 @@ const Listbox = forwardRef(function ListboxComponent(
 			}
 		}
 
-		if (keyCode === KeyCode.END) {
+		if (keyCode === keyboard.KeyCode.END) {
 			event.preventDefault();
 
 			currentIndex = lastOptionIndex;
@@ -191,7 +191,7 @@ const Listbox = forwardRef(function ListboxComponent(
 			}
 		}
 
-		if (keyCode === KeyCode.ARROW_UP) {
+		if (keyCode === keyboard.KeyCode.ARROW_UP) {
 			event.preventDefault();
 
 			currentIndex -= 1;
@@ -222,7 +222,7 @@ const Listbox = forwardRef(function ListboxComponent(
 			}
 		}
 
-		if (keyCode === KeyCode.ARROW_DOWN) {
+		if (keyCode === keyboard.KeyCode.ARROW_DOWN) {
 			event.preventDefault();
 
 			currentIndex += 1;
