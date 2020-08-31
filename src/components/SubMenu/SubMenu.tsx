@@ -14,7 +14,6 @@ import { MenuItem } from "../MenuItem";
 import { Menu } from "../Menu";
 import { random } from "../../helpers";
 import { useCombinedRefs } from "../../hooks";
-import { ChevronRightIcon } from "../Icon";
 
 const SubMenu = forwardRef(function SubMenuComponent(
 	props: any,
@@ -97,7 +96,7 @@ const SubMenu = forwardRef(function SubMenuComponent(
 
 			return;
 		}
-	}, [expanded, collapseAndFocusCaller, props.onArrowLeft]);
+	}, [expanded, props.orientation, collapseAndFocusCaller, props.onArrowLeft]);
 
 	const onArrowRight = useCallback((event: React.KeyboardEvent, details: any) => {
 		if (!expanded && props.orientation === 'horizontal') {
@@ -114,19 +113,19 @@ const SubMenu = forwardRef(function SubMenuComponent(
 
 			return;
 		}
-	}, [expanded, expand, props.orientation, collapseAndFocusCaller, props.onArrowRight]);
+	}, [expanded, expand, props.orientation, props.onArrowRight]);
 
 	const onArrowDown = useCallback(function SubMenuArrowDownCallback(event: React.KeyboardEvent, details: any) {
 		if (!expanded && props.orientation === 'horizontal') {
 			event.stopPropagation();
-			
+
 			expand();
 		}
 
 		if (props.orientation === 'vertical') {
 			props.onArrowDown(event, details);
 		}
-	}, [expanded, props.orientation, expand]);
+	}, [expanded, props.orientation, expand, props.onArrowDown]);
 
 	const onClick = useCallback((event: React.MouseEvent, details: any) => {
 		if (event.target === menuItem.current) {

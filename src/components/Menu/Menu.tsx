@@ -144,20 +144,21 @@ const Menu = forwardRef(function MenuComponent(
 				event.stopPropagation();
 			}
 
-			const item = array.last(items);
+			let currentIndex = array.lastIndex(items);
 
-			if (item.current) {
-				item.current.setAttribute("tabIndex", "0");
-				item.current.focus();
+			while (currentIndex > -1) {
+				const item = items[currentIndex];
 
-				const focusedItem = items[focusedIndex.current];
+				if (item.current) {
+					const isDisabled = item.current.getAttribute("aria-disabled");
 
-				if (focusedItem.current) {
-					focusedItem.current.setAttribute("tabIndex", "-1");
+					if (!isDisabled) {
+						switchFocus(currentIndex);
+						break;
+					}
 				}
 
-
-				focusedIndex.current = array.lastIndex(items);
+				currentIndex--;
 			}
 		},
 		[items]
