@@ -1,14 +1,16 @@
-import React, { forwardRef, MutableRefObject, useMemo } from "react";
+import React, { forwardRef, MutableRefObject, useMemo, useRef } from "react";
 
 import "./MenuItem.scss";
 
-import { keyboard } from "../../helpers";
-import { useClassNames } from "../../hooks";
+import { keyboard, dom } from "../../helpers";
+import { useClassNames, useCombinedRefs } from "../../hooks";
 
 const MenuItem = forwardRef(function MenuItemComponent(
 	props: any,
 	ref: MutableRefObject<HTMLLIElement>
 ) {
+	const item = useCombinedRefs<HTMLLIElement>(ref);
+
 	const className = useClassNames("MenuItem", props.className);
 
 	const callbackDetails = useMemo(
@@ -41,64 +43,129 @@ const MenuItem = forwardRef(function MenuItemComponent(
 		}
 	}
 
+	function focusNext() {
+		console.info('Focus next');
+		let current = item.current.nextElementSibling as HTMLLIElement;
+
+		if (!current) {
+			current = item.current.parentNode!.firstElementChild as HTMLLIElement;
+		}
+		
+		while (current !== item.current) {
+			if (!dom.isDisabledNode(current)) {
+				item.current.setAttribute('tabIndex', '-1');
+				current.setAttribute('tabIndex', '0');
+				current.focus();
+
+				break;
+			}
+
+			current = current.nextElementSibling as HTMLLIElement;
+
+			if (!current) {
+				current = item.current.parentNode!.firstElementChild as HTMLLIElement;
+			}
+		}
+	}
+
+	function focusPrevious() {
+		console.info('Focus previous');
+		let current = item.current.previousElementSibling as HTMLLIElement;
+
+		if (!current) {
+			current = item.current.parentNode!.lastElementChild as HTMLLIElement;
+		}
+
+		while (current !== item.current) {
+			if (!dom.isDisabledNode(current)) {
+				item.current.setAttribute('tabIndex', '-1');
+				current.setAttribute('tabIndex', '0');
+				current.focus();
+
+				break;
+			}
+
+			current = current.previousElementSibling as HTMLLIElement;
+
+			if (!current) {
+				current = item.current.parentNode!.lastElementChild as HTMLLIElement;
+			}
+		}
+	}
+
+	function focusFirst() {
+		console.info('Focus first');
+
+		let current = item.current.parentNode!.firstElementChild as HTMLLIElement;
+
+		while (current) {
+			if (!dom.isDisabledNode(current)) {
+				item.current.setAttribute('tabIndex', '-1');
+				current.setAttribute('tabIndex', '0');
+				current.focus();
+
+				break;
+			}
+
+			current = current.nextElementSibling as HTMLLIElement;
+		}
+	}
+
+	function focusLast() {
+		console.info('Focus last');
+
+		let current = item.current.parentNode!.lastElementChild as HTMLLIElement;
+
+		while (current) {
+			if (!dom.isDisabledNode(current)) {
+				item.current.setAttribute('tabIndex', '-1');
+				current.setAttribute('tabIndex', '0');
+				current.focus();
+
+				break;
+			}
+
+			current = current.previousElementSibling as HTMLLIElement;
+		}
+	}
+
 	function onKeyDown(event: React.KeyboardEvent<HTMLLIElement>) {
 		const { keyCode } = event;
 
 		if (
-			keyCode === keyboard.KeyCode.ARROW_DOWN &&
-			typeof props.onArrowDown === "function"
+			keyCode === keyboard.KeyCode.ARROW_DOWN
 		) {
-			props.onArrowDown(event, callbackDetails);
+			if (props.orientation === 'vertical') {
+				focusNext();
+			}
 		}
 
 		if (
-			keyCode === keyboard.KeyCode.ARROW_UP &&
-			typeof props.onArrowUp === "function"
+			keyCode === keyboard.KeyCode.ARROW_UP
 		) {
-			props.onArrowUp(event, callbackDetails);
+			if (props.orientation === 'vertical') {
+			  focusPrevious();
+			}
 		}
 
 		if (
-			keyCode === keyboard.KeyCode.ARROW_LEFT &&
-			typeof props.onArrowLeft === "function"
+			keyCode === keyboard.KeyCode.ARROW_LEFT
 		) {
-			props.onArrowLeft(event, callbackDetails);
+			if (props.orientation === 'horizontal') {
+				focusPrevious();
+			}
 		}
 
 		if (
-			keyCode === keyboard.KeyCode.ARROW_RIGHT &&
-			typeof props.onArrowRight === "function"
+			keyCode === keyboard.KeyCode.ARROW_RIGHT
 		) {
-			props.onArrowRight(event, callbackDetails);
-		}
-
-		if (
-			keyCode === keyboard.KeyCode.HOME &&
-			typeof props.onHome === "function"
-		) {
-			props.onHome(event, callbackDetails);
-		}
-
-		if (keyCode === keyboard.KeyCode.END && typeof props.onEnd === "function") {
-			props.onEnd(event, callbackDetails);
+			if (props.orientation === 'horizontal') {
+				focusNext();
+			}
 		}
 
 		if (keyCode === keyboard.KeyCode.ESC && typeof props.onEscape === 'function') {
 			props.onEscape(event, callbackDetails);
-		}
-
-		if (
-				(keyCode === keyboard.KeyCode.SPACE) && 
-				typeof props.onSpace === "function"
-			) {
-			props.onSpace(event, callbackDetails);
-		}
-
-		if (
-				(keyCode === keyboard.KeyCode.ENTER) && 
-				typeof props.onEnter === "function"
-			) {
-			props.onEnter(event, callbackDetails);
 		}
 
 		if (typeof props.onKeyDown === "function") {
@@ -108,7 +175,7 @@ const MenuItem = forwardRef(function MenuItemComponent(
 
 	return (
 		<li
-			ref={ref}
+			ref={item}
 			id={props.id}
 			data-testid={props.testid}
 			className={className}
@@ -119,7 +186,7 @@ const MenuItem = forwardRef(function MenuItemComponent(
       aria-haspopup={hasPopup()}
 			aria-controls={controls()}
 			aria-expanded={expanded()}
-			tabIndex={props.focused ? 0 : -1}
+			tabIndex={props.tabIndex}
 		>
 			{props.children || props.content}
 		</li>
@@ -128,7 +195,8 @@ const MenuItem = forwardRef(function MenuItemComponent(
 
 MenuItem.defaultProps = {
 	role: "menuitem",
-	haspopup: false
+	haspopup: false,
+	tabIndex: -1
 };
 
 MenuItem.displayName = "MenuItem";

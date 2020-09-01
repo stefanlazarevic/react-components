@@ -2,213 +2,29 @@ import React, {
 	forwardRef,
 	MutableRefObject,
 	useCallback,
-	useMemo,
-	createRef,
-	useRef,
 	useLayoutEffect,
 } from "react";
 import "./Menu.scss";
 
 import { useClassNames, useCombinedRefs } from "../../hooks";
-import { array } from "../../helpers";
+import { keyboard, dom } from "../../helpers";
 
 const Menu = forwardRef(function MenuComponent(
 	props: any,
 	ref: MutableRefObject<HTMLUListElement>
 ) {
-	const focusedIndex = useRef<number>(0);
-
 	const className = useClassNames("Menu", props.className);
 
 	const menu = useCombinedRefs(ref);
 
-	const items = useMemo(() => {
-		return Array.from({ length: React.Children.count(props.children) }, () => {
-			return createRef<HTMLLIElement>();
-		});
-	}, [props.children]);
-
-	const switchFocus = useCallback(
-		(targetIndex: number) => {
-			const item = items[targetIndex];
-
-			if (item.current) {
-				const focusedItem = items[focusedIndex.current];
-
-				item.current.setAttribute("tabIndex", "0");
-				item.current.focus();
-
-				if (focusedItem.current) {
-					focusedItem.current.setAttribute("tabIndex", "-1");
-				}
-
-				focusedIndex.current = targetIndex;
-			}
-		},
-		[items]
-	);
-
-	const onClick = useCallback(function onMenuItemSelect(
-		event: React.SyntheticEvent,
-		details: any
-	) {
-		switchFocus(details.index);
-	},
-	[]);
-
-	const focusNext = useCallback(
-		function focusNextMenuItem(event: React.SyntheticEvent, details) {
-			event.stopPropagation();
-
-			let currentIndex = details.index + 1;
-
-			while (currentIndex !== focusedIndex.current) {
-				if (currentIndex > array.lastIndex(items)) {
-					currentIndex = 0;
-				}
-
-				const item = items[currentIndex];
-
-				if (item.current) {
-					const isDisabled = item.current.getAttribute("aria-disabled");
-
-					if (!isDisabled) {
-						switchFocus(currentIndex);
-						break;
-					}
-				}
-
-				currentIndex++;
-			}
-		},
-		[items]
-	);
-
-	const focusPrevious = useCallback(
-		function focusPreviousMenuItem(event: React.SyntheticEvent, details) {
-			event.stopPropagation();
-
-			let currentIndex = details.index - 1;
-
-			while (currentIndex !== focusedIndex.current) {
-				if (currentIndex < 0) {
-					currentIndex = array.lastIndex(items);
-				}
-
-				const item = items[currentIndex];
-
-				if (item.current) {
-					const isDisabled = item.current.getAttribute("aria-disabled");
-
-					if (!isDisabled) {
-						switchFocus(currentIndex);
-						break;
-					}
-				}
-
-				currentIndex--;
-			}
-		},
-		[items]
-	);
-
-	const focusFirst = useCallback(
-		function focusFirstMenuItem(event?: React.SyntheticEvent) {
-			if (event) {
-				event.stopPropagation();
-			}
-
-			let currentIndex = 0;
-
-			while (currentIndex <= array.lastIndex(items)) {
-				const item = items[currentIndex];
-
-				if (item.current) {
-					const isDisabled = item.current.getAttribute("aria-disabled");
-
-					if (!isDisabled) {
-						switchFocus(currentIndex);
-						break;
-					}
-				}
-
-				currentIndex++;
-			}
-		},
-		[items]
-	);
-
-	const focusLast = useCallback(
-		function focusFirstMenuItem(event?: React.SyntheticEvent) {
-			if (event) {
-				event.stopPropagation();
-			}
-
-			let currentIndex = array.lastIndex(items);
-
-			while (currentIndex > -1) {
-				const item = items[currentIndex];
-
-				if (item.current) {
-					const isDisabled = item.current.getAttribute("aria-disabled");
-
-					if (!isDisabled) {
-						switchFocus(currentIndex);
-						break;
-					}
-				}
-
-				currentIndex--;
-			}
-		},
-		[items]
-	);
-
-	const onArrowUp = useCallback(function onMenuItemArrowUpKey(event: React.KeyboardEvent, details: any) {
-		if (props.orientation === 'vertical') {
-			event.stopPropagation();
-			focusPrevious(event, details);
-		}
-	}, [focusPrevious]);
-
-	const onArrowDown = useCallback(function onMenuItemArrowUpKey(event: React.KeyboardEvent, details: any) {
-		if (props.orientation === 'vertical') {
-			event.stopPropagation();
-			focusNext(event, details);
-		}
-	}, [focusNext]);
-
-	const onArrowLeft = useCallback(function onMenuItemArrowUpKey(event: React.KeyboardEvent, details: any) {
-		if (props.orientation === 'horizontal') {
-			event.stopPropagation();
-			focusPrevious(event, details);
-		}
-	}, [focusPrevious]);
-
-	const onArrowRight = useCallback(function onMenuItemArrowUpKey(event: React.KeyboardEvent, details: any) {
-		if (props.orientation === 'horizontal') {
-			event.stopPropagation();
-			focusNext(event, details);
-		}
-	}, [focusNext]);
-
 	const renderChildren = useCallback(
 		function renderMenuItems() {
-			return React.Children.map(props.children, (child, index) => {
+			return React.Children.map(props.children, (child, index: number) => {
 				if (React.isValidElement(child)) {
 					return React.cloneElement(child, {
-						// @ts-ignore
-						ref: items[index],
 						index,
 						orientation: props.orientation,
-						onClick,
-						onArrowDown,
-						onArrowUp,
-						onHome: focusFirst,
-						onEnd: focusLast,
-						onArrowLeft,
-						onArrowRight
-					});
+					} as any);
 				}
 
 				return child;
@@ -216,20 +32,73 @@ const Menu = forwardRef(function MenuComponent(
 		},
 		[
 			props.children, 
-			props.orientation, 
-			onClick, 
-			onArrowDown, 
-			onArrowUp, 
-			onArrowLeft, 
-			onArrowRight, 
-			focusFirst, 
-			focusLast
+			props.orientation
 		]
 	);
 
+	function focusFirst() {
+		let current = menu.current.firstElementChild as HTMLLIElement;
+
+		while (current) {
+			if (!dom.isDisabledNode(current)) {
+				current.setAttribute('tabIndex', '0');
+				current.focus();
+
+				break;
+			}
+
+			current = current.nextElementSibling as HTMLLIElement;
+		}
+	}
+
+	function focusLast() {
+		let current = menu.current.lastElementChild as HTMLLIElement;
+
+		while (current) {
+			if (!dom.isDisabledNode(current)) {
+				current.setAttribute('tabIndex', '0');
+				current.focus();
+
+				break;
+			}
+
+			current = current.previousElementSibling as HTMLLIElement;
+		}
+	}
+
+	const onKeyDown = useCallback((event: React.KeyboardEvent) => {
+		const {keyCode} = event;
+
+		if (keyCode === keyboard.KeyCode.HOME) {
+			event.stopPropagation();
+
+			focusFirst();
+		}
+
+		if (keyCode === keyboard.KeyCode.END) {
+			event.stopPropagation();
+
+			focusLast();
+		}
+
+		if (
+			props.orientation === 'horizontal' && 
+			(keyCode === keyboard.KeyCode.ARROW_RIGHT || keyCode === keyboard.KeyCode.ARROW_LEFT) 
+		) {
+			event.stopPropagation();
+		}
+
+		if (
+			props.orientation === 'vertical' && 
+			(keyCode === keyboard.KeyCode.ARROW_UP || keyCode === keyboard.KeyCode.ARROW_DOWN) 
+		) {
+			event.stopPropagation();
+		}
+	}, []);
+
 	useLayoutEffect(() => {
 		focusFirst();
-	}, [focusFirst]);
+	}, []);
 
 	return (
 		<ul
@@ -240,6 +109,7 @@ const Menu = forwardRef(function MenuComponent(
 			role={props.role}
 			aria-orientation={props.orientation}
 			onBlur={props.onBlur}
+			onKeyDown={onKeyDown}
 		>
 			{renderChildren()}
 		</ul>

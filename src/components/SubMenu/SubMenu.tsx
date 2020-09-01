@@ -12,7 +12,7 @@ import "./SubMenu.scss";
 
 import { MenuItem } from "../MenuItem";
 import { Menu } from "../Menu";
-import { random } from "../../helpers";
+import { random, keyboard } from "../../helpers";
 import { useCombinedRefs } from "../../hooks";
 
 const SubMenu = forwardRef(function SubMenuComponent(
@@ -36,7 +36,9 @@ const SubMenu = forwardRef(function SubMenuComponent(
 	}
 
 	const switchExpandedState = useCallback(function onSubMenuVisibilityChange(newState?: boolean) {
-		setExpanded((expanded: boolean) => typeof newState === "boolean" ? newState : !expanded);
+		if (React.Children.count(props.children)) {
+			setExpanded((expanded: boolean) => typeof newState === "boolean" ? newState : !expanded);
+		}
 	}, []);
 
 	const expand = useCallback(() => {
@@ -81,60 +83,65 @@ const SubMenu = forwardRef(function SubMenuComponent(
 		}
 	}, [expanded, collapseAndFocusCaller]);
 
-	const onArrowLeft = useCallback((event: React.KeyboardEvent, details: any) => {
-		if (!expanded && props.orientation === 'horizontal') {
-			// Do nothing, just bubble event.
-			props.onArrowLeft(event, details);
+	const onKeyDown = useCallback((event: React.KeyboardEvent) => {
+		const {keyCode} = event;
 
-			return;
+		if (menuItem.current === event.target) {
+			if (keyCode === keyboard.KeyCode.ARROW_DOWN && props.orientation === 'horizontal') {
+				event.stopPropagation();
+
+				expand();
+			}
+
+			if (keyCode === keyboard.KeyCode.ARROW_UP && props.orientation === 'horizontal') {
+				if (expanded) {
+					event.stopPropagation();
+					
+					collapseAndFocusCaller();
+				}
+			}
+
+			if (keyCode === keyboard.KeyCode.ENTER || keyCode === keyboard.KeyCode.SPACE) {
+				event.stopPropagation();
+
+				if (expanded) {
+					collapseAndFocusCaller();
+				} else {
+					expand();
+				}
+			}
 		}
 
-		if (expanded && props.orientation === 'vertical') {
-			event.stopPropagation();
-
-			collapseAndFocusCaller();
-
-			return;
-		}
-	}, [expanded, props.orientation, collapseAndFocusCaller, props.onArrowLeft]);
-
-	const onArrowRight = useCallback((event: React.KeyboardEvent, details: any) => {
-		if (!expanded && props.orientation === 'horizontal') {
-			// Do nothing, just bubble event.
-			props.onArrowRight(event, details);
-
-			return;
-		}
-
-		if (!expanded && props.orientation === 'vertical') {
-			event.stopPropagation();
-
-			expand();
-
-			return;
-		}
-	}, [expanded, expand, props.orientation, props.onArrowRight]);
-
-	const onArrowDown = useCallback(function SubMenuArrowDownCallback(event: React.KeyboardEvent, details: any) {
-		if (!expanded && props.orientation === 'horizontal') {
+		if (keyCode === keyboard.KeyCode.ARROW_RIGHT && props.orientation === 'vertical') {
 			event.stopPropagation();
 
 			expand();
 		}
 
-		if (props.orientation === 'vertical') {
-			props.onArrowDown(event, details);
+		if (
+			(keyCode === keyboard.KeyCode.ARROW_RIGHT || keyCode === keyboard.KeyCode.ARROW_LEFT) && 
+			props.orientation === 'horizontal'
+		) {
+			if (expanded) {
+				collapse();
+			}
 		}
-	}, [expanded, props.orientation, expand, props.onArrowDown]);
 
-	const onClick = useCallback((event: React.MouseEvent, details: any) => {
+		if (keyCode === keyboard.KeyCode.ARROW_LEFT && props.orientation === 'vertical') {
+			if (expanded) {
+				event.stopPropagation();
+
+				collapseAndFocusCaller();
+			}
+		}
+	}, [expanded]);
+
+	const onClick = useCallback((event: React.MouseEvent) => {
 		if (event.target === menuItem.current) {
 			event.stopPropagation();
 		}
 
 		switchExpandedState();
-
-		props.onClick(event, details);
 	}, [switchExpandedState, props.onClick]);
 
 	const onOutsideClick = useCallback((event) => {
@@ -157,15 +164,13 @@ const SubMenu = forwardRef(function SubMenuComponent(
 
 	return (
 		<MenuItem
-			ref={menuItem}
 			{...props}
+			ref={menuItem}
 			haspopup="menu"
 			onClick={onClick}
 			onEnter={onEnter}
 			onEscape={onEscape}
-			onArrowLeft={onArrowLeft}
-			onArrowRight={onArrowRight}
-			onArrowDown={onArrowDown}
+			onKeyDown={onKeyDown}
 			controls={id}
 			expanded={expanded}
 		>
