@@ -21,6 +21,17 @@ function addEventListener(target: HTMLElement | Document | Window, event: string
   }
 }
 
+function isDisabledNode(target: HTMLElement) {
+  if (!target) {
+    return false;
+  }
+
+  const isDisabled = target.getAttribute('aria-disabled') === "true";
+
+  return isDisabled;
+}
+
 export default {
-  addEventListener
+  addEventListener,
+  isDisabledNode
 }
