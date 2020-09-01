@@ -11,8 +11,8 @@ import "./ExportDropdown.scss";
 import {
 	IconButton,
 	ExportIcon,
-	Dropdown,
-	DropdownOption,
+	Menu,
+	MenuItem,
 } from "../../../components";
 
 import { withOutsideClick } from "../../../hoc";
@@ -34,12 +34,12 @@ export default function ExportDropdown() {
 	
 	const DropdownComponent = useMemo(() => {
 		const DropdownMenu = forwardRef((props: any, ref: any) => (
-			<Dropdown ref={ref} autoFocus={true} {...props}>
-				<DropdownOption content="Excel" onClick={() => undefined} />
-				<DropdownOption content="PDF" onClick={() => undefined} />
-				<DropdownOption content="XML" onClick={() => undefined} />
-				<DropdownOption content="Markdown" onClick={() => undefined} />
-			</Dropdown>
+			<Menu ref={ref} autoFocus={true} {...props}>
+				<MenuItem content="Excel" onClick={() => alert("Excel")} />
+				<MenuItem content="PDF" onClick={() => undefined} />
+				<MenuItem content="XML" onClick={() => undefined} />
+				<MenuItem content="Markdown" onClick={() => undefined} />
+			</Menu>
 		));
 
 		return withOutsideClick(DropdownMenu);

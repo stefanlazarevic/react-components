@@ -11,8 +11,6 @@ export * from "./CodeBlock";
 export * from "./Collapse";
 export * from "./Dialog";
 export * from './DialogHeader';
-export * from './Dropdown';
-export * from './DropdownOption';
 export * from "./Heading";
 export * from './Icon';
 export * from './IconButton';
