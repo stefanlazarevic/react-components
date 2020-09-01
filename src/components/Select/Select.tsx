@@ -52,7 +52,9 @@ const Select = forwardRef(function SelectComponent(
 				<Listbox ref={ref} selectedValue={props.value} onSelect={props.onChange} autoFocus={true} multiselectable={props.multiselectable}>
 					{props.options!.map((option: any) => {
 						return (
-							<ListboxOption value={option.value} disabled={option.disabled}>{option.label}</ListboxOption>
+							<ListboxOption key={option.value} value={option.value} disabled={option.disabled}>
+								{option.label}
+							</ListboxOption>
 						);
 					})}
 				</Listbox>
