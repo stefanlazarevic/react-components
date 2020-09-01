@@ -2,22 +2,35 @@ import React, { forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./AccordionHeader.scss";
 
+import { AccordionHeaderProps } from "./AccordionHeaderProps";
+
 import { Button } from "../Button";
 import { Heading } from "../Heading";
 
 import { useClassNames } from "../../hooks";
 
 const AccordionHeader = forwardRef(function AccordionHeaderComponent(
-	props: any,
+	props: AccordionHeaderProps,
 	ref: MutableRefObject<HTMLHeadingElement>
 ) {
-  const classNames = useClassNames("AccordionHeader", props.className);
+	const classNames = useClassNames("AccordionHeader", props.className);
 
-  const onClick = useCallback((event: React.SyntheticEvent) => {
-    if (typeof props.onClick === 'function') {
-      props.onClick(event, props.id);
-    }
-  }, [props.onClick, props.id]);
+	const content = useCallback(() => {
+		if (typeof props.content === 'function') {
+			return props.content();
+		}
+
+		return props.content;
+	}, [props.content]);
+
+	const onClick = useCallback(
+		(event: React.SyntheticEvent) => {
+			if (typeof props.onClick === "function") {
+				props.onClick(event, {id: props.id});
+			}
+		},
+		[props.onClick, props.id]
+	);
 
 	return (
 		<Heading
@@ -37,7 +50,7 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 				title={props.title}
 				onClick={onClick}
 			>
-				{props.children || props.content}
+				{props.children || content}
 			</Button>
 		</Heading>
 	);
