@@ -25,6 +25,7 @@ export * from "./Progress";
 export * from './Radio';
 export * from './RadioButton';
 export * from './RadioGroup';
+export * from './SearchField';
 export * from './Select';
 export * from './Slider';
 export * from './SubMenu';
