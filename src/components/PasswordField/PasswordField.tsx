@@ -27,7 +27,7 @@ const PasswordField = forwardRef(function PasswordFieldComponent(
 		<div ref={ref} data-testid={props.testid} className={className} style={props.style} data-invalid={props.invalid}>
 			<input id={props.id} type={type} name={props.name} placeholder={props.placeholder} value={props.value} aria-invalid={props.invalid} />
 			<IconButton onClick={switchType} pressed={type === 'text'} label="Reveal password">
-				{type === 'text' ? <EyeAltIcon /> : <EyeIcon />}
+				{type === 'text' ? <EyeAltIcon size={20} /> : <EyeIcon size={20} />}
 			</IconButton>
 		</div>
 	);
