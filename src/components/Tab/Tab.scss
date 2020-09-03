@@ -1,0 +1,43 @@
+.Tab {
+	box-sizing: border-box;
+
+	position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  background-color: var(--component-background-color);
+
+  border: 1px solid var(--component-border-color);
+
+  border-radius: 4px;
+
+  height: 40px;
+
+  &:not(:empty) {
+    padding: 0 16px;
+  }
+
+  &:hover {
+    background-color: #21242c;
+  }
+
+  &:not(:disabled):not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
+  &[aria-selected="true"] {
+    border-color: var(--app-info-color);
+
+    color: var(--app-info-color);
+  }
+  
+  &:focus {
+    outline: 2px solid var(--app-info-color);
+
+    outline-offset: -1px;
+
+    z-index: 2;
+  }
+}
