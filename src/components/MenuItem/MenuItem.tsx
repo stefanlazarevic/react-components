@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject, useMemo, useRef } from "react";
+import React, { forwardRef, MutableRefObject, useMemo } from "react";
 
 import "./MenuItem.scss";
 
@@ -52,7 +52,7 @@ const MenuItem = forwardRef(function MenuItemComponent(
 		}
 		
 		while (current !== item.current) {
-			if (!dom.isDisabledNode(current)) {
+			if (!dom.isDisabledElement(current)) {
 				item.current.setAttribute('tabIndex', '-1');
 				current.setAttribute('tabIndex', '0');
 				current.focus();
@@ -77,7 +77,7 @@ const MenuItem = forwardRef(function MenuItemComponent(
 		}
 
 		while (current !== item.current) {
-			if (!dom.isDisabledNode(current)) {
+			if (!dom.isDisabledElement(current)) {
 				item.current.setAttribute('tabIndex', '-1');
 				current.setAttribute('tabIndex', '0');
 				current.focus();
@@ -90,42 +90,6 @@ const MenuItem = forwardRef(function MenuItemComponent(
 			if (!current) {
 				current = item.current.parentNode!.lastElementChild as HTMLLIElement;
 			}
-		}
-	}
-
-	function focusFirst() {
-		console.info('Focus first');
-
-		let current = item.current.parentNode!.firstElementChild as HTMLLIElement;
-
-		while (current) {
-			if (!dom.isDisabledNode(current)) {
-				item.current.setAttribute('tabIndex', '-1');
-				current.setAttribute('tabIndex', '0');
-				current.focus();
-
-				break;
-			}
-
-			current = current.nextElementSibling as HTMLLIElement;
-		}
-	}
-
-	function focusLast() {
-		console.info('Focus last');
-
-		let current = item.current.parentNode!.lastElementChild as HTMLLIElement;
-
-		while (current) {
-			if (!dom.isDisabledNode(current)) {
-				item.current.setAttribute('tabIndex', '-1');
-				current.setAttribute('tabIndex', '0');
-				current.focus();
-
-				break;
-			}
-
-			current = current.previousElementSibling as HTMLLIElement;
 		}
 	}
 

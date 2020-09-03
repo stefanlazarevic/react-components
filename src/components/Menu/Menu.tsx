@@ -40,7 +40,7 @@ const Menu = forwardRef(function MenuComponent(
 		let current = menu.current.firstElementChild as HTMLLIElement;
 
 		while (current) {
-			if (!dom.isDisabledNode(current)) {
+			if (!dom.isDisabledElement(current)) {
 				current.setAttribute('tabIndex', '0');
 				current.focus();
 
@@ -55,7 +55,7 @@ const Menu = forwardRef(function MenuComponent(
 		let current = menu.current.lastElementChild as HTMLLIElement;
 
 		while (current) {
-			if (!dom.isDisabledNode(current)) {
+			if (!dom.isDisabledElement(current)) {
 				current.setAttribute('tabIndex', '0');
 				current.focus();
 
