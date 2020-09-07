@@ -16,11 +16,11 @@ const Label = forwardRef(function LabelComponent(
     if (document && typeof props.htmlFor === 'string') {
       const connectedElement = document.getElementById(props.htmlFor);
 
-      if (connectedElement) {
+      if (connectedElement instanceof HTMLElement) {
         connectedElement.focus();
       }
     }
-  }, []);
+  }, [props.htmlFor]);
 
   return (
     <label

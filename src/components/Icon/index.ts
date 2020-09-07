@@ -22,6 +22,7 @@ export { default as HeadsetIcon } from "./icons/Headset";
 export { default as HeartIcon } from "./icons/Heart";
 export { default as InfoIcon } from "./icons/Info";
 export { default as MicIcon } from "./icons/Mic";
+export { default as MinusIcon } from "./icons/Minus";
 export { default as MoreVerticalIcon } from "./icons/MoreVertical";
 export { default as PlusIcon } from "./icons/Plus";
 export { default as SearchIcon } from "./icons/Search";
