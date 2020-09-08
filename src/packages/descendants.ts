@@ -10,6 +10,8 @@ import {
 	filter,
 } from "../helpers";
 
+import { useForceUpdate } from "../hooks/forceUpdate";
+
 /**
  * React hook which is used on component interface level.
  */
@@ -23,8 +25,10 @@ export function useDescendants() {
 		element: HTMLElement
 	) {
     setDescendants(function updateDescendantsState(currentDescendants) {
-      if (not(isAbsent(find(descendant => descendant === element, currentDescendants)))) {
+      if (isAbsent(find(descendant => descendant === element, currentDescendants))) {
         const index = findIndex(descendant => {
+          if (!element) return false;
+
           return Boolean(descendant.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_PRECEDING);
         }, currentDescendants);
 
@@ -62,10 +66,16 @@ export function useDescendants() {
 /**
  * 
  */
-export function useDescendant(element: HTMLElement, context: any): number {
+export function useDescendant(element: HTMLElement | null, context: any): number {
   const { register, unregister, descendants } = context
+
+  const forceUpdate = useForceUpdate();
   
   useLayoutEffect(() => {
+    if (!element) {
+      forceUpdate();
+    }
+
     register(element);
 
     return function componentWillUnmount() {
