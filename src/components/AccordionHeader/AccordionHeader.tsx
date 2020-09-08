@@ -1,4 +1,9 @@
-import React, { forwardRef, MutableRefObject, useCallback } from "react";
+import React, {
+	forwardRef,
+	MutableRefObject,
+	useCallback,
+	useContext,
+} from "react";
 
 import "./AccordionHeader.scss";
 
@@ -8,11 +13,15 @@ import { Button } from "../Button";
 import { Heading } from "../Heading";
 
 import { useClassNames } from "../../hooks";
+import { AccordionContext } from "../Accordion/context/AccordionContext";
+import { IAccordionContext } from "../Accordion/interfaces/AccordionContext";
 
 const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 	props: AccordionHeaderProps,
 	ref: MutableRefObject<HTMLHeadingElement>
 ) {
+	const {onChange, controls, expanded} = useContext<IAccordionContext>(AccordionContext)
+
 	const classNames = useClassNames("AccordionHeader", props.className);
 
 	const content = useCallback(() => {
@@ -22,15 +31,6 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 
 		return props.content;
 	}, [props.content]);
-
-	const onClick = useCallback(
-		(event: React.SyntheticEvent) => {
-			if (typeof props.onClick === "function") {
-				props.onClick(event, {id: props.id});
-			}
-		},
-		[props.onClick, props.id]
-	);
 
 	return (
 		<Heading
@@ -42,13 +42,13 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 			level={props.level}
 		>
 			<Button
-				expanded={props.expanded}
-				controls={props.controls}
+				expanded={expanded || props.expanded}
+				controls={controls || props.controls}
 				disabled={props.disabled}
 				lang={props.lang}
 				dir={props.dir}
 				title={props.title}
-				onClick={onClick}
+				onClick={onChange}
 			>
 				{props.children || content}
 			</Button>

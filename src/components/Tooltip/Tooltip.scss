@@ -1,0 +1,15 @@
+.Tooltip {
+	box-sizing: border-box;
+
+	position: fixed;
+
+	display: block;
+
+  background-color: #171a1f;
+  
+  padding: 4px;
+
+  border: 1px solid var(--component-border-color);
+
+  border-radius: 4px;
+}

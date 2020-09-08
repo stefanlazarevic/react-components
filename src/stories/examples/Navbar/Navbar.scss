@@ -1,0 +1,9 @@
+.Navbar {
+	display: flex;
+
+	& > .Menu {
+		display: flex;
+
+		width: 100%;
+	}
+}

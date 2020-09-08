@@ -1,4 +1,6 @@
+export * from "./Accordion";
 export * from "./AccordionHeader";
+export * from "./AccordionPanel";
 export * from "./Alert";
 export * from "./AlertDialog";
 export * from "./AlphaChannelSlider";
@@ -34,3 +36,4 @@ export * from "./Switch";
 export * from "./Tab";
 export * from "./TabList";
 export * from './Textarea';
+export * from './Tooltip';

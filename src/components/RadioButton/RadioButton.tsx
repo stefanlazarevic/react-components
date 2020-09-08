@@ -14,10 +14,14 @@ const RadioButton = forwardRef(
 
     const buttonClassName = useClassNames("Button", props.buttonClassName);
 
+    function getId() {
+      return props.id || `${props.name}-${props.value}`;
+    }
+
     return (
       <div ref={ref} id={props.id} data-testid={props.testid} className={className}>
         <input
-          id={`${props.name}-${props.value}`}
+          id={getId()}
           disabled={props.disabled}
           type="radio"
           tabIndex={props.tabIndex}
@@ -35,6 +39,8 @@ const RadioButton = forwardRef(
               : props["aria-hidden"]
           }
           onChange={props.onChange}
+          onMouseEnter={props.onMouseEnter}
+          onMouseLeave={props.onMouseLeave}
         />
         <Label htmlFor={`${props.name}-${props.value}`} className={buttonClassName} title={props.title}>
           {props.children || props.content}

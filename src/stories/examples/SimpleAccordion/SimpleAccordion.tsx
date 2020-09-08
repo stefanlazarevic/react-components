@@ -4,27 +4,31 @@ import "./SimpleAccordion.scss";
 
 import {
 	AccordionHeader,
-	Collapse,
 	Paragraph,
 	PlusIcon,
+	Accordion,
+	Tooltip,
+	MinusIcon,
 } from "../../../components";
+import { AccordionPanel } from "../../../components/AccordionPanel";
 
 export default function SimpleAccordion() {
 	const [expanded, setExpanded] = useState(false);
 
-	const onClick = useCallback(() => {
+	const onChange = useCallback(() => {
 		setExpanded((expanded) => !expanded);
 	}, []);
 
 	return (
-		<div className="SimpleAccordion">
-			<AccordionHeader expanded={expanded} onClick={onClick}>
-				<span>Accordion Title</span>
-				<PlusIcon />
-			</AccordionHeader>
-			<Collapse hidden={!expanded}>
+		<Accordion className="SimpleAccordion" isOpen={expanded} onChange={onChange}>
+				<AccordionHeader id="test">
+					<span>Accordion Title</span>
+					{expanded ? <MinusIcon />  : <PlusIcon />}
+					<Tooltip parent="test" content="Hover mee"/>
+				</AccordionHeader>
+			<AccordionPanel>
 				<Paragraph>***FILE NOT PROVIDED***</Paragraph>
-			</Collapse>
-		</div>
+			</AccordionPanel>
+		</Accordion>
 	);
 }

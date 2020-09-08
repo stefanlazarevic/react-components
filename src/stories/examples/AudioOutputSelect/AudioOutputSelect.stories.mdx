@@ -1,0 +1,28 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs/blocks";
+import AudioOutputSelect from './AudioOutputSelect';
+import content from './data/jsx-source.ts';
+import scss from './data/scss-source.ts';
+
+import {CodeBlock} from '../../../components';
+
+<Meta title="Example/Audio output select" component={AudioOutputSelect} />
+
+export const Template = (args) => <AudioOutputSelect {...args} />
+
+# Audio output select
+
+An example of audio output selector.
+
+<Story name="Demo">
+	<AudioOutputSelect />
+</Story>
+
+<br />
+
+## TSX
+
+<CodeBlock content={content} language="jsx" />
+
+## SCSS
+
+<CodeBlock content={scss} language="scss" />
