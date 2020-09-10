@@ -1,0 +1,29 @@
+.Tab {
+	box-sizing: border-box;
+
+	position: relative;
+
+	display: block;
+
+	background-color: var(--component-background-color);
+
+	border: 1px solid var(--component-border-color);
+
+	border-radius: 4px;
+
+	height: 40px;
+
+	color: var(--text-base-color);
+
+	&:focus {
+		outline: 2px solid var(--app-info-color);
+
+		outline-offset: -1px;
+
+		z-index: 2;
+	}
+
+	&:not(:disabled) {
+		cursor: pointer;
+	}
+}

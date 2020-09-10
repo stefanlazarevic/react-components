@@ -1,18 +1,24 @@
 import React from "react";
 
-import { TabsContext, useTabs } from "./helpers/TabsContext";
+import { TabsProps } from "./TabsProps";
+import { TabsContextProvider, createTabsContext } from "./context/TabsContext";
 
-function Tabs(props: any) {
-	const context = useTabs(props);
+/**
+ * The parent component of the tab interface.
+ * 
+ * @param props 
+ */
+function Tabs(props: TabsProps) {
+	const context = createTabsContext(props);
 
 	return (
-		<TabsContext.Provider value={context}>
-			{props.children}
-		</TabsContext.Provider>
+		<TabsContextProvider value={context}>{props.children}</TabsContextProvider>
 	);
 }
 
-Tabs.defaultProps = {};
+Tabs.defaultProps = {
+	orientation: 'horizontal'
+}
 
 Tabs.displayName = "Tabs";
 
