@@ -2,7 +2,7 @@ import React, { forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./Button.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 import { ButtonProps } from "./ButtonProps";
 
@@ -10,7 +10,7 @@ const Button = forwardRef(function ButtonComponent(
   props: ButtonProps,
   ref: MutableRefObject<HTMLButtonElement>
 ) {
-  const className = useClassNames("Button", props.className);
+  const className = concatenate("Button", props.className);
 
   const onClick = useCallback(function ButtonClickCallback(event: React.MouseEvent<HTMLButtonElement>) {
     if (typeof props.onClick === 'function') {

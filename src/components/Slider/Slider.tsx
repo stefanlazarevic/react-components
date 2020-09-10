@@ -2,13 +2,13 @@ import React, { forwardRef, MutableRefObject, useMemo } from "react";
 
 import "./Slider.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 const Slider = forwardRef(function SliderComponent(
 	props: any,
 	ref: MutableRefObject<HTMLInputElement>
 ) {
-	const className = useClassNames('Slider', props.className);
+	const className = concatenate('Slider', props.className);
 
   const barStyle = useMemo(() => {
     return {

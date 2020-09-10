@@ -3,7 +3,9 @@ import React, { forwardRef, MutableRefObject, useMemo } from "react";
 import "./MenuItem.scss";
 
 import { keyboard, dom } from "../../helpers";
-import { useClassNames, useCombinedRefs } from "../../hooks";
+import { useCombinedRefs } from "../../hooks";
+
+import { concatenate } from "../../utils";
 
 const MenuItem = forwardRef(function MenuItemComponent(
 	props: any,
@@ -11,7 +13,7 @@ const MenuItem = forwardRef(function MenuItemComponent(
 ) {
 	const item = useCombinedRefs<HTMLLIElement>(ref);
 
-	const className = useClassNames("MenuItem", props.className);
+	const className = concatenate("MenuItem", props.className);
 
 	const callbackDetails = useMemo(
 		() => ({

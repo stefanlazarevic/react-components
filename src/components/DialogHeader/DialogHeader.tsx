@@ -2,7 +2,7 @@ import React, { forwardRef, MutableRefObject } from "react";
 
 import "./DialogHeader.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 import { DialogHeaderProps } from "./DialogHeaderProps";
 
@@ -13,7 +13,7 @@ const DialogHeader = forwardRef(function DialogHeaderComponent(
   props: DialogHeaderProps,
   ref: MutableRefObject<HTMLDivElement>
 ) {
-  const className = useClassNames("DialogHeader", props.className);
+  const className = concatenate("DialogHeader", props.className);
 
   return (
     <div

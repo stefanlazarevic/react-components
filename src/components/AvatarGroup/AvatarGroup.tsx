@@ -2,15 +2,15 @@ import React, { forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./AvatarGroup.scss";
 
-import { useClassNames } from "../../hooks";
-
 import AvatarGroupProps from "./AvatarGroupProps";
+
+import { concatenate } from "../../utils";
 
 const AvatarGroup = forwardRef(function AvatarGroupComponent(
 	props: AvatarGroupProps,
 	ref: MutableRefObject<HTMLUListElement>
 ) {
-	const className = useClassNames("AvatarGroup", props.className);
+	const className = concatenate("AvatarGroup", props.className);
 
 	const renderChildren = useCallback(() => {
 		return React.Children.map(props.children, (child) => {

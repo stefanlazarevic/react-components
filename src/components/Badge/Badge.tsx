@@ -2,13 +2,13 @@ import React, { forwardRef, MutableRefObject } from "react";
 
 import "./Badge.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 const Badge = forwardRef(function BadgeComponent(
 	props: any,
 	ref: MutableRefObject<HTMLDivElement>
 ) {
-	const className = useClassNames("Badge", props.className);
+	const className = concatenate("Badge", props.className);
 
 	return (
 		<div

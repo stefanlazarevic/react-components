@@ -12,7 +12,7 @@ const Collapse = forwardRef(function CollapseComponent(
 ) {
 	const region = useCombinedRefs<HTMLDivElement>(ref);
 
-	const className = useClassNames("Collapse", props.className);
+	const className = concatenate("Collapse", props.className);
 
 	return (
 		<div

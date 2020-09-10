@@ -6,13 +6,13 @@ import { Label } from "../Label";
 
 import { RadioButtonProps } from "./RadioButtonProps";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 const RadioButton = forwardRef(
   (props: RadioButtonProps, ref: MutableRefObject<HTMLDivElement>) => {
-    const className = useClassNames("RadioButton", props.className);
+    const className = concatenate("RadioButton", props.className);
 
-    const buttonClassName = useClassNames("Button", props.buttonClassName);
+    const buttonClassName = concatenate("Button", props.buttonClassName);
 
     return (
       <div ref={ref} id={props.id} data-testid={props.testid} className={className}>

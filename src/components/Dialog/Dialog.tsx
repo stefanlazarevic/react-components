@@ -1,10 +1,4 @@
-import React, {
-	forwardRef,
-	MutableRefObject,
-	useRef,
-	useLayoutEffect,
-	useCallback,
-} from "react";
+import React, { forwardRef, MutableRefObject, useRef, useLayoutEffect, useCallback } from "react";
 
 import "./Dialog.scss";
 
@@ -18,7 +12,7 @@ const Dialog = forwardRef(function DialogComponent(
   props: DialogProps,
   ref: MutableRefObject<HTMLDivElement>
 ) {
-  const className = useClassNames("Dialog", props.className);
+  const className = concatenate("Dialog", props.className);
 
   const dialog: MutableRefObject<HTMLDivElement> = useCombinedRefs(ref);
 

@@ -2,7 +2,7 @@ import React, { forwardRef, MutableRefObject } from "react";
 
 import "./Radio.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 import { RadioProps } from "./RadioProps";
 
@@ -10,7 +10,7 @@ const Radio = forwardRef(function RadioComponent(
   props: RadioProps,
   ref: MutableRefObject<HTMLInputElement>
 ) {
-  const className = useClassNames("Radio", props.className);
+  const className = concatenate("Radio", props.className);
 
   return (
     <input

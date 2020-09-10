@@ -1,22 +1,17 @@
-import React, {
-	forwardRef,
-	MutableRefObject,
-	useMemo,
-	useCallback,
-} from "react";
+import React, { forwardRef, MutableRefObject, useMemo, useCallback } from "react";
 
 import "./ListboxOption.scss";
 
 import { ListboxOptionProps } from "./ListboxOptionProps";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 import { keyboard } from "../../helpers";
 
 const ListboxOption = forwardRef(function ListboxOptionComponent(
 	props: ListboxOptionProps,
 	ref: MutableRefObject<HTMLLIElement>
 ) {
-	const className = useClassNames("ListboxOption", props.className);
+	const className = concatenate("ListboxOption", props.className);
 
 	const isDisabled = useMemo(
 		() =>

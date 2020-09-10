@@ -1,9 +1,4 @@
-import React, {
-	forwardRef,
-	MutableRefObject,
-	useCallback,
-	useLayoutEffect,
-} from "react";
+import React, { forwardRef, MutableRefObject, useCallback, useLayoutEffect } from "react";
 import "./Menu.scss";
 
 import { useClassNames, useCombinedRefs } from "../../hooks";
@@ -13,7 +8,7 @@ const Menu = forwardRef(function MenuComponent(
 	props: any,
 	ref: MutableRefObject<HTMLUListElement>
 ) {
-	const className = useClassNames("Menu", props.className);
+	const className = concatenate("Menu", props.className);
 
 	const menu = useCombinedRefs(ref);
 

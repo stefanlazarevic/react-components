@@ -6,13 +6,13 @@ import { Button } from "../Button";
 
 import { IconButtonProps } from "./IconButtonProps";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 const IconButton = forwardRef(function IconButtonComponent(
   props: IconButtonProps,
   ref: MutableRefObject<HTMLButtonElement>
 ) {
-  const className = useClassNames("IconButton", props.className);
+  const className = concatenate("IconButton", props.className);
 
   return (
     <Button ref={ref} {...props} className={className}>

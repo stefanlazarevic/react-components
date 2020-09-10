@@ -2,7 +2,7 @@ import React, { forwardRef, MutableRefObject } from "react";
 
 import "./Heading.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 import { HeadingProps, HeadingPropTypes } from "./HeadingProps";
 
@@ -10,7 +10,7 @@ const Heading = forwardRef(function HeadingComponent(
   props: HeadingProps,
   ref: MutableRefObject<HTMLHeadingElement>
 ) {
-  const className = useClassNames("Heading", props.className);
+  const className = concatenate("Heading", props.className);
 
   return React.createElement(`h${props.level || props["aria-level"]}`, {
     id: props.id,

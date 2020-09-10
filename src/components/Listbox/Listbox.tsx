@@ -1,11 +1,4 @@
-import React, {
-	forwardRef,
-	MutableRefObject,
-	useCallback,
-	useRef,
-	useMemo,
-	useLayoutEffect,
-} from "react";
+import React, { forwardRef, MutableRefObject, useCallback, useRef, useMemo, useLayoutEffect } from "react";
 
 import "./Listbox.scss";
 
@@ -17,7 +10,7 @@ const Listbox = forwardRef(function ListboxComponent(
 	props: any,
 	ref: MutableRefObject<HTMLUListElement>
 ) {
-	const className = useClassNames("Listbox", props.className);
+	const className = concatenate("Listbox", props.className);
 
 	const listbox = useCombinedRefs<HTMLUListElement>(ref);
 

@@ -2,7 +2,7 @@ import React, { forwardRef, MutableRefObject } from "react";
 
 import "./Progress.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 import { ProgressPropTypes, ProgressProps } from "./ProgressProps";
 
@@ -10,7 +10,7 @@ const Progress = forwardRef(function ProgressComponent(
   props: ProgressProps,
   ref: MutableRefObject<HTMLProgressElement>
 ) {
-  const className = useClassNames("Progress", props.className);
+  const className = concatenate("Progress", props.className);
 
   return (
     <progress

@@ -1,23 +1,17 @@
-import React, {
-	forwardRef,
-	MutableRefObject,
-	useCallback,
-	useMemo,
-	useState,
-} from "react";
+import React, { forwardRef, MutableRefObject, useCallback, useMemo, useState } from "react";
 
 import "./RadioGroup.scss";
 
 import { RadioGroupProps } from "./RadioGroupProps";
 
 import { random } from "../../helpers";
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 const RadioGroup = forwardRef(function RadioGroupComponent(
 	props: RadioGroupProps,
 	ref: MutableRefObject<HTMLDivElement>
 ) {
-	const className = useClassNames("RadioGroup", props.className);
+	const className = concatenate("RadioGroup", props.className);
 
 	const name = useMemo(() => props.name || random.getString(5), [
 		props.name,

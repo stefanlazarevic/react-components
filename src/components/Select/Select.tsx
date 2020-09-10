@@ -1,15 +1,8 @@
-import React, {
-	forwardRef,
-	MutableRefObject,
-	useState,
-	useMemo,
-	useCallback,
-	useRef,
-} from "react";
+import React, { forwardRef, MutableRefObject, useState, useMemo, useCallback, useRef } from "react";
 
 import "./Select.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 import { withOutsideClick } from "../../hoc";
 
 import { SelectProps } from "./interfaces";
@@ -22,7 +15,7 @@ const Select = forwardRef(function SelectComponent(
 	props: SelectProps,
 	ref: MutableRefObject<HTMLDivElement>
 ) {
-	const className = useClassNames("Select", props.className);
+	const className = concatenate("Select", props.className);
 
 	const [expanded, setExpanded] = useState(false);
 

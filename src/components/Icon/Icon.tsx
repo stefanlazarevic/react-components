@@ -2,13 +2,14 @@ import React, { forwardRef, memo } from "react";
 
 import "./Icon.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
+
 
 import { IconProps, IconPropTypes } from "./IconProps";
 
 const Icon = forwardRef(
   (props: IconProps, ref: React.Ref<SVGSVGElement>) => {
-    const classNames = useClassNames("Icon", props.className);
+    const classNames = concatenate("Icon", props.className);
 
     return (
       <svg

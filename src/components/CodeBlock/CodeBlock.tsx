@@ -1,9 +1,4 @@
-import React, {
-	useMemo,
-	forwardRef,
-	MutableRefObject,
-	useCallback,
-} from "react";
+import React, { useMemo, forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./CodeBlock.scss";
 
@@ -11,13 +6,13 @@ import { CodeBlockProps } from "./CodeBlockProps";
 
 import highlightjs from "highlight.js";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 import { IconButton } from "../IconButton";
 import { ClipboardIcon } from "../Icon";
 
 const CodeBlock = forwardRef(
 	(props: CodeBlockProps, ref: MutableRefObject<HTMLDivElement>) => {
-		const classNames = useClassNames("CodeBlock", props.className);
+		const classNames = concatenate("CodeBlock", props.className);
 
 		const languageClassName = useMemo(() => {
 			if (typeof props.language === "string") {

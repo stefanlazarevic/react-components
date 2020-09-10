@@ -10,7 +10,7 @@ const Checkbox = forwardRef(function CheckboxComponent(
   props: CheckboxProps,
   ref: MutableRefObject<HTMLInputElement>
 ) {
-  const className = useClassNames("Checkbox", props.className);
+  const className = concatenate("Checkbox", props.className);
 
   const input = useCombinedRefs(ref);
 

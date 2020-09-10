@@ -2,7 +2,7 @@ import React, { forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./Label.scss";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 import { LabelProps } from "./LabelProps";
 
@@ -10,7 +10,7 @@ const Label = forwardRef(function LabelComponent(
   props: LabelProps,
   ref: MutableRefObject<HTMLLabelElement>
 ) {
-  const className = useClassNames("Label", props.className);
+  const className = concatenate("Label", props.className);
 
   const onClick = useCallback(() => {
     if (document && typeof props.htmlFor === 'string') {

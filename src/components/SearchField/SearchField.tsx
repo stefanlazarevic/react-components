@@ -4,11 +4,11 @@ import "./SearchField.scss";
 
 import { IconButton } from "../IconButton";
 import { SearchIcon } from "../Icon";
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 const SearchField = forwardRef(
 	(props: any, ref: MutableRefObject<HTMLDivElement>) => {
-		const className = useClassNames("SearchField", props.className);
+		const className = concatenate("SearchField", props.className);
 
 		return (
 			<div

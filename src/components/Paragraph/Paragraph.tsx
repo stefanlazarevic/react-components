@@ -3,13 +3,13 @@ import React, { forwardRef, MutableRefObject } from "react";
 import "./Paragraph.scss";
 
 import { ParagraphProps, ParagraphPropTypes } from "./ParagraphProps";
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 const Paragraph = forwardRef(function ParagraphComponent(
   props: ParagraphProps,
   ref: MutableRefObject<HTMLParagraphElement>
 ) {
-  const className = useClassNames('Paragraph', props.className);
+  const className = concatenate('Paragraph', props.className);
 
   return (
     <p

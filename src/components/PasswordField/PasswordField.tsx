@@ -1,15 +1,10 @@
-import React, {
-	forwardRef,
-	MutableRefObject,
-	useState,
-	useCallback,
-} from "react";
+import React, { forwardRef, MutableRefObject, useState, useCallback } from "react";
 
 import "./PasswordField.scss";
 
 import { IconButton } from "../IconButton";
 import { EyeIcon, EyeAltIcon } from "../Icon";
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 const PasswordField = forwardRef(function PasswordFieldComponent(
 	props: any,
@@ -21,7 +16,7 @@ const PasswordField = forwardRef(function PasswordFieldComponent(
 		setType(type === "password" ? "text" : "password");
   }, [type]);
   
-  const className = useClassNames("PasswordField", props.className);
+  const className = concatenate("PasswordField", props.className);
 
 	return (
 		<div ref={ref} data-testid={props.testid} className={className} style={props.style} data-invalid={props.invalid}>
