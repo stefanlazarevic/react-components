@@ -2,15 +2,15 @@ import React, { forwardRef, MutableRefObject } from "react";
 
 import "./Textarea.scss";
 
-import { useClassNames } from "../../hooks";
-
 import { TextareaProps, TextareaPropTypes } from "./TextareaProps";
+
+import { concatenate } from "../../utils";
 
 const Textarea = forwardRef(function TextareaComponent(
   props: TextareaProps,
   ref: MutableRefObject<HTMLTextAreaElement>
 ) {
-  const className = useClassNames("Textarea", props.className);
+  const className = concatenate("Textarea", props.className);
 
   return (
     <textarea

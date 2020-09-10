@@ -1,23 +1,16 @@
-import React, {
-	forwardRef,
-	MutableRefObject,
-	useCallback,
-	useMemo,
-} from "react";
+import React, { forwardRef, MutableRefObject, useCallback, useMemo } from "react";
 
 import "./Swatch.scss";
 
-
-
-import { useClassNames } from "../../hooks";
-
 import { SwatchProps } from "./SwatchProps";
+
+import { concatenate } from "../../utils";
 
 const Swatch = forwardRef(function SwatchComponent(
 	props: SwatchProps,
 	ref: MutableRefObject<HTMLDivElement>
 ) {
-	const className = useClassNames("Swatch", props.className);
+	const className = concatenate("Swatch", props.className);
 	
 	const style = useMemo(() => ({ color: props.color, ...props.style }), [props.color, props.style]);
   
@@ -33,8 +26,8 @@ const Swatch = forwardRef(function SwatchComponent(
 			className={className}
 			style={style}
 			title={props.title}
-      tabIndex={props.tabIndex}
-      aria-disabled={typeof props.disabled === 'boolean' ? props.disabled : props['aria-disabled']}
+			tabIndex={props.tabIndex}
+			aria-disabled={typeof props.disabled === 'boolean' ? props.disabled : props['aria-disabled']}
 			onClick={typeof props.onClick === 'function' ? onClick : undefined}
 			aria-selected={typeof props.selected === 'boolean' ? props.selected : props['aria-selected']}
 		/>

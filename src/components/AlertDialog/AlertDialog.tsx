@@ -2,8 +2,6 @@ import React, { forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./AlertDialog.scss";
 
-import { useClassNames } from "../../hooks";
-
 import { AlertDialogProps } from "./AlertDialogProps";
 
 import { Alert } from "../Alert";
@@ -11,17 +9,18 @@ import { IconButton } from "../IconButton";
 import { CloseIcon } from "../Icon";
 
 import {keyboard} from "../../helpers";
+import { concatenate, isFunction } from "../../utils";
 
 const AlertDialog = forwardRef(function AlertDialogComponent(
   props: AlertDialogProps,
   ref: MutableRefObject<HTMLDivElement>
 ) {
-  const className = useClassNames("Alert AlertDialog", props.className);
+  const className = concatenate("AlertDialog", props.className);
 
   const onKeyDown = useCallback(function AlertKeyDownCallback(event: React.KeyboardEvent<HTMLDivElement>) {
     const {keyCode} = event;
 
-    if (typeof props.onClose === 'function' && keyCode === keyboard.KeyCode.ESC) {
+    if (isFunction(props.onClose) && keyCode === keyboard.KeyCode.ESC) {
       props.onClose(event as React.SyntheticEvent);
     }
   }, []);
@@ -29,7 +28,7 @@ const AlertDialog = forwardRef(function AlertDialogComponent(
   return (
     <Alert ref={ref} {...props} className={className} role={props.role} onKeyDown={onKeyDown}>
       {props.children || props.content || <div />}
-      {typeof props.onClose === 'function' && (
+      {isFunction(props.onClose) && (
         <IconButton onClick={props.onClose}>
           <CloseIcon size={18} />
         </IconButton>

@@ -1,5 +1,4 @@
-import { isArray } from ".";
-import { isTruthy } from ".";
+import { isArray, isTruthy } from "./typeof";
 
 /**
  * Returns last item index of an array.
@@ -57,6 +56,11 @@ export function findIndex<T>(predicate: (value: T, index: number, original: T[])
 	return array.findIndex(predicate);
 }
 
+/**
+ * Converts iterable value to array.
+ * 
+ * @param value 
+ */
 export function toArray<T>(value: Iterable<T>): T[] {
 	return Array.from(value);
 }
@@ -110,4 +114,56 @@ export function insertAt<T>(index: number, item: T, array: T[]): T[] {
 		item,
 		...array.slice(index)
 	];
+}
+
+/**
+ * Returns array size in safe way which means that if value is missing 0 will be returned.
+ * 
+ * @param array 
+ */
+export function size(array: any[]): number {
+	return isArray(array) ? array.length : 0;
+}
+
+/**
+ * Returns next array index in safe circular way which means that if we are at last index
+ * function will return first index.
+ * 
+ * @param currentIndex 
+ * @param array 
+ */
+export function getNextIndex(currentIndex: number, array: any[]): number {
+	return (currentIndex + 1) % size(array);
+}
+
+/**
+ * Returns previous array index in safe circular way which means that if we are at first index
+ * function will return last index.
+ * 
+ * @param currentIndex 
+ * @param array 
+ */
+export function getPreviousIndex(currentIndex: number, array: any[]): number {
+	const length = size(array);
+
+	return (currentIndex + length - 1) % length;
+}
+
+/**
+ * Returns array with non repetitive values.
+ * 
+ * @param array
+ */
+export function unique(array: any[]): any[] {
+	const cache = new Map();
+
+	return filter((item => {
+		if (cache.has(item)) {
+			return false;
+		}
+
+		cache.set(item, true);
+
+		return true;
+	}), array);
 }

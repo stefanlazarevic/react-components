@@ -7,16 +7,16 @@ import { AccordionHeaderProps } from "./AccordionHeaderProps";
 import { Button } from "../Button";
 import { Heading } from "../Heading";
 
-import { useClassNames } from "../../hooks";
+import { concatenate, isFunction } from "../../utils";
 
 const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 	props: AccordionHeaderProps,
 	ref: MutableRefObject<HTMLHeadingElement>
 ) {
-	const classNames = useClassNames("AccordionHeader", props.className);
+	const classNames = concatenate("AccordionHeader", props.className);
 
 	const content = useCallback(() => {
-		if (typeof props.content === 'function') {
+		if (isFunction(props.content)) {
 			return props.content();
 		}
 
@@ -25,7 +25,7 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 
 	const onClick = useCallback(
 		(event: React.SyntheticEvent) => {
-			if (typeof props.onClick === "function") {
+			if (isFunction(props.onClick)) {
 				props.onClick(event, {id: props.id});
 			}
 		},

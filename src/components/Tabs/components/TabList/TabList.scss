@@ -1,0 +1,29 @@
+.TabList {
+    box-sizing: border-box;
+
+    position: relative;
+
+    display: flex;
+
+    background-color: var(--component-background-color);
+
+    border: 1px solid var(--component-border-color);
+
+    .Tab {
+        border-radius: 0;
+    }
+
+    &[aria-orientation="vertical"] {
+        flex-direction: column;
+    }
+
+    &[aria-orientation="horizontal"] {
+        .Tab {
+            border-bottom: 0;
+
+            border-top: 0;
+
+            border-left: 0;
+        }
+    }
+}

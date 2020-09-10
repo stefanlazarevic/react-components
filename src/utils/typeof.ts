@@ -107,3 +107,19 @@ export function isTruthy(value: any): boolean {
 export function isFalsy(value: any): boolean {
   return !isTruthy(value);
 }
+
+/**
+ * Returns whether value is instance of HTMLElement or not.
+ * 
+ * @param value 
+ */
+export function isHTMLElement(value: any): value is HTMLElement {
+  return value instanceof HTMLElement;
+}
+
+/**
+ * Checks whether environment is browser or not.
+ */
+export default function isBrowser() {
+  return typeof window !== 'undefined' && window.document;
+}

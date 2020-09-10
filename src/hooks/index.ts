@@ -1,2 +1,4 @@
-export { default as useClassNames } from "./classnames";
-export { default as useCombinedRefs } from "./combinedrefs";
+export * from "./descendants";
+export * from "./classNames";
+export * from "./combinedRefs";
+export * from "./forceUpdate";
