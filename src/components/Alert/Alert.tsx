@@ -4,13 +4,13 @@ import "./Alert.scss";
 
 import { AlertProps } from "./AlertProps";
 
-import { useClassNames } from "../../hooks";
+import { concatenate } from "../../utils";
 
 const Alert = forwardRef(function AlertComponent(
   props: AlertProps,
   ref: MutableRefObject<HTMLDivElement>
 ) {
-  const className = useClassNames("Alert", props.className);
+  const className = concatenate("Alert", props.className);
 
   return (
     <div

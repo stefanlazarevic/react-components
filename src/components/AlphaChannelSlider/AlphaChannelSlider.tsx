@@ -9,16 +9,18 @@ import React, {
 
 import "./AlphaChannelSlider.scss";
 
-import { useClassNames, useCombinedRefs } from "../../hooks";
+import { useCombinedRefs } from "../../hooks";
 
 import { AlphaChannelSliderProps } from "./AlphaChannelSliderProps";
 import { keyboard, dom } from "../../helpers";
+
+import { concatenate, isFunction } from "../../utils";
 
 const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
 	props: AlphaChannelSliderProps,
 	ref: MutableRefObject<HTMLDivElement>
 ) {
-  const className = useClassNames("AlphaChannelSlider", props.className);
+  const className = concatenate("AlphaChannelSlider", props.className);
   
   const slider = useCombinedRefs<HTMLDivElement>(ref);
 
@@ -42,7 +44,7 @@ const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
   }, [props.value, props.max]);
 
   const onChange = useCallback((event: Event, updatedValue: number) => {
-    if (typeof props.onChange === 'function') {
+    if (isFunction(props.onChange)) {
       props.onChange(event, updatedValue);
     }
   }, [props.onChange]);

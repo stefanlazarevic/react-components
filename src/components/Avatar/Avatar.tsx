@@ -2,15 +2,15 @@ import React, { forwardRef, MutableRefObject } from "react";
 
 import "./Avatar.scss";
 
-import { useClassNames } from "../../hooks";
-
 import { AvatarProps } from "./AvatarProps";
+
+import { concatenate } from "../../utils";
 
 const Avatar = forwardRef(function AvatarComponent(
 	props: AvatarProps,
 	ref: MutableRefObject<HTMLDivElement>
 ) {
-	const className = useClassNames("Avatar", props.className);
+	const className = concatenate("Avatar", props.className);
 
 	return (
 		<div

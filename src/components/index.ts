@@ -31,6 +31,5 @@ export * from './Slider';
 export * from './SubMenu';
 export * from "./Swatch";
 export * from "./Switch";
-export * from "./Tab";
-export * from "./TabList";
+export * from './Tabs';
 export * from './Textarea';

@@ -2,14 +2,15 @@ import React, { forwardRef, MutableRefObject } from "react";
 
 import "./Switch.scss";
 
-import { useClassNames } from "../../hooks";
 import { SwitchPropTypes, SwitchProps } from "./SwitchProps";
+
+import { concatenate } from "../../utils";
 
 const Switch = forwardRef(function SwitchComponent(
   props: SwitchProps,
   ref: MutableRefObject<HTMLInputElement>
 ) {
-  const className = useClassNames("Switch", props.className);
+  const className = concatenate("Switch", props.className);
 
   return (
     <input
