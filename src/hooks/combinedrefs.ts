@@ -1,9 +1,11 @@
 import { useEffect, useRef, MutableRefObject } from "react";
 
+import { isFunction } from '../utils/typeof';
+
 /**
  * @source https://itnext.io/reusing-the-ref-from-forwardref-with-react-hooks-4ce9df693dd
  */
-export default function useCombinedRefs<T>(
+export function useCombinedRefs<T>(
   ...refs: Array<
     MutableRefObject<T> | ((ref: MutableRefObject<T>) => void)
   >
@@ -19,7 +21,7 @@ export default function useCombinedRefs<T>(
       ) => {
         if (!ref) return;
 
-        if (typeof ref === "function") {
+        if (isFunction(ref)) {
           ref(localRef);
         } else {
           ref.current = localRef.current;
