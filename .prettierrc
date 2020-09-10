@@ -3,6 +3,11 @@
 	"singleQuote": false,
 	"tabWidth": 2,
 	"rangeEnd": 120,
-	"endOfLine": "auto",
-	"useTabs": true
+	"endOfLine": "lf",
+	"useTabs": true,
+	"jsxBracketSameLine": false,
+	"arrowParens": "always",
+	"htmlWhitespaceSensitivity": "strict",
+	"printWidth": 120
 }
+
