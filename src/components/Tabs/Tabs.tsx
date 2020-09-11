@@ -5,20 +5,19 @@ import { TabsContextProvider, createTabsContext } from "./context/TabsContext";
 
 /**
  * The parent component of the tab interface.
- * 
- * @param props 
+ *
+ * @param props
  */
 function Tabs(props: TabsProps) {
 	const context = createTabsContext(props);
 
-	return (
-		<TabsContextProvider value={context}>{props.children}</TabsContextProvider>
-	);
+	return <TabsContextProvider value={context}>{props.children}</TabsContextProvider>;
 }
 
 Tabs.defaultProps = {
-	orientation: 'horizontal'
-}
+	orientation: "horizontal",
+	activation: "manual",
+};
 
 Tabs.displayName = "Tabs";
 

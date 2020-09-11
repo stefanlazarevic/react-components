@@ -10,8 +10,18 @@ import { useTabsContext } from "../../context/TabsContext";
 
 import { keyboard } from "../../../../helpers";
 
-import { focusPreviousDescendant, focusNextDescendant, concatenate } from "../../../../utils";
+import {
+	focusPreviousDescendant,
+	focusNextDescendant,
+	concatenate,
+	selectNextDescendant,
+	selectPreviousDescendant
+} from "../../../../utils";
 
+/**
+ * An element in the tab list that serves as a label for one of the 
+ * tab panels and can be activated to display that panel.
+ */
 const Tab = forwardRef(function TabComponent(
 	props: TabProps,
 	ref: MutableRefObject<HTMLButtonElement>
@@ -22,35 +32,60 @@ const Tab = forwardRef(function TabComponent(
 
 	const context = useTabsContext();
 
-	const { descendants, orientation, selectedIndex, onSelect } = context;
+	const { 
+		descendants, 
+		orientation, 
+		selectedIndex, 
+		onSelect, 
+		getTabIndex,
+		activation
+	} = context;
 
 	const index = useDescendant(tab.current, context);
+
+	const tabIndex = getTabIndex(index, props);
 
 	function onKeyDown(event: React.KeyboardEvent) {
 		const { keyCode } = event;
 
-		switch (keyCode) {
-			case keyboard.KeyCode.ARROW_RIGHT:
-				if (orientation === 'horizontal') {
-					focusNextDescendant(index, descendants);
-				}
-				break;
-			case keyboard.KeyCode.ARROW_LEFT:
-				if (orientation === 'horizontal') {
-					focusPreviousDescendant(index, descendants);
-				}
-				break;
-			case keyboard.KeyCode.ARROW_DOWN:
-				if (orientation === 'vertical') {
-					focusNextDescendant(index, descendants);
-				}
-				break;
-			case keyboard.KeyCode.ARROW_UP:
-				if (orientation === 'vertical') {
-					focusPreviousDescendant(index, descendants);
-				}
-				break;
-			default: return;
+		if (orientation === 'horizontal') {
+			switch (keyCode) {
+				case keyboard.KeyCode.ARROW_RIGHT:
+					if (activation === 'automatic') {
+						selectNextDescendant(index, descendants);
+					} else {
+						focusNextDescendant(index, descendants);
+					}
+					break;
+				case keyboard.KeyCode.ARROW_LEFT:
+					if (activation === 'automatic') {
+						selectPreviousDescendant(index, descendants);
+					} else {
+						focusPreviousDescendant(index, descendants);
+					}
+					break;
+				default: return;
+			}
+		}
+
+		if (orientation === 'vertical') {
+			switch (keyCode) {
+				case keyboard.KeyCode.ARROW_DOWN:
+					if (activation === 'automatic') {
+						selectNextDescendant(index, descendants);
+					} else {
+						focusNextDescendant(index, descendants);
+					}
+					break;
+				case keyboard.KeyCode.ARROW_UP:
+					if (activation === 'automatic') {
+						selectPreviousDescendant(index, descendants);
+					} else {
+						focusPreviousDescendant(index, descendants);
+					}
+					break;
+				default: return;
+			}
 		}
 	}
 
@@ -63,15 +98,17 @@ const Tab = forwardRef(function TabComponent(
 			ref={tab}
 			id={props.id}
 			data-testid={props.testid}
+			className={className}
+			style={props.style}
 			role={props.role}
-            className={className}
-            style={props.style}
 			aria-selected={selectedIndex === index ? true : undefined}
-			tabIndex={selectedIndex === index ? 0 : -1}
-			data-index={index}
+			aria-controls={props.controls}
+			aria-haspopup={props.haspopup}
+			tabIndex={tabIndex}
 			disabled={props.disabled}
 			onKeyDown={onKeyDown}
 			onClick={onClick}
+			onContextMenu={props.onContextMenu}
 		>
 			{props.children}
 		</button>

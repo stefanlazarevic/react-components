@@ -5,7 +5,7 @@ import { IDescendantContext } from "../../interfaces/DescentantContext";
 import { findIndex } from '../../utils/array';
 
 /**
- *
+ * A React hook used to control DOM reference of the component.
  */
 export function useDescendant(
 	element: HTMLElement | null,

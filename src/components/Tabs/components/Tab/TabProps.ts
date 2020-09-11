@@ -11,7 +11,7 @@ export interface TabProps extends IComponentBase {
 	 */
 	role?: string;
 	/**
-	 *
+	 * Indicates the tab control is active and its associated panel is displayed.
 	 */
 	selected?: true;
 	/**
@@ -22,4 +22,16 @@ export interface TabProps extends IComponentBase {
 	 *
 	 */
 	disabled?: boolean;
+	/**
+	 * Refers to the tabpanel ID associated with the tab.
+	 */
+	controls?: string;
+	/**
+	 *
+	 */
+	haspopup?: "menu" | true;
+	/**
+	 *
+	 */
+	onContextMenu?: (event: React.SyntheticEvent) => void;
 }

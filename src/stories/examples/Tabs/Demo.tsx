@@ -18,7 +18,7 @@ export function Demo() {
     }
 
     return (
-        <Tabs selectedIndex={selectedIndex} onSelect={(e, i) => setSelectedIndex(i)}>
+        <Tabs selectedIndex={selectedIndex} onSelect={(e, i) => setSelectedIndex(i)} activation="automatic">
             <TabList style={{marginBottom: 10}}>
                 {tabs.map(tab => <Heading><Tab>{tab}</Tab></Heading>)}
             </TabList>
