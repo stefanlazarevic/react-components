@@ -8,6 +8,14 @@ export function isNumber(value: any): value is number {
 }
 
 /**
+ * 
+ * @param value 
+ */
+export function isPositiveNumber(value: number): boolean {
+  return value > -1;
+}
+
+/**
  * Checks whether or not a value is a function.
  *
  * @param value
