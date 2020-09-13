@@ -1,17 +1,16 @@
 import { useDescendants } from "../../../hooks";
 import { createNamedContext } from "../../../context/createNamedContext";
-import { IDescendantContext } from "../../../interfaces/DescentantContext";
+import { IDescendantContext, ISelectable, ISelectableDetails } from "../../../interfaces";
 
 import { TabsProps } from "../TabsProps";
 import { useCallback, useRef } from "react";
 import { isFunction, isNumber, not } from "../../../utils";
+import { Orientation } from "../../../types";
 
-export interface ITabsContext extends IDescendantContext {
-	orientation?: "horizontal" | "vertical";
-	selectedIndex?: number;
+export interface ITabsContext extends IDescendantContext, ISelectable {
+	orientation?: Orientation;
 	activation?: "manual" | "automatic";
-	onSelect: (event: React.SyntheticEvent, index: number) => void;
-	onDelete: (event: React.SyntheticEvent, index: number) => void;
+	onDelete: (event: React.SyntheticEvent, details: ISelectableDetails) => void;
 	getTabIndex: (index: number, props: any) => number;
 }
 
@@ -23,15 +22,15 @@ const [TabsContextProvider, useTabsContext] = createNamedContext<ITabsContext>("
 export function createTabsContext(props: TabsProps): ITabsContext {
 	const { orientation, selectedIndex, activation } = props;
 	
-	const onSelect = useCallback((event: React.SyntheticEvent, index: number) => {
+	const onSelect = useCallback((event: React.SyntheticEvent, details: ISelectableDetails) => {
 		if (isFunction(props.onSelect)) {
-			props.onSelect(event, index);
+			props.onSelect(event, details);
 		}
 	}, [props.onSelect]);
 	
-	const onDelete = useCallback((event: React.SyntheticEvent, index: number) => {
+	const onDelete = useCallback((event: React.SyntheticEvent, details: ISelectableDetails) => {
 		if (isFunction(props.onDelete)) {
-			props.onDelete(event, index);
+			props.onDelete(event, details);
 		}
 	}, [props.onDelete]);
 	

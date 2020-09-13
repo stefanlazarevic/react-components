@@ -10,13 +10,7 @@ import { useTabsContext } from "../../context/TabsContext";
 
 import { keyboard } from "../../../../helpers";
 
-import {
-	focusPreviousDescendant,
-	focusNextDescendant,
-	concatenate,
-	selectNextDescendant,
-	selectPreviousDescendant
-} from "../../../../utils";
+import { concatenate, isFunction } from "../../../../utils";
 
 /**
  * An element in the tab list that serves as a label for one of the 
@@ -33,12 +27,15 @@ const Tab = forwardRef(function TabComponent(
 	const context = useTabsContext();
 
 	const { 
-		descendants, 
 		orientation, 
 		selectedIndex, 
 		onSelect, 
 		getTabIndex,
-		activation
+		activation,
+		selectNextDescendant,
+		selectPreviousDescendant,
+		focusPreviousDescendant,
+		focusNextDescendant
 	} = context;
 
 	const index = useDescendant(tab.current, context);
@@ -52,16 +49,16 @@ const Tab = forwardRef(function TabComponent(
 			switch (keyCode) {
 				case keyboard.KeyCode.ARROW_RIGHT:
 					if (activation === 'automatic') {
-						selectNextDescendant(index, descendants);
+						selectNextDescendant(index);
 					} else {
-						focusNextDescendant(index, descendants);
+						focusNextDescendant(index);
 					}
 					break;
 				case keyboard.KeyCode.ARROW_LEFT:
 					if (activation === 'automatic') {
-						selectPreviousDescendant(index, descendants);
+						selectPreviousDescendant(index);
 					} else {
-						focusPreviousDescendant(index, descendants);
+						focusPreviousDescendant(index);
 					}
 					break;
 				default: return;
@@ -72,16 +69,16 @@ const Tab = forwardRef(function TabComponent(
 			switch (keyCode) {
 				case keyboard.KeyCode.ARROW_DOWN:
 					if (activation === 'automatic') {
-						selectNextDescendant(index, descendants);
+						selectNextDescendant(index);
 					} else {
-						focusNextDescendant(index, descendants);
+						focusNextDescendant(index);
 					}
 					break;
 				case keyboard.KeyCode.ARROW_UP:
 					if (activation === 'automatic') {
-						selectPreviousDescendant(index, descendants);
+						selectPreviousDescendant(index);
 					} else {
-						focusPreviousDescendant(index, descendants);
+						focusPreviousDescendant(index);
 					}
 					break;
 				default: return;
@@ -90,7 +87,9 @@ const Tab = forwardRef(function TabComponent(
 	}
 
 	function onClick(event: React.MouseEvent) {
-		onSelect(event, index);
+		if (isFunction(onSelect)) {
+			onSelect(event, {id: props.id, index});
+		}
 	}
 
 	return (

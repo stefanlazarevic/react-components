@@ -3,21 +3,21 @@ import React from "react";
 import "./ContentPositionControls.scss";
 
 import {
-  RadioGroup,
-  RadioButton,
-  AlignLeftIcon,
-  AlignRightIcon,
-  AlignCenterIcon,
-  AlignTopIcon,
-  AlignBottomIcon,
-  AlignMiddleIcon,
+	RadioGroup,
+	RadioButton,
+	AlignLeftIcon,
+	AlignRightIcon,
+	AlignCenterIcon,
+	AlignTopIcon,
+	AlignBottomIcon,
+	AlignMiddleIcon,
 } from "../../../components";
 
 export default {
   title: "Example/Content placement controls",
 };
 
-export const Template = (args) => {
+export const Template = (args: any) => {
   return (
     <div className="ContentPositionControls">
       <RadioGroup name="horizontal" selectedValue="1">
