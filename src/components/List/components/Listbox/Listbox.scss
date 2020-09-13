@@ -1,0 +1,21 @@
+.Listbox {
+  box-sizing: border-box;
+
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  list-style: none;
+
+  margin: 0;
+
+  padding: 0;
+
+  user-select: none;
+
+  &[aria-orientation="horizontal"] {
+    flex-direction: row;
+  }
+}
