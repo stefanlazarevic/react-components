@@ -1,7 +1,7 @@
 import { IDescendant } from "../interfaces/Descendant";
 import { size, lastIndex, getNextIndex, getPreviousIndex } from "./array";
 import { not } from "./logic";
-import clickAndFocus, { isDisabledHTMLElement, focusElement } from "./dom";
+import { isDisabledHTMLElement } from "./dom";
 
 /**
  *

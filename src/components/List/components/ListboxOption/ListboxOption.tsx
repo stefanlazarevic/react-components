@@ -3,7 +3,7 @@ import React, { forwardRef, MutableRefObject, useMemo } from "react";
 import "./ListboxOption.scss";
 
 import { ListboxOptionProps } from "./ListboxOptionProps";
-import { concatenate, isFunction, not, isHTMLElement, contains } from "../../../../utils";
+import { concatenate, not, contains } from "../../../../utils";
 import { useCombinedRefs, useDescendant } from "../../../../hooks";
 import { useListContext } from "../../context/ListContext";
 import { keyboard } from "../../../../helpers";
@@ -22,7 +22,7 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 		multiselectable,
 		selectedIndex,
 		selectedIndexes,
-		focusPreviousDescendant, 
+		focusPreviousDescendant,
 		focusNextDescendant,
 		selectNextDescendant,
 		selectPreviousDescendant,
@@ -33,7 +33,7 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 	} = context;
 
 	const descendant = useMemo(
-		() => ({element: option.current, disabled: props.disabled}), 
+		() => ({ element: option.current, disabled: props.disabled }),
 		[option.current, props.disabled]
 	);
 
@@ -44,14 +44,14 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 	}, [multiselectable, index, selectedIndexes, selectedIndex]);
 
 	function onKeyDown(event: React.KeyboardEvent) {
-		const {keyCode, ctrlKey, shiftKey, repeat} = event;
+		const { keyCode, ctrlKey, shiftKey, repeat } = event;
 
 		if (keyCode === keyboard.KeyCode.ARROW_DOWN) {
 			if (not(shiftKey)) {
 				focusNextDescendant(index);
 				return;
 			}
-			
+
 			if (repeat) {
 				return;
 			}
@@ -98,13 +98,13 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 	}
 
 	return (
-		<li 
-			ref={option} 
-			id={props.id} 
-			data-testid={props.testid} 
-			className={className} 
-			style={props.style} 
-			role={props.role} 
+		<li
+			ref={option}
+			id={props.id}
+			data-testid={props.testid}
+			className={className}
+			style={props.style}
+			role={props.role}
 			aria-disabled={props.disabled || undefined}
 			onKeyDown={onKeyDown}
 			onClick={onClick}
@@ -117,7 +117,7 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 });
 
 ListboxOption.defaultProps = {
-  role: "option"
+	role: "option"
 }
 
 ListboxOption.displayName = "ListboxOption";
@@ -125,8 +125,8 @@ ListboxOption.displayName = "ListboxOption";
 export default ListboxOption;
 
 /**
- * 
+ *
  * selectRange
- * unselectRange 
- * 
+ * unselectRange
+ *
  */

@@ -1,4 +1,4 @@
-import { isHTMLElement } from "./typeof";
+import { isHTMLElement } from "./assertions";
 
 /**
  *

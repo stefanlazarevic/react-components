@@ -2,9 +2,11 @@ import React, { forwardRef, MutableRefObject, useLayoutEffect } from "react";
 
 import "./Checkbox.scss";
 
-import { useClassNames, useCombinedRefs } from "../../hooks";
+import { useCombinedRefs } from "../../hooks";
 
 import CheckboxProps from "./CheckboxProps";
+
+import { concatenate } from "../../utils";
 
 const Checkbox = forwardRef(function CheckboxComponent(
   props: CheckboxProps,

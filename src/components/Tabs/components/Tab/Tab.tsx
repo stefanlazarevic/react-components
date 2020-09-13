@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject } from "react";
+import React, { forwardRef, MutableRefObject, useMemo } from "react";
 
 import "./Tab.scss";
 
@@ -26,10 +26,10 @@ const Tab = forwardRef(function TabComponent(
 
 	const context = useTabsContext();
 
-	const { 
-		orientation, 
-		selectedIndex, 
-		onSelect, 
+	const {
+		orientation,
+		selectedIndex,
+		onSelect,
 		getTabIndex,
 		activation,
 		selectNextDescendant,
@@ -38,7 +38,9 @@ const Tab = forwardRef(function TabComponent(
 		focusNextDescendant
 	} = context;
 
-	const index = useDescendant(tab.current, context);
+	const descendant = useMemo(() => ({ element: tab.current, disabled: props.disabled }), [tab.current, props.disabled]);
+
+	const index = useDescendant(descendant, context);
 
 	const tabIndex = getTabIndex(index, props);
 
@@ -88,7 +90,7 @@ const Tab = forwardRef(function TabComponent(
 
 	function onClick(event: React.MouseEvent) {
 		if (isFunction(onSelect)) {
-			onSelect(event, {id: props.id, index});
+			onSelect(event, { selectedIndex: index });
 		}
 	}
 

@@ -1,6 +1,5 @@
-import { isArray, isTruthy, isAbsent } from "./typeof";
+import { isArray, isTruthy, isAbsent } from "./assertions";
 import { not } from "./logic";
-import { any, array } from "prop-types";
 
 /**
  * Returns last item index of an array.

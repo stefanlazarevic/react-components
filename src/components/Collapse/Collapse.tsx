@@ -4,7 +4,9 @@ import "./Collapse.scss";
 
 import { CollapseProps } from "./CollapseProps";
 
-import { useClassNames, useCombinedRefs } from "../../hooks";
+import { useCombinedRefs } from "../../hooks";
+
+import { concatenate } from "../../utils";
 
 const Collapse = forwardRef(function CollapseComponent(
 	props: CollapseProps,

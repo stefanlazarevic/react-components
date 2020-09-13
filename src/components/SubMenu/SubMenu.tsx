@@ -12,8 +12,9 @@ import "./SubMenu.scss";
 
 import { MenuItem } from "../MenuItem";
 import { Menu } from "../Menu";
-import { random, keyboard } from "../../helpers";
+import { keyboard } from "../../helpers";
 import { useCombinedRefs } from "../../hooks";
+import { getRandomString } from "../../utils";
 
 const SubMenu = forwardRef(function SubMenuComponent(
 	props: any,
@@ -21,7 +22,7 @@ const SubMenu = forwardRef(function SubMenuComponent(
 ) {
 	const [expanded, setExpanded] = useState<boolean>(false);
 
-	const id = useMemo(() => props.id || random.getString(5), [props.id]);
+	const id = useMemo(() => props.id || getRandomString(5), [props.id]);
 
 	const menuItem = useCombinedRefs(ref);
 
@@ -60,10 +61,10 @@ const SubMenu = forwardRef(function SubMenuComponent(
 	const onEnter = useCallback((event: React.KeyboardEvent) => {
 		if (event.target === menuItem.current) {
 			event.stopPropagation();
-			
+
 			if (!expanded) {
 				expand();
-	
+
 				return;
 			}
 
@@ -84,7 +85,7 @@ const SubMenu = forwardRef(function SubMenuComponent(
 	}, [expanded, collapseAndFocusCaller]);
 
 	const onKeyDown = useCallback((event: React.KeyboardEvent) => {
-		const {keyCode} = event;
+		const { keyCode } = event;
 
 		if (menuItem.current === event.target) {
 			if (keyCode === keyboard.KeyCode.ARROW_DOWN && props.orientation === 'horizontal') {
@@ -96,7 +97,7 @@ const SubMenu = forwardRef(function SubMenuComponent(
 			if (keyCode === keyboard.KeyCode.ARROW_UP && props.orientation === 'horizontal') {
 				if (expanded) {
 					event.stopPropagation();
-					
+
 					collapseAndFocusCaller();
 				}
 			}
@@ -119,7 +120,7 @@ const SubMenu = forwardRef(function SubMenuComponent(
 		}
 
 		if (
-			(keyCode === keyboard.KeyCode.ARROW_RIGHT || keyCode === keyboard.KeyCode.ARROW_LEFT) && 
+			(keyCode === keyboard.KeyCode.ARROW_RIGHT || keyCode === keyboard.KeyCode.ARROW_LEFT) &&
 			props.orientation === 'horizontal'
 		) {
 			if (expanded) {

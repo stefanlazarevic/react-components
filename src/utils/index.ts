@@ -6,4 +6,4 @@ export * from "./object";
 export * from "./props";
 export * from "./random";
 export * from "./string";
-export * from "./typeof";
+export * from "./assertions";

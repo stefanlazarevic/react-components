@@ -2,11 +2,13 @@ import React, { forwardRef, MutableRefObject, useRef, useLayoutEffect, useCallba
 
 import "./Dialog.scss";
 
-import { useClassNames, useCombinedRefs } from "../../hooks";
+import { useCombinedRefs } from "../../hooks";
 
 import { DialogProps, DialogPropTypes } from "./DialogProps";
 
-import { keyboard, array, string } from "../../helpers";
+import { keyboard, string } from "../../helpers";
+
+import { concatenate, isEmpty, lastIndex, not } from "../../utils";
 
 const Dialog = forwardRef(function DialogComponent(
   props: DialogProps,
@@ -43,7 +45,7 @@ const Dialog = forwardRef(function DialogComponent(
       if (
         shiftKey &&
         keyCode === keyboard.KeyCode.TAB &&
-        !array.isEmpty(elements.current)
+        not(isEmpty(elements.current))
       ) {
         event.preventDefault();
 
@@ -51,7 +53,7 @@ const Dialog = forwardRef(function DialogComponent(
 
         while (currentIndex !== focusedIndex) {
           if (currentIndex < 0) {
-            currentIndex = array.lastIndex(elements.current);
+            currentIndex = lastIndex(elements.current);
           }
 
           const element = elements.current[currentIndex];
@@ -72,14 +74,14 @@ const Dialog = forwardRef(function DialogComponent(
       if (
         !shiftKey &&
         keyCode === keyboard.KeyCode.TAB &&
-        !array.isEmpty(elements.current)
+        not(isEmpty(elements.current))
       ) {
         event.preventDefault();
 
         currentIndex++;
 
         while (currentIndex !== focusedIndex) {
-          if (currentIndex > array.lastIndex(elements.current)) {
+          if (currentIndex > lastIndex(elements.current)) {
             currentIndex = 0;
           }
 

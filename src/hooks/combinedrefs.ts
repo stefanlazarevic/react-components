@@ -1,6 +1,6 @@
 import { useEffect, useRef, MutableRefObject } from "react";
 
-import { isFunction } from '../utils/typeof';
+import { isFunction } from '../utils/assertions';
 
 /**
  * @source https://itnext.io/reusing-the-ref-from-forwardref-with-react-hooks-4ce9df693dd

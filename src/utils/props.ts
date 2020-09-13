@@ -1,4 +1,4 @@
-import { isAbsent } from "./typeof";
+import { isAbsent } from "./assertions";
 
 /**
  *

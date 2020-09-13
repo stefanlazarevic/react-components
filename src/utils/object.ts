@@ -1,4 +1,4 @@
-import { isObject, isString } from "./typeof";
+import { isObject, isString } from "./assertions";
 import { not } from "./logic";
 import { trim, split } from "./string";
 

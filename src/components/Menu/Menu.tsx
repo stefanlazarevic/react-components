@@ -1,8 +1,9 @@
 import React, { forwardRef, MutableRefObject, useCallback, useLayoutEffect } from "react";
 import "./Menu.scss";
 
-import { useClassNames, useCombinedRefs } from "../../hooks";
+import { useCombinedRefs } from "../../hooks";
 import { keyboard, dom } from "../../helpers";
+import { concatenate } from "../../utils";
 
 const Menu = forwardRef(function MenuComponent(
 	props: any,
@@ -26,7 +27,7 @@ const Menu = forwardRef(function MenuComponent(
 			});
 		},
 		[
-			props.children, 
+			props.children,
 			props.orientation
 		]
 	);
@@ -62,7 +63,7 @@ const Menu = forwardRef(function MenuComponent(
 	}
 
 	const onKeyDown = useCallback((event: React.KeyboardEvent) => {
-		const {keyCode} = event;
+		const { keyCode } = event;
 
 		if (keyCode === keyboard.KeyCode.HOME) {
 			event.stopPropagation();
@@ -77,15 +78,15 @@ const Menu = forwardRef(function MenuComponent(
 		}
 
 		if (
-			props.orientation === 'horizontal' && 
-			(keyCode === keyboard.KeyCode.ARROW_RIGHT || keyCode === keyboard.KeyCode.ARROW_LEFT) 
+			props.orientation === 'horizontal' &&
+			(keyCode === keyboard.KeyCode.ARROW_RIGHT || keyCode === keyboard.KeyCode.ARROW_LEFT)
 		) {
 			event.stopPropagation();
 		}
 
 		if (
-			props.orientation === 'vertical' && 
-			(keyCode === keyboard.KeyCode.ARROW_UP || keyCode === keyboard.KeyCode.ARROW_DOWN) 
+			props.orientation === 'vertical' &&
+			(keyCode === keyboard.KeyCode.ARROW_UP || keyCode === keyboard.KeyCode.ARROW_DOWN)
 		) {
 			event.stopPropagation();
 		}

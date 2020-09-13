@@ -4,8 +4,7 @@ import "./RadioGroup.scss";
 
 import { RadioGroupProps } from "./RadioGroupProps";
 
-import { random } from "../../helpers";
-import { concatenate } from "../../utils";
+import { concatenate, getRandomString } from "../../utils";
 
 const RadioGroup = forwardRef(function RadioGroupComponent(
 	props: RadioGroupProps,
@@ -13,7 +12,7 @@ const RadioGroup = forwardRef(function RadioGroupComponent(
 ) {
 	const className = concatenate("RadioGroup", props.className);
 
-	const name = useMemo(() => props.name || random.getString(5), [
+	const name = useMemo(() => props.name || getRandomString(5), [
 		props.name,
 	]);
 
@@ -40,7 +39,7 @@ const RadioGroup = forwardRef(function RadioGroupComponent(
 				name,
 				tabIndex:
 					(selectedValue === "" && index === 0) ||
-					child.props.value === selectedValue
+						child.props.value === selectedValue
 						? 0
 						: -1,
 				checked:
