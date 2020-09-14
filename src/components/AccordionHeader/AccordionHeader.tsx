@@ -26,7 +26,7 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 	const onClick = useCallback(
 		(event: React.SyntheticEvent) => {
 			if (isFunction(props.onClick)) {
-				props.onClick(event, {id: props.id});
+				props.onClick(event, { id: props.id });
 			}
 		},
 		[props.onClick, props.id]

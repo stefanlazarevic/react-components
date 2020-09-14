@@ -1,14 +1,12 @@
 import { ReactNodeLike } from "prop-types";
+import { ISelectable, ISelectableDetails } from "../../interfaces";
+import { Orientation } from "../../types";
 
-export interface TabsProps {
+export interface TabsProps extends ISelectable {
 	/**
 	 *
 	 */
-	orientation?: "horizontal" | "vertical";
-	/**
-	 *
-	 */
-	selectedIndex?: number;
+	orientation?: Orientation;
 	/**
 	 *
 	 */
@@ -20,9 +18,5 @@ export interface TabsProps {
 	/**
 	 *
 	 */
-	onSelect?: (event: React.SyntheticEvent, index: number) => void;
-	/**
-	 *
-	 */
-	onDelete?: (event: React.SyntheticEvent, index: number) => void;
+	onDelete?: (event: React.SyntheticEvent, details: ISelectableDetails) => void;
 }

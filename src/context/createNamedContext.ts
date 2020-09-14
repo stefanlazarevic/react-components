@@ -1,5 +1,5 @@
 import { createContext, useContext as useContextHook } from "react";
-import { NamedContext } from "../interfaces/NamedContext";
+import { NamedContext } from "../types";
 
 /**
  * Creates React context with provided display name.

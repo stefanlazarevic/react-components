@@ -1,4 +1,4 @@
-import { isString } from "./typeof";
+import { isString } from "./assertions";
 import { compact } from "./array";
 
 /**
@@ -6,7 +6,7 @@ import { compact } from "./array";
  * @param value
  */
 export function trim(value: string): string {
-	return isString(value) ? value.trim() : "";
+    return isString(value) ? value.trim() : "";
 }
 
 /**

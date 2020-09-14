@@ -3,12 +3,14 @@ import { useForceUpdate } from "../forceUpdate";
 import { IDescendantContext } from "../../interfaces/DescentantContext";
 
 import { findIndex } from '../../utils/array';
+import { IDescendant } from "../../interfaces";
+import { not } from "../../utils";
 
 /**
  * A React hook used to control DOM reference of the component.
  */
 export function useDescendant(
-	element: HTMLElement | null,
+	descendant: IDescendant,
 	context: IDescendantContext
 ): number {
 	const { register, unregister, descendants } = context;
@@ -16,16 +18,16 @@ export function useDescendant(
 	const forceUpdate = useForceUpdate();
 
 	useLayoutEffect(function descendantLayoutEffect() {
-		if (!element) {
+		if (not(descendant.element)) {
 			forceUpdate();
 		}
 
-		register(element);
+		register(descendant);
 
 		return function componentWillUnmount() {
-			unregister(element);
+			unregister(descendant);
 		};
-	}, [element]);
+	}, [descendant]);
 
-	return findIndex((descendant) => descendant.element === element, descendants);
+	return findIndex((currentDescendant) => currentDescendant.element === descendant.element, descendants);
 }

@@ -1,4 +1,4 @@
-import { isObject, isString } from "./typeof";
+import { isObject, isString } from "./assertions";
 import { not } from "./logic";
 import { trim, split } from "./string";
 
@@ -24,4 +24,29 @@ export function pluck(path: string, target: object) {
 	}
 
 	return undefined;
+}
+
+/**
+ * 
+ * @param value 
+ */
+export function cloneObject(value: object) {
+	if (isObject(value)) {
+		return Object.assign({}, value);
+	}
+
+	return value;
+}
+
+/**
+ * 
+ * @param key 
+ * @param value 
+ * @param obj 
+ */
+export function set(key: string, value: any, obj: object) {
+	return {
+		...obj,
+		[key]: value
+	}
 }

@@ -11,7 +11,13 @@ import {
 	insertAt,
 	filter,
 	isAbsent,
+	getFirstDescendantIndex,
+	getLastDescendantIndex,
+	getNextDescendantIndex,
+	getPreviousDescendantIndex,
+	focusElement,
 } from "../../utils";
+import clickAndFocus from "../../utils/dom";
 
 /**
  * React hook which is used on component interface level.
@@ -22,66 +28,191 @@ export function useDescendants(): IDescendantContext {
 	/**
 	 *
 	 */
-	const register = useCallback(function registerDescendant(
-		element: HTMLElement | null
-	) {
-		if (!element) {
+	const register = useCallback(function registerDescendant(descendant: IDescendant) {
+		if (not(descendant.element)) {
 			return;
 		}
 
 		setDescendants(function updateDescendantsState(currentDescendants) {
-			if (
-				isAbsent(
-					find(
-						(descendant) => descendant.element === element,
-						currentDescendants
-					)
-				)
-			) {
-				const index = findIndex((descendant) => {
-					if (not(isHTMLElement(descendant)) || isAbsent(element)) return false;
+			if (isAbsent(find((currentDescendant) => currentDescendant.element === descendant.element, currentDescendants))) {
+				const index = findIndex((currentDescendant) => {
+					if (not(isHTMLElement(currentDescendant.element)) || isAbsent(descendant.element)) return false;
 
-					return Boolean(
-						descendant.element.compareDocumentPosition(element) &
-							Node.DOCUMENT_POSITION_PRECEDING
-					);
+					return Boolean(currentDescendant.element.compareDocumentPosition(descendant.element) & Node.DOCUMENT_POSITION_PRECEDING);
 				}, currentDescendants);
 
 				if (index === -1) {
-					return concat(currentDescendants, { element });
+					return concat(currentDescendants, descendant);
 				}
 
-				return insertAt(index, { element }, currentDescendants);
+				return insertAt(index, descendant, currentDescendants);
 			}
 
 			return currentDescendants;
 		});
-	},
-	[]);
+	}, []);
 
 	/**
 	 *
 	 */
-	const unregister = useCallback(function unregisterDescendant(
-		element: HTMLElement
-	) {
+	const unregister = useCallback(function unregisterDescendant(descendant: IDescendant) {
 		setDescendants(function updateDescendantsState(currentDescendants) {
-			return filter(
-				(descendant) => descendant.element !== element,
-				currentDescendants
-			);
+			return filter((currentDescendant) => currentDescendant.element !== descendant.element, currentDescendants);
 		});
-	},
-	[]);
+	}, []);
+
+	/**
+	 *
+	 */
+	const focusFirstDescendant = useCallback(
+		function focusFirstDescendant() {
+			let index = getFirstDescendantIndex(descendants);
+
+			const { element } = descendants[index];
+
+			focusElement(element);
+		},
+		[descendants]
+	);
+
+	/**
+	 *
+	 */
+	const focusLastDescendant = useCallback(
+		function focusLastDescendant() {
+			let index = getLastDescendantIndex(descendants);
+
+			const { element } = descendants[index];
+
+			focusElement(element);
+		},
+		[descendants]
+	);
+
+	/**
+	 *
+	 * @param currentIndex
+	 * @param descendants
+	 */
+	const focusNextDescendant = useCallback(
+		function focusNextDescendant(currentIndex: number) {
+			let nextIndex = getNextDescendantIndex(currentIndex, descendants);
+
+			const { element } = descendants[nextIndex];
+
+			focusElement(element);
+		},
+		[descendants]
+	);
+
+	/**
+	 *
+	 * @param currentIndex
+	 * @param descendants
+	 */
+	const focusPreviousDescendant = useCallback(
+		function focusPreviousDescendant(currentIndex: number) {
+			const previousIndex = getPreviousDescendantIndex(currentIndex, descendants);
+
+			const { element } = descendants[previousIndex];
+
+			focusElement(element);
+		},
+		[descendants]
+	);
+
+	/**
+	 *
+	 */
+	const selectFirstDescendant = useCallback(
+		function selectFirstDescendant() {
+			let index = getFirstDescendantIndex(descendants);
+
+			const { element } = descendants[index];
+
+			clickAndFocus(element);
+		},
+		[descendants]
+	);
+
+	/**
+	 *
+	 */
+	const selectLastDescendant = useCallback(
+		function selectLastDescendant() {
+			let index = getLastDescendantIndex(descendants);
+
+			const { element } = descendants[index];
+
+			clickAndFocus(element);
+		},
+		[descendants]
+	);
+
+	/**
+	 *
+	 * @param currentIndex
+	 * @param descendants
+	 */
+	const selectPreviousDescendant = useCallback(
+		function selectPreviousDescendant(currentIndex: number) {
+			const previousIndex = getPreviousDescendantIndex(currentIndex, descendants);
+
+			const { element } = descendants[previousIndex];
+
+			clickAndFocus(element);
+		},
+		[descendants]
+	);
+
+	/**
+	 *
+	 * @param currentIndex
+	 * @param descendants
+	 */
+	const selectNextDescendant = useCallback(
+		function selectNextDescendant(currentIndex: number) {
+			const nextIndex = getNextDescendantIndex(currentIndex, descendants);
+
+			const { element } = descendants[nextIndex];
+
+			clickAndFocus(element);
+		},
+		[descendants]
+	);
 
 	/**
 	 *
 	 */
 	const context = useMemo(
 		function cachedDescendantsContext(): IDescendantContext {
-			return { descendants, register, unregister };
+			return {
+				descendants,
+				register,
+				unregister,
+				focusFirstDescendant,
+				focusLastDescendant,
+				focusNextDescendant,
+				focusPreviousDescendant,
+				selectFirstDescendant,
+				selectLastDescendant,
+				selectNextDescendant,
+				selectPreviousDescendant,
+			};
 		},
-		[descendants, register, unregister]
+		[
+			descendants,
+			register,
+			unregister,
+			focusFirstDescendant,
+			focusLastDescendant,
+			focusNextDescendant,
+			focusPreviousDescendant,
+			selectFirstDescendant,
+			selectLastDescendant,
+			selectNextDescendant,
+			selectPreviousDescendant,
+		]
 	);
 
 	return context;

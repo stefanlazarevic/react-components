@@ -1,4 +1,4 @@
-import { isHTMLElement } from "./typeof";
+import { isHTMLElement } from "./assertions";
 
 /**
  *
@@ -12,19 +12,42 @@ export function isDisabledHTMLElement(element: HTMLElement) {
  * 
  * @param element
  */
-export function focusElement(element: HTMLElement) {
+export function focusElement(element: HTMLElement, options?: FocusOptions) {
 	if (isHTMLElement(element)) {
-		element.focus();
+		return requestAnimationFrame(() => {
+			element.focus(options);
+		});
 	}
+
+	return -1;
 }
 
 /**
  * 
  * @param element 
  */
-export default function clickAndFocus(element: HTMLElement) {
+export default function clickAndFocus(element: HTMLElement, options?: FocusOptions) {
 	if (isHTMLElement(element)) {
 		element.click();
-		element.focus();
+		element.focus(options);
 	}
+}
+
+/**
+ * 
+ * @param element 
+ * @param parent 
+ */
+export function scrollIntoViewIfNeeded(element: HTMLElement, parent: HTMLElement, block: "center" | "end" | "nearest" | "start") {
+	const { scrollTop, offsetHeight: parentHeight } = parent;
+	const { offsetTop, offsetHeight: elementHeight } = element;
+
+	const top = scrollTop;
+	const bottom = scrollTop + parentHeight;
+
+	if (top < offsetTop && offsetTop + elementHeight < bottom) {
+		return;
+	}
+
+	element.scrollIntoView({ block });
 }

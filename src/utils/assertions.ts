@@ -8,6 +8,14 @@ export function isNumber(value: any): value is number {
 }
 
 /**
+ * 
+ * @param value 
+ */
+export function isPositiveNumber(value: number): boolean {
+  return value > -1;
+}
+
+/**
  * Checks whether or not a value is a function.
  *
  * @param value
@@ -39,7 +47,7 @@ export function isString(value: any): value is string {
  *
  * @param value
  */
-export function isArray(value: any): value is any[] {
+export function isArray<T>(value: any): value is T[] {
   return Array.isArray(value);
 }
 
@@ -120,6 +128,14 @@ export function isHTMLElement(value: any): value is HTMLElement {
 /**
  * Checks whether environment is browser or not.
  */
-export default function isBrowser() {
+export function isBrowser() {
   return typeof window !== 'undefined' && window.document;
 }
+
+/**
+ * 
+ * @param element 
+ */
+export function isActiveElement(element: Element) {
+  return document.activeElement === element;
+} 

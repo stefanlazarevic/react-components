@@ -53,7 +53,8 @@
     cursor: default;
   }
 
-  &[tabIndex="-1"][hidden] {
+  &[role="presentation"],
+  &[role="none"] {
     pointer-events: none;
   }
 }

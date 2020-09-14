@@ -8,22 +8,22 @@ import { useTabsContext } from "../../context/TabsContext";
 
 import { keyboard } from "../../../../helpers";
 
-import { focusFirstDescendant, focusLastDescendant, concatenate } from "../../../../utils";
+import { concatenate } from "../../../../utils";
 
 const TabList = forwardRef(function TabListComponent(props: TabListProps, ref: MutableRefObject<HTMLDivElement>) {
 	const className = concatenate("TabList", props.className);
 
-	const {orientation, descendants} = useTabsContext();
+	const {orientation, focusFirstDescendant, focusLastDescendant} = useTabsContext();
 
 	function onKeyDown(event: React.KeyboardEvent) {
 		const {keyCode} = event;
 
 		switch (keyCode) {
 			case keyboard.KeyCode.HOME:
-				focusFirstDescendant(descendants);
+				focusFirstDescendant();
 				break;
 			case keyboard.KeyCode.END:
-				focusLastDescendant(descendants);
+				focusLastDescendant();
 				break;
 			default: return;
 		}
