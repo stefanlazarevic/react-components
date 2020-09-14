@@ -15,4 +15,8 @@ export interface ListProps extends ISelectable, IMultiSelectable {
 	 * 
 	 */
 	multiselectable?: boolean;
+	/**
+	 * 
+	 */
+	showSelectAll?: boolean;
 }

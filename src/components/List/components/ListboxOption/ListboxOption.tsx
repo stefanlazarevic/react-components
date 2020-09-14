@@ -1,9 +1,9 @@
-import React, { forwardRef, MutableRefObject, useMemo } from "react";
+import React, { forwardRef, MutableRefObject, useCallback, useMemo } from "react";
 
 import "./ListboxOption.scss";
 
 import { ListboxOptionProps } from "./ListboxOptionProps";
-import { concatenate, not, contains } from "../../../../utils";
+import { concatenate, not, contains, isFunction } from "../../../../utils";
 import { useCombinedRefs, useDescendant } from "../../../../hooks";
 import { useListContext } from "../../context/ListContext";
 import { keyboard } from "../../../../helpers";
@@ -27,8 +27,8 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 		selectNextDescendant,
 		selectPreviousDescendant,
 		selectOption,
-		selectToHome,
-		selectToEnd,
+		selectOptionsUpToFirst,
+		selectOptionsDownToLast,
 		setFromMostRecentlySelectedIndex
 	} = context;
 
@@ -48,6 +48,7 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 
 		if (keyCode === keyboard.KeyCode.ARROW_DOWN) {
 			if (not(shiftKey)) {
+				event.preventDefault();
 				focusNextDescendant(index);
 				return;
 			}
@@ -61,6 +62,7 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 
 		if (keyCode === keyboard.KeyCode.ARROW_UP) {
 			if (not(shiftKey)) {
+				event.preventDefault();
 				focusPreviousDescendant(index);
 				return;
 			}
@@ -74,13 +76,13 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 
 		if (keyCode === keyboard.KeyCode.HOME) {
 			if (ctrlKey && shiftKey) {
-				selectToHome(event, index);
+				selectOptionsUpToFirst(event, index);
 			}
 		}
 
 		if (keyCode === keyboard.KeyCode.END) {
 			if (ctrlKey && shiftKey) {
-				selectToEnd(event, index);
+				selectOptionsDownToLast(event, index);
 			}
 		}
 
@@ -93,9 +95,23 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 		}
 	}
 
-	function onClick(event: React.SyntheticEvent) {
-		selectOption(event, index);
+	function onClick(event: React.MouseEvent) {
+		const { shiftKey } = event;
+
+		if (shiftKey) {
+			setFromMostRecentlySelectedIndex(event, index);
+		} else {
+			selectOption(event, index);
+		}
 	}
+
+	const renderChildren = useCallback(() => {
+		if (isFunction(props.children)) {
+			return props.children({ index, isSelected });
+		}
+
+		return props.children;
+	}, [props.children, index, isSelected]);
 
 	return (
 		<li
@@ -111,7 +127,7 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 			tabIndex={isSelected ? 0 : -1}
 			aria-selected={isSelected}
 		>
-			{props.children}
+			{renderChildren()}
 		</li>
 	);
 });

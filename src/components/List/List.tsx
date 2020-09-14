@@ -11,7 +11,7 @@ function List(props: ListProps) {
 
 List.defaultProps = {
 	orientation: "vertical",
-	selectedIndexes: []
+	selectedIndexes: [],
 };
 
 List.displayName = "List";

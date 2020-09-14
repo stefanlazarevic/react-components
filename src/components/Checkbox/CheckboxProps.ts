@@ -1,30 +1,19 @@
 import { CSSProperties } from "react";
+import { IComponentBase } from "../../interfaces";
 
-export default interface CheckboxProps {
-	/**
-	 *
-	 */
-	id?: string;
-	/**
-	 *
-	 */
-	testid?: string;
-	/**
-	 *
-	 */
-	className?: string;
+export default interface CheckboxProps extends IComponentBase {
 	/**
 	 *
 	 */
 	title?: string;
 	/**
-	 *
-	 */
-	style?: CSSProperties;
-	/**
 	 * @default false
 	 */
 	checked?: "mixed" | boolean;
+	/**
+	 * @default false
+	 */
+	defaultChecked?: boolean;
 	/**
 	 * @default false
 	 */
@@ -53,6 +42,10 @@ export default interface CheckboxProps {
 	 *
 	 */
 	hidden?: boolean;
+	/**
+	 * 
+	 */
+	role?: string;
 	/**
 	 *
 	 */

@@ -2,7 +2,7 @@ import React, { forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./Label.scss";
 
-import { concatenate } from "../../utils";
+import { concatenate, focusElement } from "../../utils";
 
 import { LabelProps } from "./LabelProps";
 
@@ -16,9 +16,7 @@ const Label = forwardRef(function LabelComponent(
     if (document && typeof props.htmlFor === 'string') {
       const connectedElement = document.getElementById(props.htmlFor);
 
-      if (connectedElement instanceof HTMLElement) {
-        connectedElement.focus();
-      }
+      focusElement(connectedElement as HTMLElement);
     }
   }, [props.htmlFor]);
 

@@ -1,8 +1,8 @@
 import { ListProps } from "../ListProps";
 import { createNamedContext } from "../../../context/createNamedContext";
 import { useDescendants } from "../../../hooks";
-import { IDescendantContext, IMultiSelectable, ISelectable, IDescendant } from "../../../interfaces";
-import { Orientation } from "../../../types";
+import { IDescendantContext, IMultiSelectable, ISelectable, IDescendant, ISelectableDetails } from "../../../interfaces";
+import { Orientation, ThreeStateBoolean } from "../../../types";
 import { useCallback, useRef } from "react";
 import {
 	forEach,
@@ -10,30 +10,42 @@ import {
 	isFunction,
 	filterMap,
 	size,
-	filter,
 	cloneArray,
-	unique,
-	isPositiveNumber,
-	lastIndex,
-	isNumber,
+	isArray,
+	and,
+	getFirstDescendantIndex,
+	increment,
+	removeDuplicates,
+	getLastDescendantIndex,
+	decrement,
+	isAbsent,
+	isEmpty,
 } from "../../../utils";
 
 export interface IListContext extends IDescendantContext, ISelectable, IMultiSelectable {
 	orientation?: Orientation;
 	multiselectable?: boolean;
+	showSelectAll?: boolean;
 
 	// Callbacks
+	getSelectedAllState: () => ThreeStateBoolean;
 	selectOption: (event: React.SyntheticEvent, index: number) => void;
 	selectAllOptions: (event: React.SyntheticEvent) => void;
-	selectToHome: (event: React.SyntheticEvent, index: number) => void;
-	selectToEnd: (event: React.SyntheticEvent, index: number) => void;
+	selectOptionsUpToFirst: (event: React.SyntheticEvent, index: number) => void;
+	selectOptionsDownToLast: (event: React.SyntheticEvent, index: number) => void;
 	setFromMostRecentlySelectedIndex: (event: React.SyntheticEvent, index: number) => void;
 }
 
 const [ListContextProvider, useListContext] = createNamedContext<IListContext>("ListContext");
 
+/**
+ * Creates context for List interface which provides all methods 
+ * following WAI Aria practices 1.2
+ * 
+ * @param props 
+ */
 export function createListContext(props: ListProps): IListContext {
-	const { selectedIndex, selectedIndexes, orientation, multiselectable } = props;
+	const { selectedIndex, selectedIndexes, orientation, multiselectable, showSelectAll } = props;
 
 	const descendantsContext = useDescendants();
 
@@ -41,181 +53,193 @@ export function createListContext(props: ListProps): IListContext {
 
 	const mostRecentlySelectedIndex = useRef<number | undefined>(undefined);
 
-	const setMostRecentlySelectedIndex = useCallback((index?: number) => {
+	const setMostRecentlySelectedIndex = useCallback(function setMostRecentlySelectedIndex(index?: number) {
 		mostRecentlySelectedIndex.current = index;
 	}, []);
 
-	/**
-	 *
-	 */
-	const selectOption = useCallback(
-		function onListboxOptionSelect(event: React.SyntheticEvent, index: number) {
-			if (multiselectable) {
-				setMostRecentlySelectedIndex(index);
+	const getSelectedAllState = useCallback((): ThreeStateBoolean => {
+		if (isEmpty(selectedIndexes)) {
+			return false;
+		}
 
-				let isSelected = false;
-				const output = [];
-
-				forEach((selectedIndex) => {
-					if (selectedIndex === index) {
-						isSelected = true;
-					} else {
-						output.push(selectedIndex);
-					}
-				}, selectedIndexes as number[]);
-
-				if (not(isSelected)) {
-					output.push(index);
-				}
-
-				if (isFunction(props.onSelect)) {
-					props.onSelect(event, { selectedIndexes: output });
-				}
-			}
-		},
-		[selectedIndexes, multiselectable, props.onSelect, setMostRecentlySelectedIndex]
-	);
-
-	/**
-	 *
-	 */
-	const selectAllOptions = useCallback(
-		(event) => {
-			setMostRecentlySelectedIndex(undefined);
-			const enabledDescendants = filter((descendant) => not(descendant.disabled), descendants);
-
-			if (size(selectedIndexes) === size(enabledDescendants)) {
-				if (isFunction(props.onSelect)) {
-					props.onSelect(event, { selectedIndexes: [] });
-				}
-
-				return;
-			}
-
-			const output = filterMap<number>((descendant: IDescendant, index) => {
-				if (descendant.disabled) {
-					return undefined;
-				}
-
+		const enabledDescendantIndexes = filterMap<IDescendant, number>(function filterOutDisabledDescendants(descendant, index) {
+			if (not(descendant.disabled)) {
 				return index;
+			}
+
+			return undefined;
+		}, descendants);
+
+		if (size(selectedIndexes) === size(enabledDescendantIndexes)) {
+			return true;
+		}
+
+		return null;
+	}, [selectedIndexes, descendants]);
+
+	/**
+	 * Function which executes provided `onSelect` callback if provided.
+	 */
+	const onSelect = useCallback(function onListSelectionChange(event: React.SyntheticEvent, details: ISelectableDetails) {
+		if (isFunction(props.onSelect)) {
+			props.onSelect(event, details);
+		}
+	}, [props.onSelect]);
+
+	/**
+	 * Function which selects provided index. In multiselectable list, this function
+	 * is used to select/deselect provided index in `selectedIndexes` array.
+	 * 
+	 * @param index Selected index
+	 */
+	const selectOption = useCallback(function onListSelectedOptionsChange(event: React.SyntheticEvent, index: number) {
+		if (and(isArray(selectedIndexes), multiselectable)) {
+			setMostRecentlySelectedIndex();
+
+			const output = [];
+
+			let shouldSelect = true;
+
+			forEach(function forEachSelectedIndex(selectedIndex: number) {
+				// In case index is already selected, deselect it.
+				if (selectedIndex === index) {
+					shouldSelect = false;
+					return;
+				}
+
+				output.push(selectedIndex);
+			}, selectedIndexes);
+
+			if (shouldSelect) {
+				setMostRecentlySelectedIndex(index);
+				output.push(index);
+			}
+
+			return onSelect(event, { selectedIndexes: output });
+		}
+
+		onSelect(event, { selectedIndex: index });
+	}, [selectedIndexes, multiselectable, setMostRecentlySelectedIndex, descendants, onSelect]);
+
+	/**
+	 * Function which selects all visible options in case they are not selected, otherwise it deselects all options.
+	 * 
+	 * **Note:** This function is used only in multiselectable list.
+	 */
+	const selectAllOptions = useCallback(function onListSelectAllOptions(event: React.SyntheticEvent) {
+		if (and(isArray(selectedIndexes), multiselectable)) {
+			setMostRecentlySelectedIndex();
+
+			const enabledDescendantIndexes = filterMap<IDescendant, number>(function filterOutDisabledDescendants(descendant, index) {
+				if (not(descendant.disabled)) {
+					return index;
+				}
+
+				return undefined;
 			}, descendants);
 
-			if (isFunction(props.onSelect)) {
-				props.onSelect(event, { selectedIndexes: output });
+			if (size(selectedIndexes) === size(enabledDescendantIndexes)) {
+				return onSelect(event, { selectedIndexes: [] });
 			}
-		},
-		[descendants, selectedIndexes, props.onSelect, setMostRecentlySelectedIndex]
+
+			onSelect(event, { selectedIndexes: enabledDescendantIndexes });
+		}
+	},
+		[selectedIndexes, multiselectable, setMostRecentlySelectedIndex, descendants, onSelect]
 	);
 
 	/**
-	 *
+	 * Selects the option at given index and all options up to the first available option. 
 	 */
-	const selectToHome = useCallback(
-		(event: React.SyntheticEvent, index: number) => {
-			let i = 0;
+	const selectOptionsUpToFirst = useCallback(
+		function selectOptionsUpToFirst(event: React.SyntheticEvent, index: number) {
+			if (and(isArray(selectedIndexes), multiselectable)) {
+				const firstIndex = getFirstDescendantIndex(descendants);
 
-			setMostRecentlySelectedIndex(index);
+				setMostRecentlySelectedIndex(firstIndex);
 
-			if (not(isPositiveNumber(index))) {
-				return;
-			}
+				const output = cloneArray(selectedIndexes);
 
-			const output = cloneArray(selectedIndexes);
+				let currentIndex = firstIndex;
 
-			while (i !== index) {
-				const descendant = descendants[i];
+				while (currentIndex <= index) {
+					const descendant = descendants[currentIndex];
 
-				if (not(descendant.disabled)) {
-					output.push(i);
+					if (not(descendant.disabled)) {
+						output.push(currentIndex);
+					}
+
+					currentIndex = increment(currentIndex);
 				}
 
-				i++;
-			}
-
-			output.push(index);
-
-			if (isFunction(props.onSelect)) {
-				props.onSelect(event, { selectedIndexes: unique(output) });
+				onSelect(event, { selectedIndexes: removeDuplicates(output) });
 			}
 		},
-		[selectedIndexes, descendants, props.onSelect, setMostRecentlySelectedIndex]
+		[selectedIndexes, multiselectable, descendants, setMostRecentlySelectedIndex, onSelect]
 	);
 
 	/**
-	 *
+	 * Selects the focused option and all options down to the last option.
 	 */
-	const selectToEnd = useCallback(
-		(event: React.SyntheticEvent, index: number) => {
-			setMostRecentlySelectedIndex(index);
-			let i = lastIndex(descendants);
+	const selectOptionsDownToLast = useCallback(
+		function selectOptionsDownToLast(event: React.SyntheticEvent, index: number) {
+			if (and(isArray(selectedIndexes), multiselectable)) {
+				const lastIndex = getLastDescendantIndex(descendants);
 
-			if (not(isPositiveNumber(index))) {
-				return;
-			}
+				setMostRecentlySelectedIndex(lastIndex);
 
-			const output = cloneArray(selectedIndexes);
+				const output = cloneArray(selectedIndexes);
 
-			while (i !== index) {
-				const descendant = descendants[i];
+				let currentIndex = lastIndex;
 
-				if (not(descendant.disabled)) {
-					output.push(i);
+				while (currentIndex >= index) {
+					const descendant = descendants[currentIndex];
+
+					if (not(descendant.disabled)) {
+						output.push(currentIndex);
+					}
+
+					currentIndex = decrement(currentIndex);
 				}
 
-				i--;
-			}
-
-			output.push(index);
-
-			if (isFunction(props.onSelect)) {
-				props.onSelect(event, { selectedIndexes: unique(output) });
+				onSelect(event, { selectedIndexes: removeDuplicates(output) });
 			}
 		},
-		[selectedIndexes, descendants, props.onSelect, setMostRecentlySelectedIndex]
+		[selectedIndexes, multiselectable, getLastDescendantIndex, descendants, onSelect]
 	);
 
 	/**
 	 * 
 	 */
 	const setFromMostRecentlySelectedIndex = useCallback((event: React.SyntheticEvent, index: number) => {
-		console.log(mostRecentlySelectedIndex.current, index);
-		
-		if (not(isNumber(mostRecentlySelectedIndex.current))) {
-			return;
-		}
+		if (and(isArray(selectedIndexes), multiselectable)) {
+			let { current: currentIndex } = mostRecentlySelectedIndex;
 
-		let currentIndex = mostRecentlySelectedIndex.current as number;
-
-		const output = cloneArray(selectedIndexes);
-
-		const step = index > mostRecentlySelectedIndex.current! ? 1 : -1;
-
-		while (currentIndex !== mostRecentlySelectedIndex.current) {
-			const descendant = descendants[currentIndex];
-
-			if (not(descendant.disabled)) {
-				output.push(currentIndex);
+			if (isAbsent(currentIndex)) {
+				currentIndex = index;
 			}
 
-			currentIndex += step;
-		}
+			const output = cloneArray(selectedIndexes);
 
-		if (isFunction(props.onSelect)) {
-			props.onSelect(event, { selectedIndexes: unique(output) });
-		}
-	}, []);
+			const direction = index > currentIndex ? 1 : -1;
 
-	/**
-	 * @todo
-	 *
-	 * 1. Select single index. ✔
-	 * 2. Select next index. ✔
-	 * 3. Select previous index. ✔
-	 * 4. Select from last to current index.
-	 * 5. Select from index to start. ✔
-	 * 6. Select from index to end. ✔
-	 * 7. Select all. ✔
-	 */
+			while (currentIndex !== index) {
+				const descendant = descendants[currentIndex];
+
+				if (not(descendant.disabled)) {
+					output.push(currentIndex);
+				}
+
+				currentIndex += direction;
+			}
+
+			output.push(index);
+
+			setMostRecentlySelectedIndex(index);
+
+			onSelect(event, { selectedIndexes: removeDuplicates(output) });
+		}
+	}, [selectedIndexes, multiselectable]);
 
 	return {
 		...descendantsContext,
@@ -223,10 +247,12 @@ export function createListContext(props: ListProps): IListContext {
 		selectedIndexes,
 		orientation,
 		multiselectable,
+		showSelectAll,
+		getSelectedAllState,
 		selectOption,
 		selectAllOptions,
-		selectToHome,
-		selectToEnd,
+		selectOptionsUpToFirst,
+		selectOptionsDownToLast,
 		setFromMostRecentlySelectedIndex
 	};
 }

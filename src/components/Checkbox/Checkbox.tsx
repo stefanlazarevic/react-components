@@ -6,7 +6,7 @@ import { useCombinedRefs } from "../../hooks";
 
 import CheckboxProps from "./CheckboxProps";
 
-import { concatenate } from "../../utils";
+import { concatenate, isBoolean } from "../../utils";
 
 const Checkbox = forwardRef(function CheckboxComponent(
   props: CheckboxProps,
@@ -15,6 +15,10 @@ const Checkbox = forwardRef(function CheckboxComponent(
   const className = concatenate("Checkbox", props.className);
 
   const input = useCombinedRefs(ref);
+
+  function isPresentation() {
+    return props.role === 'presentation' || props.role === 'none';
+  }
 
   useLayoutEffect(() => {
     if (props.checked === "mixed") {
@@ -32,13 +36,15 @@ const Checkbox = forwardRef(function CheckboxComponent(
       className={className}
       style={props.style}
       type={props.type}
-      checked={typeof props.checked === 'boolean' ? props.checked : undefined}
+      checked={isBoolean(props.checked) ? props.checked : undefined}
+      defaultChecked={props.defaultChecked}
       disabled={props.disabled}
       title={props.title}
       name={props.name}
+      role={props.role}
       readOnly={props.readOnly}
       autoFocus={props.autoFocus}
-      tabIndex={props.tabIndex}
+      tabIndex={isPresentation() ? -1 : props.tabIndex}
       hidden={props.hidden}
       onChange={props.onChange}
       onFocus={props.onFocus}
