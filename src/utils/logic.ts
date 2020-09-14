@@ -26,7 +26,7 @@ export function and(...args: any): boolean {
   let isTrue = true;
 
   for (let index = 0; index < args.length; index++) {
-    if (!isTrue) {
+    if (not(isTrue)) {
       return false;
     }
 
@@ -34,4 +34,18 @@ export function and(...args: any): boolean {
   }
 
   return isTrue;
+}
+
+/**
+ * 
+ * @param args 
+ */
+export function or(...args: any): boolean {
+  for (let index = 0; index < args.length; index++) {
+    if (args[index]) {
+      return true;
+    }
+  }
+
+  return false;
 }

@@ -57,7 +57,7 @@ export default function ControllableList() {
 	];
 
   const [selectedIndexes, setSelectedIndexes] = useState(
-		filterMap<number>((o, i) => o.selected ? i : undefined, INITIAL_STATE)
+		filterMap<any, number>((o, i) => o.selected ? i : undefined, INITIAL_STATE)
 	);
 
   function onSelect(event: React.SyntheticEvent, details: ISelectableDetails) {
