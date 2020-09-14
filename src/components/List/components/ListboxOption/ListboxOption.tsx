@@ -3,7 +3,7 @@ import React, { forwardRef, MutableRefObject, useCallback, useMemo } from "react
 import "./ListboxOption.scss";
 
 import { ListboxOptionProps } from "./ListboxOptionProps";
-import { concatenate, not, contains, isFunction } from "../../../../utils";
+import { concatenate, not, contains, isFunction, scrollToActiveElement, or } from "../../../../utils";
 import { useCombinedRefs, useDescendant } from "../../../../hooks";
 import { useListContext } from "../../context/ListContext";
 import { keyboard } from "../../../../helpers";
@@ -19,6 +19,7 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 	const context = useListContext();
 
 	const {
+		orientation,
 		multiselectable,
 		selectedIndex,
 		selectedIndexes,
@@ -46,10 +47,15 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 	function onKeyDown(event: React.KeyboardEvent) {
 		const { keyCode, ctrlKey, shiftKey, repeat } = event;
 
-		if (keyCode === keyboard.KeyCode.ARROW_DOWN) {
+		if (or(keyCode === keyboard.KeyCode.ARROW_DOWN, keyCode === keyboard.KeyCode.ARROW_RIGHT)) {
 			if (not(shiftKey)) {
 				event.preventDefault();
-				focusNextDescendant(index);
+				focusNextDescendant(index, {preventScroll: true});
+				if (orientation === 'vertical') {
+					requestAnimationFrame(() => scrollToActiveElement({ block: 'nearest'}));
+				} else {
+					requestAnimationFrame(() => scrollToActiveElement({ inline: 'nearest' }));
+				}
 				return;
 			}
 
@@ -60,10 +66,15 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 			selectNextDescendant(index);
 		}
 
-		if (keyCode === keyboard.KeyCode.ARROW_UP) {
+		if (or(keyCode === keyboard.KeyCode.ARROW_UP, keyCode === keyboard.KeyCode.ARROW_LEFT)) {
 			if (not(shiftKey)) {
 				event.preventDefault();
-				focusPreviousDescendant(index);
+				focusPreviousDescendant(index, { preventScroll: true });
+				if (orientation === 'vertical') {
+					requestAnimationFrame(() => scrollToActiveElement({ block: 'nearest' }));
+				} else {
+					requestAnimationFrame(() => scrollToActiveElement({ inline: 'nearest' }));
+				}
 				return;
 			}
 
@@ -87,6 +98,8 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 		}
 
 		if (keyCode === keyboard.KeyCode.SPACE) {
+			event.preventDefault();
+			
 			if (shiftKey) {
 				setFromMostRecentlySelectedIndex(event, index);
 			} else {
@@ -139,10 +152,3 @@ ListboxOption.defaultProps = {
 ListboxOption.displayName = "ListboxOption";
 
 export default ListboxOption;
-
-/**
- *
- * selectRange
- * unselectRange
- *
- */

@@ -65,12 +65,12 @@ export function useDescendants(): IDescendantContext {
 	 *
 	 */
 	const focusFirstDescendant = useCallback(
-		function focusFirstDescendant() {
+		function focusFirstDescendant(options?: FocusOptions) {
 			let index = getFirstDescendantIndex(descendants);
 
 			const { element } = descendants[index];
 
-			focusElement(element);
+			focusElement(element, options);
 		},
 		[descendants]
 	);
@@ -79,12 +79,12 @@ export function useDescendants(): IDescendantContext {
 	 *
 	 */
 	const focusLastDescendant = useCallback(
-		function focusLastDescendant() {
+		function focusLastDescendant(options?: FocusOptions) {
 			let index = getLastDescendantIndex(descendants);
 
 			const { element } = descendants[index];
 
-			focusElement(element);
+			focusElement(element, options);
 		},
 		[descendants]
 	);
@@ -95,12 +95,12 @@ export function useDescendants(): IDescendantContext {
 	 * @param descendants
 	 */
 	const focusNextDescendant = useCallback(
-		function focusNextDescendant(currentIndex: number) {
+		function focusNextDescendant(currentIndex: number, options?: FocusOptions) {
 			let nextIndex = getNextDescendantIndex(currentIndex, descendants);
 
 			const { element } = descendants[nextIndex];
 
-			focusElement(element);
+			focusElement(element, options);
 		},
 		[descendants]
 	);
@@ -111,12 +111,12 @@ export function useDescendants(): IDescendantContext {
 	 * @param descendants
 	 */
 	const focusPreviousDescendant = useCallback(
-		function focusPreviousDescendant(currentIndex: number) {
+		function focusPreviousDescendant(currentIndex: number, options?: FocusOptions) {
 			const previousIndex = getPreviousDescendantIndex(currentIndex, descendants);
 
 			const { element } = descendants[previousIndex];
 
-			focusElement(element);
+			focusElement(element, options);
 		},
 		[descendants]
 	);

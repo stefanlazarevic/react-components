@@ -3,7 +3,7 @@
 
   position: relative;
 
-  display: flex;
+    display: block;
 
   flex-direction: column;
 
@@ -15,11 +15,27 @@
 
   user-select: none;
 
-  height: 400px;
+  width: 100%;
+
+  max-height: 400px;
 
   overflow-y: auto;
 
   &[aria-orientation="horizontal"] {
-    flex-direction: row;
+    overflow-x: unset;
+
+    overflow-y: auto;
+
+    white-space: nowrap;
+    
+    .ListboxOption {
+      display: inline-block;
+
+      line-height: 40px;
+
+      & > * {
+        vertical-align: middle;
+      }
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { isHTMLElement } from "./assertions";
+import { isHTMLElement, isElement } from "./assertions";
 
 /**
  *
@@ -50,4 +50,16 @@ export function scrollIntoViewIfNeeded(element: HTMLElement, parent: HTMLElement
 	}
 
 	element.scrollIntoView({ block });
+}
+
+/**
+ * 
+ * @param options 
+ */
+export function scrollToActiveElement(options?: ScrollIntoViewOptions) {
+	const {activeElement} = document;
+
+	if (isElement(activeElement)) {
+		activeElement.scrollIntoView(options);
+	}
 }

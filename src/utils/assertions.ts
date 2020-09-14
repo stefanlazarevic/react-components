@@ -139,3 +139,11 @@ export function isBrowser() {
 export function isActiveElement(element: Element) {
   return document.activeElement === element;
 } 
+
+/**
+ * 
+ * @param value 
+ */
+export function isElement(value: any): value is Element {
+  return value instanceof Element;
+}
