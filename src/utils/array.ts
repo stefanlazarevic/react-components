@@ -172,6 +172,13 @@ export function unique(array: any[] = []): any[] {
 }
 
 /**
+ * Returns array with non repetitive values.
+ *
+ * @param array
+ */
+export const removeDuplicates = unique;
+
+/**
  * Returns shallow cloned array.
  *
  * @param value
@@ -196,7 +203,7 @@ export function contains(item: any, array: any[] = []): boolean {
 /**
  *
  */
-export function filterMap<T>(callbackfn: (item: any, index: number, array: any[]) => any, array: any[]): T[] {
+export function filterMap<T, O>(callbackfn: (item: T, index: number, array: T[]) => any, array: T[]): O[] {
 	const output = [];
 
 	for (let index = 0; index < size(array); index++) {
@@ -226,6 +233,6 @@ export function update(newValue: any, targetIndex: number, array: any[]) {
  * @param callbackfn 
  * @param array 
  */
-export function forEach(callbackfn: (item: any, index: number, array: any[]) => any, array: any[]) {
+export function forEach(callbackfn: (item: any, index: number, array: any[]) => any, array: any[] = []) {
 	array.forEach(callbackfn);
 };
