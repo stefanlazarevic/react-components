@@ -26,6 +26,7 @@ export { default as MinusIcon } from "./icons/Minus";
 export { default as MoreVerticalIcon } from "./icons/MoreVertical";
 export { default as PlusIcon } from "./icons/Plus";
 export { default as SearchIcon } from "./icons/Search";
+export { default as ShoppingBagIcon } from "./icons/ShoppingBag";
 export { default as SpeakerIcon } from "./icons/Speaker";
 export { default as SyncIcon } from "./icons/Sync";
 export { default as TerminalIcon } from "./icons/Terminal";
