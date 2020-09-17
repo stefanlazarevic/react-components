@@ -1,0 +1,6 @@
+- [ ] ~~Support submenu open on mouse enter with delegation.~~
+- [ ] Add `openAfter` property on sub menu which when specified will open on mouse enter with delegation.
+- [ ] Support RTL
+- [ ] Prevent submenu from opening outside of visible window.
+- [ ] Add touch support.
+- [ ] Support SSR.
