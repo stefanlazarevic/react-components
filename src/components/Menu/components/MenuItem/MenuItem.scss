@@ -1,0 +1,27 @@
+.MenuItem {
+   box-sizing: border-box;
+
+   position: relative;
+
+   display: flex;
+
+   min-height: 40px;
+
+   background-color: var(--component-background-color);
+
+   align-items: center;
+
+   padding: 0 10px;
+
+   cursor: pointer;
+
+   white-space: nowrap;
+
+   &:focus {
+      outline: 2px solid var(--app-info-color);
+      
+      outline-offset: -1px;
+
+      z-index: 2;
+   }
+}

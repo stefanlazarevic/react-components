@@ -1,0 +1,47 @@
+.MenuList {
+    box-sizing: border-box;
+
+    position: relative;
+
+    display: inline-block;
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+
+    &:focus {
+      outline: 2px solid var(--app-info-color);
+      
+      outline-offset: -1px;
+
+      z-index: 2;
+   }
+
+   &[aria-orientation="vertical"] {
+      .SubMenuList {
+         top: 0 !important;
+
+         left: calc(100% + 4px) !important;
+      }
+   }
+
+   &[aria-orientation="horizontal"] {
+      & > * {
+         display: inline-block;
+
+         vertical-align: middle;
+
+         text-align: center;
+
+         line-height: 40px;
+      }
+
+      .SubMenuList {
+         top: calc(100% + 4px);
+
+         left: 0;
+      }
+   }
+}
