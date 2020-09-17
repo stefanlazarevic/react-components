@@ -16,7 +16,7 @@ export function pluck(path: string, target: object) {
 	if (isString(path)) {
 		const keys = split('.', trim(path));
 
-		keys.reduce(function pluckIfExistant(object, key) {
+		return keys.reduce(function pluckIfExistant(object, key) {
 			if (isObject(object) && key in object) {
 				return object[key];
 			}

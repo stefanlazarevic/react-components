@@ -12,7 +12,7 @@ export function isDisabledHTMLElement(element: HTMLElement) {
  * 
  * @param element
  */
-export function focusElement(element: HTMLElement, options?: FocusOptions) {
+export function focusElement(element?: HTMLElement, options?: FocusOptions) {
 	if (isHTMLElement(element)) {
 		return requestAnimationFrame(() => {
 			element.focus(options);
@@ -28,9 +28,13 @@ export function focusElement(element: HTMLElement, options?: FocusOptions) {
  */
 export default function clickAndFocus(element: HTMLElement, options?: FocusOptions) {
 	if (isHTMLElement(element)) {
-		element.click();
-		element.focus(options);
+		return requestAnimationFrame(() => {
+			element.click();
+			element.focus(options);
+		});
 	}
+
+	return -1;
 }
 
 /**
@@ -62,4 +66,13 @@ export function scrollToActiveElement(options?: ScrollIntoViewOptions) {
 	if (isElement(activeElement)) {
 		activeElement.scrollIntoView(options);
 	}
+}
+
+/**
+ * 
+ * @param element 
+ * @param parent 
+ */
+export function isDirectChild(element: Element, parent: Element): boolean {
+	return Array.from(parent.children).includes(element);
 }

@@ -236,3 +236,11 @@ export function update(newValue: any, targetIndex: number, array: any[]) {
 export function forEach(callbackfn: (item: any, index: number, array: any[]) => any, array: any[] = []) {
 	array.forEach(callbackfn);
 };
+
+/**
+ * 
+ * @param array 
+ */
+export function copyArray(array: any[] = []) {
+	return array.slice();
+}
