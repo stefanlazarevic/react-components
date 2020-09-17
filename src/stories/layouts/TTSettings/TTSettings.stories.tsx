@@ -10,7 +10,6 @@ import {
 	DialogHeader,
 	RadioGroup,
 	Radio,
-	Select,
 } from "../../../components";
 
 export default {
@@ -51,14 +50,6 @@ export const TTSettings = () => {
             <Radio value="1" />
             <Radio value="2" />
           </RadioGroup>
-        </div>
-        <div className="FormRow FormColumn Medium">
-          <Label className="ColorSchemeLabel" htmlFor="color-scheme">Editor color scheme</Label>
-          <Select id="color-scheme" options={[
-            {label: 'Schema #1', value: "1"},
-            {label: 'Schema #2', value: "2"},
-            {label: 'Schema #3', value: "3"},
-          ]} value="3" label="Schema #3" />
         </div>
       </form>
     </Dialog>

@@ -1,10 +1,10 @@
 import React from "react";
-import { Demo } from "./Demo";
+import { Example } from "./Example";
 
 export default {
 	title: "Tabs",
 };
 
-export const Demo2 = () => {
-	return <Demo />;
+export const Demo = () => {
+	return <Example />;
 };
