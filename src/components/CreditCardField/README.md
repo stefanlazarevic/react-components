@@ -1,0 +1,6 @@
+- [X] Support 4 digit separator.
+- [X] Support auto validation using Luhn algorithm.
+- [X] Open numeric keyboard on IOS devices.
+- [X] Open numeric keyboard on Android devices.
+- [X] Support invalid styles.
+- [X] Support only numeric inputs from regular keys and num keys.
