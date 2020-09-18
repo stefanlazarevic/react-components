@@ -44,3 +44,11 @@ export function concatenate(...args: (string | undefined | null)[]): string {
 export function split(separator: string | RegExp = '', value: string, limit?: number) {
     return value.split(separator, limit)
 };
+
+/**
+ * 
+ * @param value 
+ */
+export function stripWhitespace(value: string): string {
+    return value.replace(/\s+/g, '');
+}

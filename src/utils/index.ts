@@ -2,6 +2,7 @@ export * from "./array";
 export * from "./descendants";
 export * from "./dom";
 export * from "./functions";
+export * from "./keyboard";
 export * from "./logic";
 export * from "./number";
 export * from "./object";
