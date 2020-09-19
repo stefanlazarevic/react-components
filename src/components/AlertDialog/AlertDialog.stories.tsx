@@ -37,3 +37,8 @@ export const Success = Template.bind({});
 Success.args = {
   kind: "success",
 };
+
+export const AutoClose = Template.bind({});
+AutoClose.args = {
+	closeAfter: 3000
+}

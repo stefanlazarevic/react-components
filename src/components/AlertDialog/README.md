@@ -1,2 +1,2 @@
-[] Support `autoCloseAfter` property.
-[] Pause auto closing on hover.
+[X] Support `autoCloseAfter` property.
+[X] Pause auto closing on hover.

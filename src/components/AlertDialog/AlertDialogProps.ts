@@ -6,7 +6,11 @@ export interface AlertDialogProps extends AlertProps {
 	 */
 	role?: string;
 	/**
+	 * Automatically call `onClose` callback after specified time expressed in milliseconds.
+	 */
+	closeAfter?: number;
+	/**
 	 *
 	 */
-	onClose?: (event: React.SyntheticEvent) => void;
+	onClose?: () => void;
 }

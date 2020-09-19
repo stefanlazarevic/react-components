@@ -1,19 +1,8 @@
 import { ReactNodeLike } from "prop-types";
 import { CSSProperties } from "react";
+import { IComponentBase } from "../../interfaces";
 
-export interface AlertProps {
-  /**
-   * Hello world
-   */
-  id?: string;
-  /**
-   *
-   */
-  testid?: string;
-  /**
-   *
-   */
-  className?: string;
+export interface AlertProps extends IComponentBase {
   /**
    *
    */
@@ -37,10 +26,6 @@ export interface AlertProps {
   /**
    *
    */
-  style?: CSSProperties;
-  /**
-   *
-   */
   content?: string;
   /**
    *
@@ -54,4 +39,12 @@ export interface AlertProps {
    *
    */
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
+  /**
+   *
+   */
+  onMouseEnter?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  /**
+   *
+   */
+  onMouseLeave?: (event: React.MouseEvent<HTMLDivElement>) => void;
 };

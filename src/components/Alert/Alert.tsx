@@ -26,6 +26,8 @@ const Alert = forwardRef(function AlertComponent(
       lang={props.lang}
       tabIndex={props.tabIndex}
       onKeyDown={props.onKeyDown}
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
     >
       {props.children || props.content}
     </div>
