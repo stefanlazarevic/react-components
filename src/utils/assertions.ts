@@ -147,3 +147,11 @@ export function isActiveElement(element: Element) {
 export function isElement(value: any): value is Element {
   return value instanceof Element;
 }
+
+/**
+ * 
+ * @param value 
+ */
+export function isDate(value: any): value is Date {
+  return value instanceof Date;
+}

@@ -1,0 +1,1 @@
+type ISODateArray = [year: number, month: number, day: number];

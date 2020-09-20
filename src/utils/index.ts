@@ -1,4 +1,5 @@
 export * from "./array";
+export * from "./date";
 export * from "./descendants";
 export * from "./dom";
 export * from "./functions";

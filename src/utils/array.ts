@@ -244,3 +244,28 @@ export function forEach(callbackfn: (item: any, index: number, array: any[]) => 
 export function copyArray(array: any[] = []) {
 	return array.slice();
 }
+
+/**
+ * 
+ * @param chunkSize 
+ * @param array 
+ */
+export function chunk(chunkSize: number, array: any[] = []): any[][] {
+	const output = [];
+	const chunk = [];
+
+	for (let index = 0; index < size(array); index++) {
+		chunk.push(array[index]);
+
+		if ((index + 1) % chunkSize === 0) {
+			output.push(copyArray(chunk));
+			chunk.length = 0;
+		}
+	}
+
+	if (chunk.length > 0) {
+		output.push(chunk);
+	}
+
+	return output;
+}
