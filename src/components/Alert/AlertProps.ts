@@ -1,5 +1,4 @@
 import { ReactNodeLike } from "prop-types";
-import { CSSProperties } from "react";
 import { IComponentBase } from "../../interfaces";
 
 export interface AlertProps extends IComponentBase {
