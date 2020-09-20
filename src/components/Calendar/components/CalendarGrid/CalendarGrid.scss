@@ -1,0 +1,15 @@
+.CalendarGrid {
+   box-sizing: border-box;
+
+   position: relative;
+}
+
+.CalendarGridHead {
+   box-sizing: border-box;
+
+   position: relative;
+
+   th {
+      height: 40px;
+   }
+}

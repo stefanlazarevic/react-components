@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useForceUpdate } from "../forceUpdate";
 import { IDescendantContext } from "../../interfaces/DescentantContext";
 
@@ -17,7 +17,7 @@ export function useDescendant(
 
 	const forceUpdate = useForceUpdate();
 
-	useLayoutEffect(function descendantLayoutEffect() {
+	useEffect(function descendantLayoutEffect() {
 		if (not(descendant.element)) {
 			forceUpdate();
 		}

@@ -71,6 +71,13 @@ export function useDescendants(): IDescendantContext {
 	/**
 	 * 
 	 */
+	const clear = useCallback(function clearRegisteredDescendants() {
+		setDescendants([]);
+	}, []);
+
+	/**
+	 * 
+	 */
 	const getFirstDescendant = useCallback(
 		function getFirstDescendant(options: IDescendantOptions = {}) {
 			if (not(isEmpty(descendants))) {
@@ -277,6 +284,7 @@ export function useDescendants(): IDescendantContext {
 				descendants,
 				register,
 				unregister,
+				clear,
 				getFirstDescendant,
 				getLastDescendant,
 				focusFirstDescendant,
@@ -293,6 +301,7 @@ export function useDescendants(): IDescendantContext {
 			descendants,
 			register,
 			unregister,
+			clear,
 			getFirstDescendant,
 			getLastDescendant,
 			focusFirstDescendant,

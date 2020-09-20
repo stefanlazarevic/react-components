@@ -5,6 +5,7 @@ export interface IDescendantContext {
 	descendants: IDescendant[];
 	register: (descendant: IDescendant) => void;
 	unregister: (descendant: IDescendant) => void;
+	clear: () => void;
 	getFirstDescendant: (options?: IDescendantOptions) => void;
 	getLastDescendant: (options?: IDescendantOptions) => void;
 	focusFirstDescendant: (options?: IDescendantOptions) => void;
