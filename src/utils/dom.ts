@@ -76,3 +76,26 @@ export function scrollToActiveElement(options?: ScrollIntoViewOptions) {
 export function isDirectChild(element: Element, parent: Element): boolean {
 	return Array.from(parent.children).includes(element);
 }
+
+/**
+ * 
+ * @param element 
+ */
+export function getFocusableElements(element: Element) {
+	const focusableElements = Array.from(element.querySelectorAll(`button:not([tabindex = "-1"]):not([disabled]):not([style*="display:none"]):not([hidden]),
+		[href][clientHeight][clientWidth]:not([tabindex = "-1"]):not([disabled]):not([style*="display:none"]):not([hidden]),
+		input:not([tabindex = "-1"]):not([disabled]):not([style*="display:none"]):not([hidden]), select:not([tabindex = "-1"]):not([disabled]):not([style*="display:none"]):not([hidden]),
+		textarea:not([tabindex = "-1"]):not([disabled]):not([style*="display:none"]):not([hidden]), [tabIndex]:not([tabIndex = "-1"]):not([disabled]):not([style*="display:none"]):not([hidden]),
+		[contenteditable]:not([tabIndex = "-1"]):not([disabled]):not([style*="display:none"]):not([hidden])`
+	));
+
+	const visibleFocusableElements = [];
+
+	for (let focusableElement of focusableElements) {
+		if (getComputedStyle(focusableElement).display !== "none" && getComputedStyle(focusableElement).visibility !== "hidden") {
+			visibleFocusableElements.push(focusableElement);
+		}
+	}
+
+	return visibleFocusableElements;
+}

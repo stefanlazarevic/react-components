@@ -52,3 +52,27 @@ export function split(separator: string | RegExp = '', value: string, limit?: nu
 export function stripWhitespace(value: string): string {
     return value.replace(/\s+/g, '');
 }
+
+/**
+ * 
+ * @param value 
+ * @param length 
+ * @param pad 
+ */
+export function padStart(value: string | number, maxLength: number, fillString: string) {
+    const string = String(value);
+
+    return string.padStart(maxLength, fillString);
+}
+
+/**
+ * 
+ * @param value 
+ * @param length 
+ * @param pad 
+ */
+export function padEnd(value: string | number, maxLength: number, fillString: string) {
+    const string = String(value);
+
+    return string.padEnd(maxLength, fillString);
+}
