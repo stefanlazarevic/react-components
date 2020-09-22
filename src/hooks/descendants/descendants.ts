@@ -156,6 +156,20 @@ export function useDescendants(): IDescendantContext {
 	);
 
 	/**
+	 * 
+	 */
+	const getDescendantAtIndex = useCallback(
+		function getDescendantAtIndex(index: number) {
+			if (not(isEmpty(descendants))) {
+				return descendants[index];
+			}
+
+			return undefined;
+		},
+		[descendants]
+	)
+
+	/**
 	 *
 	 */
 	const focusFirstDescendant = useCallback(
@@ -193,6 +207,11 @@ export function useDescendants(): IDescendantContext {
 			const nextDescendant = getNextDescendant(currentIndex, options);
 
 			if (!isAbsent(nextDescendant)) {
+				if (options.replaceTabIndex) {
+					descendants[currentIndex].element.setAttribute('tabIndex', '-1');
+					nextDescendant.element.setAttribute('tabIndex', '0');
+				}
+
 				focusElement(nextDescendant.element, options);
 			}
 		},
@@ -209,11 +228,28 @@ export function useDescendants(): IDescendantContext {
 			const previousDescendant = getPreviousDescendant(currentIndex, options);
 
 			if (!isAbsent(previousDescendant)) {
+				if (options.replaceTabIndex) {
+					descendants[currentIndex].element.setAttribute('tabIndex', '-1');
+					previousDescendant.element.setAttribute('tabIndex', '0');
+				}
+				
 				focusElement(previousDescendant.element, options);
 			}
 		},
 		[descendants]
 	);
+
+	/**
+	 * 
+	 */
+	const focusDescendantAtIndex = useCallback(
+		function focusDescendantAtIndex(index, options: IDescendantOptions = {}) {
+			if (!isAbsent(descendants[index])) {
+				focusElement(descendants[index].element, options);
+			}
+		},
+		[descendants]
+	)
 
 	/**
 	 *
@@ -276,6 +312,18 @@ export function useDescendants(): IDescendantContext {
 	);
 
 	/**
+	 * 
+	 */
+	const selectDescendantAtIndex = useCallback(
+		function selectDescendantAtIndex(index: number) {
+			if (!isAbsent(descendants[index])) {
+				clickAndFocus(descendants[index].element);
+			}
+		},
+		[descendants]
+	)
+
+	/**
 	 *
 	 */
 	const context = useMemo(
@@ -287,14 +335,19 @@ export function useDescendants(): IDescendantContext {
 				clear,
 				getFirstDescendant,
 				getLastDescendant,
+				getNextDescendant,
+				getPreviousDescendant,
+				getDescendantAtIndex,
 				focusFirstDescendant,
 				focusLastDescendant,
 				focusNextDescendant,
 				focusPreviousDescendant,
+				focusDescendantAtIndex,
 				selectFirstDescendant,
 				selectLastDescendant,
 				selectNextDescendant,
 				selectPreviousDescendant,
+				selectDescendantAtIndex
 			};
 		},
 		[
@@ -304,14 +357,19 @@ export function useDescendants(): IDescendantContext {
 			clear,
 			getFirstDescendant,
 			getLastDescendant,
+			getNextDescendant,
+			getPreviousDescendant,
+			getDescendantAtIndex,
 			focusFirstDescendant,
 			focusLastDescendant,
 			focusNextDescendant,
 			focusPreviousDescendant,
+			focusDescendantAtIndex,
 			selectFirstDescendant,
 			selectLastDescendant,
 			selectNextDescendant,
 			selectPreviousDescendant,
+			selectDescendantAtIndex
 		]
 	);
 

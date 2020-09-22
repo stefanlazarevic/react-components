@@ -6,5 +6,5 @@ export interface IDescendant {
 	/**
 	 * 
 	 */
-	disabled?: boolean;
+	isDisabled?: boolean;
 }
