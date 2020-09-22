@@ -21,7 +21,7 @@ const CalendarWeek = forwardRef(function CalendarWeekComponent(props: CalendarWe
          style={props.style}
       >
          {days[props.index].map(record => (
-            <CalendarDay key={record.day} {...record} />
+            <CalendarDay key={`${record.day}-${record.month}-${record.year}`} {...record} />
          ))}
       </tr>
    )

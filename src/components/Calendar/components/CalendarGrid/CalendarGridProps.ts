@@ -8,19 +8,27 @@ export interface CalendarGridProps extends IComponentBase {
     */
    children?: ReactNodeLike;
    /**
-    * @default "grid"
+    * 
     */
-   role?: string;
+   weekdays: CalendarWeekday[]
    /**
     * 
     */
-   weekdays?: CalendarWeekday[]
+   multiselectable?: boolean;
    /**
-    * @todo move to context.
+    * 
     */
-   currentMonth?: number;
+   onSelectNextMonth: () => void;
    /**
-    * @todo move to context.
+    * 
     */
-   currentYear?: number;
+   onSelectPreviousMonth: () => void;
+   /**
+    * 
+    */
+   onSelectNextYear: () => void;
+   /**
+    * 
+    */
+   onSelectPreviousYear: () => void;
 }

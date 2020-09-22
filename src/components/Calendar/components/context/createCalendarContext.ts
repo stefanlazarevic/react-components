@@ -1,9 +1,11 @@
 import { createNamedContext } from "../../../../context/createNamedContext";
 import { CalendarProps } from "../../CalendarProps";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ICalendarContext } from "../interfaces/CalendarContext";
-import { getNumberOfDays, getWeekdayOffset, chunk, getNextMonth, getPreviousMonth, isString, isDate, isNumber } from "../../../../utils";
+import { getNumberOfDays, getWeekdayOffset, chunk, getNextMonth, getPreviousMonth, isDate, isNumber, focusElement, isArray } from "../../../../utils";
 import { CalendarDayRecord } from "../interfaces";
+import { useDescendants } from "../../../../hooks";
+import { CalendarDescendant } from "../interfaces/CalendarDescendant";
 
 const [CalendarContextProvider, useCalendarContext] = createNamedContext<ICalendarContext>('CalendarContext');
 
@@ -12,35 +14,53 @@ const [CalendarContextProvider, useCalendarContext] = createNamedContext<ICalend
  * @param props 
  */
 export function createCalendarContext(props: CalendarProps): ICalendarContext {
-   const today = new Date();
+   const today = useMemo(() => {
+      return new Date();
+   }, []);
+
+   const descendantContext = useDescendants();
+
+   const {getDescendantAtIndex, getNextDescendant, getPreviousDescendant} = descendantContext;
 
    const [currentMonth, setCurrentMonth] = useState(props.currentMonth || today.getMonth());
 
-   const [currentYear, setCurrentYear] = useState(props.currentMonth || today.getFullYear());
+   const [currentYear, setCurrentYear] = useState(props.currentYear || today.getFullYear());
 
    const [selectedDays, setSelectedDays] = useState<Date[]>([]);
 
-   useEffect(() => {
-      if (!props.multiselectable) {
-         setSelectedDays(props.selectedDays!.slice(0, 1));
+   const focusedDate = useRef<Date>(today);
+
+   const retainFocus = useRef<boolean>(false);
+
+   useEffect(function mapSelectedDaysPropsToState() {
+      if (isArray(props.selectedDays) && props.multiselectable) {
+         setSelectedDays(props.selectedDays);
       }
 
-      setSelectedDays(props.selectedDays!);
-   }, [props.selectedDays]);
-
-   useEffect(() => {
-      if (isNumber(props.currentYear) && props.currentYear !== currentYear) {
-         setCurrentYear(props.currentYear!);
+      if (isDate(props.selectedDay) && !props.multiselectable) {
+         setSelectedDays([props.selectedDay]);
       }
-   }, [props.currentYear]);
+   }, [props.selectedDays, props.multiselectable]);
 
-   useEffect(() => {
+   useEffect(function mapCurrentMonthPropToState() {
       if (isNumber(props.currentMonth) && props.currentMonth !== currentMonth) {
+         focusedDate.current.setMonth(props.currentMonth);
+         retainFocus.current = false;
+
          setCurrentMonth(props.currentMonth!);
       }
    }, [props.currentMonth]);
 
-   const weekdays = useMemo(() => {
+   useEffect(function mapCurrentYearPropToState() {
+      if (isNumber(props.currentYear) && props.currentYear !== currentYear) {
+         focusedDate.current.setFullYear(props.currentYear);
+         retainFocus.current = false;
+
+         setCurrentYear(props.currentYear);
+      }
+   }, [props.currentYear]);
+
+   const weekdays = useMemo(function weekdays() {
       const defaultweekDays = [
          { shortName: 'Su', name: "Sunday" },
          { shortName: 'Mo', name: 'Monday' },
@@ -51,8 +71,8 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
          { shortName: 'Sa', name: 'Saturday' }
       ];
 
-      return props.weekdays || defaultweekDays;
-   }, [props.weekdays]);
+      return defaultweekDays;
+   }, []);
 
    const minimumDate = useMemo(function extractMinimumDate(): Date | undefined {
       if (props.startDate && isDate(props.startDate)) {
@@ -81,43 +101,46 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
       const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
       const numberOfDaysInPreviousMonth = getNumberOfDays(previousMonth, previousYear);
 
+      const SelectedDaysWeakSet = new WeakSet(selectedDays);
+
       for (let day = numberOfDaysInPreviousMonth - weekdayOffset; day <= numberOfDaysInPreviousMonth; day++) {
          const date = new Date(previousYear, previousMonth, day);
-         const isSelected = selectedDays.findIndex((selectedDay: string | Date) => {
-            const selectedDate = isString(selectedDay) ? new Date(selectedDay) : selectedDay;
 
-            return selectedDate.toDateString() === date.toDateString();
-         }) !== -1
+         const isSelected = SelectedDaysWeakSet.has(date);
 
+         const isDisabled = (minimumDate && minimumDate > date) || (maximumDate && maximumDate < date); 
+         
          output.push({
             day,
             month: previousMonth,
             year: previousYear,
             weekday: (weekdayOffset + day) % 7,
             date,
-            tabIndex: undefined,
-            isSelected
+            tabIndex: -1,
+            isSelected,
+            isDisabled
          })
       }
 
       /** Build current month */
       for (let day = 1; day <= numberOfDays; day++) {
          const date = new Date(currentYear, currentMonth, day);
-         const isSelected = selectedDays.findIndex((selectedDay: string | Date) => {
-            const selectedDate = isString(selectedDay) ? new Date(selectedDay) : selectedDay;
 
-            return selectedDate.toDateString() === date.toDateString();
-         }) !== -1
-         const isToday = date.toDateString() === today.toDateString();
+         const isSelected = SelectedDaysWeakSet.has(date);
+
+         const isDisabled = (minimumDate && minimumDate > date) || (maximumDate && maximumDate < date); 
+
+         const isFocused = focusedDate.current.toDateString() === date.toDateString();
 
          output.push({
             day,
             month: currentMonth,
             year: currentYear,
             weekday: (weekdayOffset + day) % 7,
-            date,
-            tabIndex: isSelected || isToday ? 0 : -1,
-            isSelected
+            tabIndex: isSelected || isFocused ? 0 : -1,
+            isSelected,
+            isDisabled,
+            autoFocus: isFocused && retainFocus.current
          });
       }
 
@@ -128,27 +151,29 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
 
       for (let day = 1; day <= remainingDays; day++) {
          const date = new Date(nextYear, nextMonth, day);
-         const isSelected = selectedDays.findIndex((selectedDay: string | Date) => {
-            const selectedDate = isString(selectedDay) ? new Date(selectedDay) : selectedDay;
 
-            return selectedDate.toDateString() === date.toDateString();
-         }) !== -1
+         const isSelected = SelectedDaysWeakSet.has(date);
+
+         const isDisabled = (minimumDate && minimumDate > date) || (maximumDate && maximumDate < date); 
+
+         const isFocused = focusedDate.current.toDateString() === date.toDateString();
 
          output.push({
             day,
             month: nextMonth,
             year: nextYear,
             weekday: day % 7,
-            date,
-            tabIndex: undefined,
-            isSelected
+            tabIndex: isFocused ? 0 : -1,
+            isSelected,
+            isDisabled,
+            autoFocus: isFocused && retainFocus.current
          })
       }
 
       return chunk(7, output);
    }, [today, selectedDays, currentMonth, currentYear, minimumDate, maximumDate]);
 
-   const selectNextMonth = useCallback(() => {
+   const selectNextMonth = useCallback(function selectNextMonth() {
       const nextMonth = getNextMonth(currentMonth);
       const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
 
@@ -156,15 +181,21 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
          const maxMonth = maximumDate.getMonth();
          const maxYear = maximumDate.getFullYear();
 
-         if (nextYear > maxYear || (nextYear <= maxYear && nextMonth > maxMonth)) {
+         if (nextYear > maxYear || (nextYear === maxYear && nextMonth > maxMonth)) {
             return;
          }
       }
+
+      retainFocus.current = true;
+
+      focusedDate.current.setMonth(nextMonth);
+      focusedDate.current.setFullYear(nextYear);
+
       setCurrentMonth(nextMonth);
       setCurrentYear(nextYear);
    }, [currentMonth, currentYear, maximumDate]);
 
-   const selectNextYear = useCallback(() => {
+   const selectNextYear = useCallback(function selectNextYear() {
       const nextYear = currentYear + 1
       if (isDate(maximumDate)) {
          const maxYear = maximumDate.getFullYear();
@@ -172,10 +203,15 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
             return;
          }
       }
+
+      retainFocus.current = true;
+
+      focusedDate.current.setFullYear(nextYear);
+
       setCurrentYear(nextYear);
    }, [currentYear, maximumDate]); 
 
-   const selectPreviousMonth = useCallback(() => {
+   const selectPreviousMonth = useCallback(function selectPreviousMonth() {
       const previousMonth = getPreviousMonth(currentMonth);
       const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
 
@@ -183,15 +219,22 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
          const minMonth = minimumDate.getMonth();
          const minYear = minimumDate.getFullYear();
 
-         if (previousYear < minYear || (previousYear >= minYear && previousMonth < minMonth)) {
+         if (previousYear < minYear || (previousYear === minYear && previousMonth < minMonth)) {
+            console.log('Cant go back', previousYear, minYear, previousMonth, minMonth);
             return;
          }
       }
+
+      retainFocus.current = true;
+
+      focusedDate.current.setMonth(previousMonth);
+      focusedDate.current.setFullYear(previousYear);
+
       setCurrentMonth(previousMonth);
       setCurrentYear(previousYear);
    }, [currentMonth, currentYear, minimumDate]);
 
-   const selectPreviousYear = useCallback(() => {
+   const selectPreviousYear = useCallback(function selectPreviousYear() {
       const previousYear = currentYear - 1;
 
       if (isDate(minimumDate)) {
@@ -200,10 +243,69 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
             return;
          }
       }
+
+      retainFocus.current = true;
+
+      focusedDate.current.setFullYear(previousYear);
+
       setCurrentYear(previousYear);
    }, [currentYear, minimumDate]); 
 
+   const focusPreviousDay = useCallback(function focusPreviousDay(currentIndex: number, dayRecord: CalendarDayRecord) {
+      const previousDay = getPreviousDescendant(currentIndex) as CalendarDescendant;
+
+      focusedDate.current.setDate(dayRecord.day - 1);
+      
+      if (previousDay && previousDay.month === currentMonth) {
+         focusElement(previousDay.element);
+      } else {
+         selectPreviousMonth();
+      }
+
+   }, [descendantContext, currentMonth, selectPreviousMonth]);
+
+   const focusNextDay = useCallback(function focusNextDay(currentIndex: number, dayRecord: CalendarDayRecord) {
+      const nextDay = getNextDescendant(currentIndex) as CalendarDescendant;
+
+      focusedDate.current.setDate(dayRecord.day + 1);
+      
+      if (nextDay && nextDay.month === currentMonth) {
+         focusElement(nextDay.element);
+      } else {
+         selectNextMonth();
+      }
+   }, [descendantContext, currentMonth, selectNextMonth]);
+
+   const focusPreviousWeek = useCallback(function focusPreviousWeek(currentIndex: number, dayRecord: CalendarDayRecord) {
+      const previousWeekDay = getDescendantAtIndex(currentIndex - 7) as CalendarDescendant;
+
+      focusedDate.current.setDate(dayRecord.day - 7);
+      
+      if (previousWeekDay && previousWeekDay.month === currentMonth) {
+         focusElement(previousWeekDay.element);
+      } else {
+         selectPreviousMonth();
+      }
+   }, [descendantContext, currentMonth]);
+
+   const focusNextWeek = useCallback(function focusNextWeek(currentIndex: number, dayRecord: CalendarDayRecord) {
+      const previousWeekDay = getDescendantAtIndex(currentIndex + 7) as CalendarDescendant;
+
+      focusedDate.current.setDate(dayRecord.day + 7);
+      
+      if (previousWeekDay && previousWeekDay.month === currentMonth) {
+         descendantContext.focusDescendantAtIndex(currentIndex + 7, {skipDisabled: true});
+      } else {
+         selectNextMonth();
+      }
+   }, [descendantContext, currentMonth]);
+
+   useEffect(function componentDidMount() {
+      return function componentWillUnmount() {}
+   }, []);
+
    return {
+      ...descendantContext,
       today,
       weekdays,
       currentMonth,
@@ -216,7 +318,11 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
       selectNextYear,
       selectPreviousYear,
       renderDay: props.renderDay,
-      onSelect: props.onSelect
+      onSelect: props.onSelect,
+      focusPreviousDay,
+      focusNextDay,
+      focusPreviousWeek,
+      focusNextWeek
    };
 }
 

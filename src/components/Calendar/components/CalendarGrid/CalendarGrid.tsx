@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { forwardRef, memo, MutableRefObject, useMemo } from 'react';
 
 import './CalendarGrid.scss';
 
@@ -6,86 +6,67 @@ import { CalendarGridProps } from './CalendarGridProps';
 
 import { concatenate } from '../../../../utils';
 import { CalendarWeek } from '../CalendarWeek';
-import { useCalendarContext } from '../context/createCalendarContext';
 import { keyboard } from '../../../../helpers';
-import { useCombinedRefs } from '../../../../hooks';
 
 const CalendarGrid = forwardRef(function CalendarComponent(props: CalendarGridProps, ref: MutableRefObject<HTMLTableElement>) {
    const className = concatenate("CalendarGrid", props.className);
 
-   const { weekdays, multiselectable, selectNextMonth, selectPreviousMonth, selectNextYear, selectPreviousYear} = useCalendarContext();
-
-   const cells = useRef<HTMLTableCellElement[]>([]);
-
-   const grid = useCombinedRefs(ref);
-
-   useLayoutEffect(() => {
-      cells.current = Array.from(grid.current.querySelectorAll<HTMLTableCellElement>('.CalendarDay'));
-
-      console.log(cells.current);
-
-      return () => {
-         cells.current = [];
-      };
+   const Weeks = useMemo(() => {
+      return Array.from({ length: 6 }, (_, index: number) => <CalendarWeek key={index} index={index} />);
    }, []);
 
-   const weeks = useMemo(() => Array.from({ length: 6 }, (_, index: number) => index), []);
-
    function onKeyDown(event: React.KeyboardEvent) {
-      const {keyCode, altKey} = event;
+      const { keyCode, altKey, repeat } = event;
 
-      if (keyCode === keyboard.KeyCode.PAGE_UP) {
+      if (keyCode === keyboard.KeyCode.PAGE_UP && !repeat) {
          event.preventDefault();
+
          if (altKey) {
-            selectNextYear();
-         } else {
-            selectNextMonth();
+            props.onSelectNextYear();
+            return;
          }
+
+         props.onSelectNextMonth();
       }
 
-      if (keyCode === keyboard.KeyCode.PAGE_DOWN) {
+      if (keyCode === keyboard.KeyCode.PAGE_DOWN && !repeat) {
          event.preventDefault();
+         
          if (altKey) {
-            selectPreviousYear();
-         } else {
-            selectPreviousMonth();
+            props.onSelectNextYear();
          }
+         
+         props.onSelectPreviousMonth();
       }
    }
 
    return (
       <table 
-         ref={grid}
+         ref={ref}
          id={props.id}
          data-testid={props.testid}
          className={className}
          style={props.style}
          role="grid"
-         aria-multiseltable={multiselectable}
+         aria-multiseltable={props.multiselectable}
          onKeyDown={onKeyDown}
       >
          <thead className="CalendarGridHead">
             <tr>
-               {weekdays.map(weekday => (
+               {props.weekdays.map(weekday => (
                   <th key={weekday.name}>
                      <abbr title={weekday.name}>{weekday.shortName || weekday.name}</abbr>
                   </th>
                ))}
             </tr>
          </thead>
-         <tbody>
-            {weeks.map(week => (
-               <CalendarWeek key={week} index={week} />
-            ))}
-         </tbody>
+         <tbody>{Weeks}</tbody>
       </table>
    )
 });
 
-CalendarGrid.defaultProps = {
-   role: "grid"
-};
+CalendarGrid.defaultProps = {};
 
 CalendarGrid.displayName = "CalendarGrid";
 
-export default CalendarGrid;
+export default memo(CalendarGrid);

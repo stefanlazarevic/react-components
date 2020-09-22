@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, MutableRefObject, useCallback, useMemo } from 'react';
+import React, { forwardRef, MutableRefObject, useCallback, useLayoutEffect, useMemo } from 'react';
 
 import './CalendarDay.scss';
 
@@ -6,23 +6,35 @@ import { CalendarDayProps } from './CalendarDayProps';
 
 import { concatenate, isFunction } from '../../../../utils';
 import { useCalendarContext } from '../context/createCalendarContext';
-import { useCombinedRefs } from '../../../../hooks';
+import { useCombinedRefs, useDescendant } from '../../../../hooks';
+import { IDescendantContext } from '../../../../interfaces';
 import { keyboard } from '../../../../helpers';
+import { CalendarDescendant } from '../interfaces/CalendarDescendant';
 
 const CalendarDay = forwardRef(function CalendarDayComponent(props: CalendarDayProps, ref: MutableRefObject<HTMLTableCellElement>) {
    const className = concatenate("CalendarDay", props.className);
 
    const day = useCombinedRefs<HTMLTableCellElement>(ref);
 
-   const { minimumDate, maximumDate, renderDay, onSelect } = useCalendarContext();
+   const context = useCalendarContext();
 
-   const isDisabled = useMemo(() => {
-      return (maximumDate && props.date > maximumDate) || (minimumDate && props.date < minimumDate);
-   }, [minimumDate, maximumDate, props.date]);
+   const { weekdays, renderDay, onSelect, focusPreviousDay, focusNextDay, focusPreviousWeek, focusNextWeek } = context;
+
+   const descendant = useMemo(function createCalendarDescendant(): CalendarDescendant { 
+      return {
+         element: day.current,
+         isDisabled: props.isDisabled,
+         day: props.day,
+         month: props.month,
+         year: props.year
+      }
+   }, [day.current, props.isDisabled]);
+
+   const index = useDescendant(descendant, context as unknown as IDescendantContext);
 
    function onClick() {
       if (isFunction(onSelect)) {
-         onSelect(props.date);
+         onSelect(`${props.year}-${props.month}-${props.day}`);
       }
    }
 
@@ -30,11 +42,19 @@ const CalendarDay = forwardRef(function CalendarDayComponent(props: CalendarDayP
       const {keyCode} = event;
 
       if (keyCode === keyboard.KeyCode.ARROW_LEFT) {
-         // focusPreviousDescendant(index);
+         focusPreviousDay(index, props);
       }
 
       if (keyCode === keyboard.KeyCode.ARROW_RIGHT) {
-         // focusNextDescendant(index);
+         focusNextDay(index, props);
+      }
+
+      if (keyCode === keyboard.KeyCode.ARROW_UP) {
+         focusPreviousWeek(index, props);
+      }
+
+      if (keyCode === keyboard.KeyCode.ARROW_DOWN) {
+         focusNextWeek(index, props);
       }
    }
 
@@ -48,6 +68,13 @@ const CalendarDay = forwardRef(function CalendarDayComponent(props: CalendarDayP
       );
    }, []);
 
+   useLayoutEffect(() => {
+      if (props.autoFocus) {
+         console.log(day.current);
+         day.current.focus();
+      }
+   }, [props.autoFocus]);
+
    return (
       <td 
          ref={day}
@@ -57,9 +84,12 @@ const CalendarDay = forwardRef(function CalendarDayComponent(props: CalendarDayP
          style={props.style}
          tabIndex={props.tabIndex}
          aria-selected={props.isSelected}
-         aria-disabled={isDisabled}
-         onKeyDown={onKeyDown}
+         aria-disabled={props.isDisabled}
          onClick={onClick}
+         onKeyDown={onKeyDown}
+         data-index={index}
+         aria-label={`${weekdays[props.weekday].name}, ${props.day} ${props.year}`}
+         role="button"
       >
          {renderChildren()}
       </td>
@@ -70,4 +100,4 @@ CalendarDay.defaultProps = {};
 
 CalendarDay.displayName = "CalendarDay";
 
-export default memo(CalendarDay);
+export default CalendarDay;

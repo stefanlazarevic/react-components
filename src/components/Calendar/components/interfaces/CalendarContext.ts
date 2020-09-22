@@ -1,8 +1,9 @@
 import { CalendarWeekday } from "./CalendarWeekday";
 import { CalendarDayRecord } from "./CalendarDayRecord";
 import { ReactNodeLike } from "prop-types";
+import { IDescendantContext } from "../../../../interfaces";
 
-export interface ICalendarContext {
+export interface ICalendarContext extends IDescendantContext {
    /**
     * 
     */
@@ -58,5 +59,21 @@ export interface ICalendarContext {
    /**
     * 
     */
-   onSelect?: (selectedDate: Date) => void;
+   onSelect?: (selectedDate: string) => void;
+   /**
+    * 
+    */
+   focusPreviousDay: (currentIndex: number, dayRecord: CalendarDayRecord) => void;
+   /**
+    * 
+    */
+   focusNextDay: (currentIndex: number, dayRecord: CalendarDayRecord) => void;
+   /**
+    * 
+    */
+   focusPreviousWeek: (currentIndex: number, dayRecord: CalendarDayRecord) => void;
+   /**
+    * 
+    */
+   focusNextWeek: (currentIndex: number, dayRecord: CalendarDayRecord) => void;
 }

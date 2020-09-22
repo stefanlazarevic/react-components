@@ -18,7 +18,7 @@ export interface CalendarDayRecord {
    /**
     * 
     */
-   date: Date,
+   date?: Date,
    /**
     * 
     */
@@ -31,4 +31,12 @@ export interface CalendarDayRecord {
     * 
     */
    tabIndex?: number;
+   /**
+    * 
+    */
+   iso?: string;
+   /**
+    * 
+    */
+   autoFocus?: boolean;
 }

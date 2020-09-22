@@ -1,4 +1,3 @@
-import { ReactNodeLike } from "prop-types";
 import { IComponentBase } from "../../../../interfaces";
 import { CalendarDayRecord } from "../interfaces";
 

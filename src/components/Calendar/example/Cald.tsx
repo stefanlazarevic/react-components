@@ -10,7 +10,7 @@ export default function Cald() {
 
    return (
       <div>
-         <Calendar currentYear={currentYear} />
+         <Calendar currentYear={currentYear} selectedDay={new Date('2020-09-20')} startDate={new Date('2020-09-12')} />
          <button onClick={onClick}>Next year</button>
       </div>
    )

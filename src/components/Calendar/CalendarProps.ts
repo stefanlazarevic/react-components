@@ -5,31 +5,39 @@ export interface CalendarProps {
    /**
     * 
     */
-   weekdays?: CalendarWeekday[];
+   selectedDay?: Date;
    /**
-    * 
-    */
-   currentMonth?: number;
-   /**
-    * 
-    */
-   currentYear?: number;
-   /**
-    * Minimum date allowed to be picked. Must be in ISO-8601 format: YYYY-MM-DD.
-    */
-   startDate?: Date;
-   /**
-    * Maximum date allowed to be picked. Must be in ISO-8601 format: YYYY-MM-DD.
-    */
-   endDate?: Date;
-   /**
-    * 
+    * List of selected days when `multiselectable` is `true`.
     */
    selectedDays?: Date[];
    /**
     * 
     */
+   disabledDays?: Date[];
+   /**
+    * Minimum date allowed to be picked.
+    */
+   startDate?: Date;
+   /**
+    * Maximum date allowed to be picked.
+    */
+   endDate?: Date;
+   /**
+    * Visible calendar month. 0 - 11
+    */
+   currentMonth?: number;
+   /**
+    * Visible calendar year.
+    */
+   currentYear?: number;
+   /**
+    * 
+    */
    multiselectable?: boolean;
+   /**
+    * @default "en-US"
+    */
+   lang?: string;
    /**
     * 
     */
@@ -37,5 +45,5 @@ export interface CalendarProps {
    /**
     * 
     */
-   onSelect?: (selectedDate: Date) => void;
+   onSelect?: (selectedDate: string) => void;
 }
