@@ -1,74 +1,76 @@
+import { IFunction } from "../types";
+
 /**
- * Checks whether or not a value is a number.
+ * Checks whether or not a input is a number.
  * 
- * @param value
+ * @param input
  */
-export function isNumber(value: any): value is number {
-  return typeof value === "number" && !Number.isNaN(value);
+export function isNumber(input: any): input is number {
+  return typeof input === "number" && !Number.isNaN(input);
 }
 
 /**
  * 
- * @param value 
+ * @param input 
  */
-export function isPositiveNumber(value: number): boolean {
-  return value > -1;
+export function isPositiveNumber(input: number): boolean {
+  return input > -1;
 }
 
 /**
- * Checks whether or not a value is a function.
+ * Checks whether or not a input is a function.
  *
- * @param value
+ * @param input
  */
-export function isFunction(value: any): value is Function {
-  return !!(value && {}.toString.call(value) == "[object Function]");
+export function isFunction(input: any): input is IFunction {
+  return typeof input === 'function';
 }
 
 /**
- * Checks whether or not a value is a boolean.
+ * Checks whether or not a input is a boolean.
  *
- * @param value
+ * @param input
  */
-export function isBoolean(value: any): value is boolean {
-  return typeof value === "boolean";
+export function isBoolean(input: any): input is boolean {
+  return typeof input === "boolean";
 }
 
 /**
- * Checks whether or not a value is a string.
+ * Checks whether or not a input is a string.
  *
- * @param value
+ * @param input
  */
-export function isString(value: any): value is string {
-  return typeof value === "string";
+export function isString(input: any): input is string {
+  return typeof input === "string";
 }
 
 /**
- * Checks whether or not a value is an array.
+ * Checks whether or not a input is an array.
  *
- * @param value
+ * @param input
  */
-export function isArray<T>(value: any): value is T[] {
-  return Array.isArray(value);
+export function isArray<T>(input: any): input is T[] {
+  return Array.isArray(input);
 }
 
 /**
- * Checks whether or not a value is an object.
+ * Checks whether or not a input is an object.
  *
- * @param value
+ * @param input
  */
-export function isObject(value: any): value is object {
-  return value === Object(value) && !isArray(value);
+export function isObject(input: any): input is object {
+  return input === Object(input) && !isArray(input);
 }
 
 /**
  * Checks whether or not a value is a valid JSON string.
  *
- * @param value
+ * @param input
  */
-export function isJson(value: any): value is string {
-  if (isString(value)) {
+export function isJson(input: any): input is string {
+  if (isString(input)) {
     try {
-      JSON.parse(value);
+      JSON.parse(input);
       return true;
     } catch (err) {
       return false;
@@ -79,50 +81,50 @@ export function isJson(value: any): value is string {
 }
 
 /**
- * Checks whether or not a value is a tupple.
+ * Checks whether or not a input is a tupple.
  *
- * @param value
+ * @param input
  */
-export function isTupple<T>(value: any): value is T {
-  return isArray(value) && value.length === 2;
+export function isTupple<T>(input: any): input is T {
+  return isArray(input) && input.length === 2;
 }
 
 /**
- * Checks whether or not a value is undefined or null.
+ * Checks whether or not a input is undefined or null.
  * 
- * @param value 
+ * @param input 
  */
-export function isAbsent(value: any): value is undefined | null {
-  return value === undefined || value === null;
+export function isAbsent(input: any): input is undefined | null {
+  return input === undefined || input === null;
 }
 
 /**
- * Return whether value is truthy or not.
+ * Return whether input is truthy or not.
  * 
- * @param value 
+ * @param input 
  */
-export function isTruthy(value: any): boolean {
-  return !!value;
+export function isTruthy(input: any): boolean {
+  return Boolean(input);
 }
 
 /**
- * Return whether value is falsy or not.
+ * Return whether input is falsy or not.
  * 
- * Values such as `false`, `null`, `0`, `""`, `undefined` and `NaN` are considered "falsy".
+ * inputs such as `false`, `null`, `0`, `""`, `undefined` and `NaN` are considered "falsy".
  * 
- * @param value 
+ * @param input 
  */
-export function isFalsy(value: any): boolean {
-  return !isTruthy(value);
+export function isFalsy(input: any): boolean {
+  return !isTruthy(input);
 }
 
 /**
- * Returns whether value is instance of HTMLElement or not.
+ * Returns whether input is instance of HTMLElement or not.
  * 
- * @param value 
+ * @param input 
  */
-export function isHTMLElement(value: any): value is HTMLElement {
-  return value instanceof HTMLElement;
+export function isHTMLElement(input: any): input is HTMLElement {
+  return input instanceof HTMLElement;
 }
 
 /**
@@ -134,24 +136,64 @@ export function isBrowser() {
 
 /**
  * 
- * @param element 
+ * @param input
  */
-export function isActiveElement(element: Element) {
-  return document.activeElement === element;
+export function isActiveElement(input: Element): boolean {
+  return document.activeElement === input;
 } 
 
 /**
  * 
- * @param value 
+ * @param input
  */
-export function isElement(value: any): value is Element {
-  return value instanceof Element;
+export function isElement(input: any): input is Element {
+  return input instanceof Element;
 }
 
 /**
  * 
- * @param value 
+ * @param input
  */
-export function isDate(value: any): value is Date {
-  return value instanceof Date;
+export function isDate(input: any): input is Date {
+  return input instanceof Date;
+}
+
+/**
+ * 
+ * @param input 
+ */
+export function isIterable<T>(input: any): input is Iterable<T> {
+  if (typeof input !== 'object' || input === null) {
+    return false
+  }
+
+  return input[Symbol.iterator] !== undefined
+}
+
+/**
+ * 
+ * @param input 
+ */
+export function isAsyncIterable<T>(input: any): input is AsyncIterable<T> {
+  if (typeof input !== 'object' || input === null) {
+    return false;
+  }
+
+  return input[Symbol.asyncIterator] !== undefined
+}
+
+/**
+ * 
+ * @param input 
+ */
+export function isPromise<T>(input: any): input is Promise<T> {
+  return input instanceof Promise;
+}
+
+/**
+ * 
+ * @param input 
+ */
+export function isSymbol(input: any): input is Symbol {
+  return typeof input === 'symbol';
 }

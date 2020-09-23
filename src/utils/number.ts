@@ -22,18 +22,6 @@ export function decrement(value: number, steps: number = 1) {
  * @param min 
  * @param max 
  */
-export function clump(value: number, min: number, max: number) {
-   if (min > max) {
-      return value;
-   }
-
-   if (value < min) {
-      return min;
-   }
-
-   if (value > max) {
-      return max;
-   }
-
-   return value;
+export function clamp(input: number, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER) {
+   return Math.min(max, Math.max(min, input))
 }

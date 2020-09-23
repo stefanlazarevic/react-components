@@ -1,5 +1,7 @@
-import { CancelableFunction } from "../types";
+import { CancelableFunction, IFunction, LazyIterable } from "../types";
 import { TimeoutController } from "../types";
+import { isAbsent, isAsyncIterable, isPromise } from "./assertions";
+import { ensureFunction } from "./functions/ensureFunction";
 
 /**
  * Returns a function, that, as long as it continues to be invoked, will not
@@ -91,5 +93,69 @@ export function executeAfter(wait: number, callbackfn: () => void): TimeoutContr
       resume,
       pause,
       cancel
+   }
+}
+
+
+
+/**
+ * @param functions
+ */
+export function pipe<T>(...functions: (IFunction | LazyIterable<T>)[]): IFunction {
+   return functions.reduceRight<IFunction>((func: IFunction, g: any) => {
+      const g_ = ensureFunction(g);
+
+      return function processNext(...args: any) {
+         return func(g_(...args));
+      }
+   }, ensureFunction(functions.pop()));
+}
+
+/**
+ * 
+ * @param fn 
+ * @param functions 
+ */
+export function compose<T>(fn: IFunction | LazyIterable<T>, ...functions: (IFunction | LazyIterable<T>)[]): IFunction {
+   return functions.reduce<IFunction>((f: IFunction, g) => {
+      const g_ = ensureFunction(g);
+
+      return function processPrevious(...args: any) {
+         f(g_(...args));
+      }
+   }, ensureFunction(fn))
+}
+
+export function find<T>(predicate: (input: T, index: number) => boolean) {
+   return function findFn(data: LazyIterable<T>): any {
+      if (isAbsent(data)) {
+         return undefined;
+      }
+      
+      if (isAsyncIterable(data) || isPromise(data)) {
+         return (async () => {
+            const stream = isPromise(data) ? await data : data;
+
+            let index = 0;
+
+            for await (let value of stream) {
+               if (predicate(value, index++)) {
+                  return value;
+               }
+            }
+
+            return undefined
+         })();
+      }
+
+      let index = 0;
+
+      for (let value of data) {
+         if (predicate(value, index++)) {
+            return value;
+         }
+      }
+
+      return undefined
    }
 }

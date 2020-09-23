@@ -1,3 +1,4 @@
 import { ICancelable } from "../interfaces/Cancelable";
+import { IFunction } from "./Function";
 
-export type CancelableFunction = Function & ICancelable;
+export type CancelableFunction = IFunction & ICancelable;
