@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject } from 'react';
+import React from 'react';
 
 import './CalendarWeek.scss';
 
@@ -7,14 +7,13 @@ import { concatenate } from '../../../../utils';
 import { CalendarDay } from '../CalendarDay';
 import { useCalendarContext } from '../context/createCalendarContext';
 
-const CalendarWeek = forwardRef(function CalendarWeekComponent(props: CalendarWeekProps, ref: MutableRefObject<HTMLTableRowElement>) {
+function CalendarWeek(props: CalendarWeekProps) {
    const className = concatenate("CalendarWeek", props.className);
 
    const {days} = useCalendarContext();
 
    return (
-      <tr 
-         ref={ref}
+      <tr
          id={props.id}
          data-testid={props.testid}
          className={className}
@@ -25,7 +24,7 @@ const CalendarWeek = forwardRef(function CalendarWeekComponent(props: CalendarWe
          ))}
       </tr>
    )
-});
+};
 
 CalendarWeek.defaultProps = {};
 

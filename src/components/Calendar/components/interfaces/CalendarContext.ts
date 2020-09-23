@@ -76,4 +76,20 @@ export interface ICalendarContext extends IDescendantContext {
     * 
     */
    focusNextWeek: (currentIndex: number, dayRecord: CalendarDayRecord) => void;
+   /**
+    * 
+    */
+   focusFirstDay: () => void;
+   /**
+    * 
+    */
+   focusLastDay: () => void;
+   /**
+    * 
+    */
+   focusFirstWeekday: (currentIndex: number, dayRecord: CalendarDayRecord) => void;
+   /**
+    * 
+    */
+   focusLastWeekday: (currentIndex: number, dayRecord: CalendarDayRecord) => void;
 }

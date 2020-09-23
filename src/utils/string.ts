@@ -31,7 +31,15 @@ export function trimRight(value: string): string {
  * @param args
  */
 export function concatenate(...args: (string | undefined | null)[]): string {
-    return trim(compact(args).join(" "));
+    let output = '';
+
+    for (let i = 0; i < args.length; i++) {
+        if (typeof args[i] === 'string') {
+            output += args[i];
+        }
+    }
+
+    return output;
 }
 
 /**

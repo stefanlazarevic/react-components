@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject, useCallback, useLayoutEffect, useMemo } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 
 import './CalendarDay.scss';
 
@@ -6,23 +6,36 @@ import { CalendarDayProps } from './CalendarDayProps';
 
 import { concatenate, isFunction } from '../../../../utils';
 import { useCalendarContext } from '../context/createCalendarContext';
-import { useCombinedRefs, useDescendant } from '../../../../hooks';
+import { useDescendant } from '../../../../hooks';
 import { IDescendantContext } from '../../../../interfaces';
 import { keyboard } from '../../../../helpers';
 import { CalendarDescendant } from '../interfaces/CalendarDescendant';
+import { ICalendarContext } from '../interfaces/CalendarContext';
 
-const CalendarDay = forwardRef(function CalendarDayComponent(props: CalendarDayProps, ref: MutableRefObject<HTMLTableCellElement>) {
+function CalendarDay(props: CalendarDayProps) {
    const className = concatenate("CalendarDay", props.className);
 
-   const day = useCombinedRefs<HTMLTableCellElement>(ref);
+   const day = useRef<HTMLTableCellElement>(null);
 
    const context = useCalendarContext();
 
-   const { weekdays, renderDay, onSelect, focusPreviousDay, focusNextDay, focusPreviousWeek, focusNextWeek } = context;
+   const { 
+      weekdays, 
+      renderDay, 
+      onSelect, 
+      focusPreviousDay, 
+      focusNextDay, 
+      focusPreviousWeek, 
+      focusNextWeek, 
+      focusFirstDay, 
+      focusLastDay, 
+      focusFirstWeekday,
+      focusLastWeekday
+   } = context as ICalendarContext;
 
    const descendant = useMemo(function createCalendarDescendant(): CalendarDescendant { 
       return {
-         element: day.current,
+         element: day.current!,
          isDisabled: props.isDisabled,
          day: props.day,
          month: props.month,
@@ -39,7 +52,11 @@ const CalendarDay = forwardRef(function CalendarDayComponent(props: CalendarDayP
    }
 
    function onKeyDown(event: React.KeyboardEvent) {
-      const {keyCode} = event;
+      const {keyCode, altKey, repeat} = event;
+
+      if (repeat) {
+         return;
+      }
 
       if (keyCode === keyboard.KeyCode.ARROW_LEFT) {
          focusPreviousDay(index, props);
@@ -56,6 +73,26 @@ const CalendarDay = forwardRef(function CalendarDayComponent(props: CalendarDayP
       if (keyCode === keyboard.KeyCode.ARROW_DOWN) {
          focusNextWeek(index, props);
       }
+
+      if (keyCode === keyboard.KeyCode.HOME) {
+         event.preventDefault();
+
+         if (altKey) {
+            focusFirstDay();
+         } else {
+            focusFirstWeekday(index, props);
+         }
+      }
+
+      if (keyCode === keyboard.KeyCode.END) {
+         event.preventDefault();
+
+         if (altKey) {
+            focusLastDay();
+         } else {
+            focusLastWeekday(index, props);
+         }
+      }
    }
 
    const renderChildren = useCallback(() => {
@@ -70,10 +107,9 @@ const CalendarDay = forwardRef(function CalendarDayComponent(props: CalendarDayP
 
    useLayoutEffect(() => {
       if (props.autoFocus) {
-         console.log(day.current);
-         day.current.focus();
+         day.current!.focus();
       }
-   }, [props.autoFocus]);
+   }, []);
 
    return (
       <td 
@@ -94,7 +130,7 @@ const CalendarDay = forwardRef(function CalendarDayComponent(props: CalendarDayP
          {renderChildren()}
       </td>
    )
-});
+};
 
 CalendarDay.defaultProps = {};
 

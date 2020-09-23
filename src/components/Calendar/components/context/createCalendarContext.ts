@@ -294,15 +294,70 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
       focusedDate.current.setDate(dayRecord.day + 7);
       
       if (previousWeekDay && previousWeekDay.month === currentMonth) {
-         descendantContext.focusDescendantAtIndex(currentIndex + 7, {skipDisabled: true});
+         descendantContext.focusDescendantAtIndex(currentIndex + 7);
       } else {
          selectNextMonth();
       }
    }, [descendantContext, currentMonth]);
 
-   useEffect(function componentDidMount() {
-      return function componentWillUnmount() {}
-   }, []);
+   const focusFirstDay = useCallback(function focusFirstDay() {
+      const weekdayOffset = getWeekdayOffset(currentMonth, currentYear);
+
+      const descendant = getDescendantAtIndex(weekdayOffset + 1);
+
+      focusedDate.current.setDate(1);
+
+      if (descendant) {
+         descendantContext.focusDescendantAtIndex(weekdayOffset + 1);
+      }
+   }, [descendantContext, currentMonth, currentYear]);
+
+   const focusLastDay = useCallback(function focusLastDay() {
+      const weekdayOffset = getWeekdayOffset(currentMonth, currentYear);
+      const numberOfDays = getNumberOfDays(currentMonth, currentYear);
+
+      const descendant = getDescendantAtIndex(weekdayOffset + numberOfDays);
+
+      focusedDate.current.setDate(numberOfDays);
+
+      if (descendant) {
+         descendantContext.focusDescendantAtIndex(weekdayOffset + numberOfDays);
+      }
+   }, [descendantContext, currentMonth, currentYear]);
+
+   const focusFirstWeekday = useCallback(function focusFirstWeekday(currentIndex: number, dayRecord: CalendarDayRecord) {
+      const index = currentIndex -dayRecord.weekday;
+
+      const descendant = getDescendantAtIndex(index) as CalendarDescendant;
+
+      if (descendant) {
+         if (descendant.month !== currentMonth) {
+            focusFirstDay();
+            return;
+         }
+         
+         focusedDate.current.setDate(descendant.day);
+
+         descendantContext.focusDescendantAtIndex(index);
+      }
+   }, [descendantContext, currentMonth]);
+
+   const focusLastWeekday = useCallback(function focusLastWeekday(currentIndex: number, dayRecord: CalendarDayRecord) {
+      const index = currentIndex + (6 - dayRecord.weekday);
+
+      const descendant = getDescendantAtIndex(index) as CalendarDescendant;
+
+      if (descendant) {
+         if (descendant.month !== currentMonth) {
+            focusLastDay();
+            return;
+         }
+
+         focusedDate.current.setDate(descendant.day);
+
+         descendantContext.focusDescendantAtIndex(index);
+      }
+   }, [descendantContext, currentMonth]);
 
    return {
       ...descendantContext,
@@ -322,7 +377,11 @@ export function createCalendarContext(props: CalendarProps): ICalendarContext {
       focusPreviousDay,
       focusNextDay,
       focusPreviousWeek,
-      focusNextWeek
+      focusNextWeek,
+      focusFirstDay,
+      focusLastDay,
+      focusFirstWeekday,
+      focusLastWeekday
    };
 }
 

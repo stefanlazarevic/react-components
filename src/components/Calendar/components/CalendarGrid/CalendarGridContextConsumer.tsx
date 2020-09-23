@@ -12,7 +12,7 @@ export default function CalendarGridContextConsumer() {
          onSelectNextYear={selectNextYear}
          onSelectPreviousYear={selectPreviousYear}
          onSelectNextMonth={selectNextMonth} 
-         onSelectPreviousMonth={selectPreviousMonth} 
+         onSelectPreviousMonth={selectPreviousMonth}
       />
    );
 }
