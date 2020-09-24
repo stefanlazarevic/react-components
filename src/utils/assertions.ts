@@ -94,7 +94,7 @@ export function isTupple<T>(input: any): input is T {
  * 
  * @param input 
  */
-export function isAbsent(input: any): input is undefined | null {
+export function isAbsent(input: any): input is (undefined | null) {
   return input === undefined || input === null;
 }
 

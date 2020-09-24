@@ -1,0 +1,1 @@
+export type ArrayPredicateFunction<T> = (input: T, index: number) => boolean;

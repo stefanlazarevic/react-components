@@ -1,3 +1,5 @@
+export * from "./ArrayPredicateFunction";
+export * from "./ArrayReduceFunction";
 export * from "./CancelableFunction";
 export * from "./Function";
 export * from "./ISODateArray";

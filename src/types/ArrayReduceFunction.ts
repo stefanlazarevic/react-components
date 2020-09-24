@@ -1,0 +1,1 @@
+export type ArrayReduceFunction<T, R = T> = (accumulator: R, value: T, index: number) => R;
