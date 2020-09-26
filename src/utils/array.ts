@@ -1,4 +1,6 @@
-import { isArray, isTruthy, isAbsent } from "./assertions";
+import { isArray } from "./assertions";
+import { pipe, toArray } from "./functions";
+import { unique } from "./functions/unique";
 import { not } from "./logic";
 
 /**
@@ -26,80 +28,6 @@ export function last<T>(array: T[] = []): T {
  */
 export function first<T>(array: T[] = []): T {
 	return array[0];
-}
-
-/**
- * Checks whether or not an array is empty.
- *
- * @param array
- */
-export function isEmpty<T>(array: T[] = []): boolean {
-	return !isArray(array) || array.length === 0;
-}
-
-/**
- * Find array item that satisfies provided predicate.
- *
- * @param callback
- * @param array
- */
-export function find<T>(predicate: (value: T, index: number, original: T[]) => boolean, array: T[]): T | undefined {
-	return array.find(predicate);
-}
-
-/**
- * Find index of an item in an array that satisfies provided predicate.
- *
- * @param callback
- * @param array
- */
-export function findIndex<T>(predicate: (value: T, index: number, original: T[]) => boolean, array: T[]): number {
-	return array.findIndex(predicate);
-}
-
-/**
- * Converts iterable value to array.
- *
- * @param value
- */
-export function toArray<T>(value: Iterable<T>): T[] {
-	return Array.from(value);
-}
-
-/**
- * Returns all arguments concatenated into single array.
- */
-export function concat<T>(...args: any[]): T[] {
-	return args.reduce((output: any[], value) => output.concat(value), []);
-}
-
-/**
- * Filter all items which satisfies predicate.
- *
- * @param predicate
- * @param array
- */
-export function filter<T>(predicate: (value: T, index: number, original: T[]) => boolean, array: T[] = []): T[] {
-	return array.filter(predicate);
-}
-
-/**
- * Map all items which satisfies predicate.
- *
- * @param predicate
- * @param array
- */
-export function map<T>(callbackfn: (value: T, index: number, original: T[]) => any, array: T[] = []): any[] {
-	return array.map(callbackfn);
-}
-
-/**
- * Returns a copy of array with all falsy values removed.
- *
- * @param array
- */
-export function compact(array: any[] = []): NonNullable<any>[] {
-	return filter(isTruthy, array) as NonNullable<any>[];
 }
 
 /**
@@ -151,32 +79,7 @@ export function getPreviousIndex(currentIndex: number, array: any[] = []): numbe
  *
  * @param array
  */
-export function unique(array: any[] = []): any[] {
-	if (not(isArray(array))) return [];
-
-	const cache = new Map();
-
-	const output = filter((item) => {
-		if (cache.has(item)) {
-			return false;
-		}
-
-		cache.set(item, true);
-
-		return true;
-	}, array);
-
-	cache.clear();
-
-	return output;
-}
-
-/**
- * Returns array with non repetitive values.
- *
- * @param array
- */
-export const removeDuplicates = unique;
+export const removeDuplicates = pipe(unique(), toArray());
 
 /**
  * Returns shallow cloned array.
@@ -187,45 +90,6 @@ export function cloneArray<T>(array: T[] = []): T[] {
 	if (not(isArray(array))) return [];
 
 	return array.slice();
-}
-
-/**
- *
- * @param item
- * @param array
- */
-export function contains(item: any, array: any[] = []): boolean {
-	if (not(isArray(array))) return false;
-
-	return findIndex((element) => element === item, array) !== -1;
-}
-
-/**
- *
- */
-export function filterMap<T, O>(callbackfn: (item: T, index: number, array: T[]) => any, array: T[]): O[] {
-	const output = [];
-
-	for (let index = 0; index < size(array); index++) {
-		const item = callbackfn(array[index], index, array);
-
-		if (not(isAbsent(item))) {
-			output.push(item);
-		}
-	}
-
-	return output;
-}
-
-/**
- * Returns a new copy of the array with the element at the provided index replaced with the given value.
- *
- * @param newValue
- * @param targetIndex
- * @param array
- */
-export function update(newValue: any, targetIndex: number, array: any[]) {
-	return map((value, currentIndex) => (currentIndex === targetIndex ? newValue : value), array);
 }
 
 /**

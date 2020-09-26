@@ -4,6 +4,7 @@
     - [Composing functions](#composing-functions)
         - [compose](#compose)
         - [pipe](#pipe)
+    - [Existing array functions](#existing-array-functions)
 
 ## Available functions
 
@@ -40,4 +41,23 @@ import {pipe} from './utils';
 const program = pipe(fn1, fn2, fn3);
 
 program(); // => fn3(fn2(fn1())); 
+```
+
+### Existing array functions
+
+#### `concat`
+
+Concat multiple iterators or arrays into a 
+single iterator.
+
+```js
+import { pipe, concat, toArray } from './utils';
+
+const program = pipe(
+  concat([0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10]),
+  toArray()
+);
+
+program();
+// [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
 ```

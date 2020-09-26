@@ -1,5 +1,5 @@
 import { isString } from "./assertions";
-import { compact } from "./array";
+import { compact, pipe, toArray } from "./functions";
 
 /**
  *
@@ -31,7 +31,7 @@ export function trimRight(value: string): string {
  * @param args
  */
 export function concatenate(...args: (string | undefined | null)[]): string {
-    return trim(compact(args).join(" "));
+    return trim(pipe(compact(), toArray())(args).join(' '));
 }
 
 /**

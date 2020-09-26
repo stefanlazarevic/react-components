@@ -40,3 +40,15 @@ export function getWeekNumber(currentDate: Date): number {
    const ISOWeekday = (0 == currentDate.getDay()) ? 7 : currentDate.getDay();
    return Math.floor((((currentDate.getTime() - (new Date(currentDate.getFullYear(), 0, 1)).getTime()) / 86400000) - ISOWeekday + 10) / 7);
 }
+
+/**
+ * 
+ * @param rawSeconds 
+ */
+export function secondsToTime(rawSeconds: number) {
+   const hours = Math.floor(rawSeconds / 3600) % 24
+   const minutes = Math.floor(rawSeconds / 60) % 60
+   const seconds = Math.floor(rawSeconds % 60)
+
+   return { hours, minutes, seconds };
+}

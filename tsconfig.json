@@ -24,7 +24,6 @@
 		"noUnusedParameters": true,
 		"esModuleInterop": true,
 		"downlevelIteration": true,
-		"strictFunctionTypes": true
 	},
 	"include": [
 		"src"

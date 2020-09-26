@@ -22,7 +22,7 @@ export function isPositiveNumber(input: number): boolean {
  *
  * @param input
  */
-export function isFunction(input: any): input is IFunction {
+export function isFunction(input: any): input is Function {
   return typeof input === 'function';
 }
 
@@ -196,4 +196,87 @@ export function isPromise<T>(input: any): input is Promise<T> {
  */
 export function isSymbol(input: any): input is Symbol {
   return typeof input === 'symbol';
+}
+
+/**
+ * 
+ * @param input 
+ */
+export function isValidLuhnNumber(input: string | number): boolean {
+  let value = input.toString();
+
+  if (value.length === 0) {
+    return false;
+  }
+
+  let sum = 0;
+
+  for (let i = value.length - 1; i > -1; i--) {
+    let digit = value.charCodeAt(i) - 48;
+
+    if (!((value.length - i) & 1)) {
+      digit <<= 1;
+    }
+
+    sum += digit > 9 ? digit - 9 : digit;
+  }
+
+  return !(sum % 10);
+}
+
+/**
+ * 
+ */
+export function isTouchDevice() {
+  return 'ontouchstart' in window ||
+    navigator.maxTouchPoints   // IE10/11 & Surface
+}
+
+/**
+ * 
+ * @param url 
+ */
+export function isObjectURL(url: string) {
+  return url.indexOf('blob:') === 0
+}
+
+/**
+ * 
+ */
+export function isAllowedCopy() {
+  const support = Boolean(document.queryCommandSupported);
+  return support ? document.queryCommandSupported('copy') : false;
+}
+
+/**
+ * 
+ */
+export function isMobile() {
+  const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+
+  if (
+    /windows phone/i.test(userAgent) ||
+    /android/i.test(userAgent) ||
+    (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * 
+ */
+export function isGenerator(fn: Function) {
+  return ['GeneratorFunction', 'AsyncGeneratorFunction'].includes(fn.constructor.name);
+}
+
+/**
+ * Checks whether or not an array is empty.
+ *
+ * @param array
+ */
+export function isEmpty<T>(array: T[] = []): boolean {
+  return !isArray(array) || array.length === 0;
 }

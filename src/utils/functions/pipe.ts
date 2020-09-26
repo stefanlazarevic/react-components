@@ -1,4 +1,4 @@
-import { IFunction, LazyIterable } from "../../types";
+import { LazyIterable } from "../../types";
 import { ensureFunction } from "./ensureFunction";
 
 /**
@@ -6,8 +6,8 @@ import { ensureFunction } from "./ensureFunction";
  * 
  * The difference between pipe and compose is the order of execution of the functions.
  */
-export function pipe<T>(...functions: (IFunction | LazyIterable<T>)[]): IFunction {
-   return functions.reduceRight((f: IFunction, g: any) => {
+export function pipe<T>(...functions: (Function | LazyIterable<T>)[]): Function {
+   return functions.reduceRight<Function>((f: Function, g: any) => {
       return function processNext(...args: any) {
          return f(ensureFunction(g)(...args));
       }
