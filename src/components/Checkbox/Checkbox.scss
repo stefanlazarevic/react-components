@@ -7,9 +7,9 @@
 
   appearance: none;
 
-  width: 20px;
+  width: 1em;
 
-  height: 20px;
+  height: 1em;
 
   background-color: var(--component-background-color);
 
@@ -26,7 +26,7 @@
 
     color: var(--app-info-color);
 
-    line-height: 20px;
+    line-height: 1em;
   }
 
   &:indeterminate:before {
@@ -34,9 +34,9 @@
 
     color: var(--app-info-color);
 
-    line-height: 18px;
+    line-height: 0.9em;
 
-    font-size: 18px;
+    font-size: 0.9em;
   }
 
   &:focus {

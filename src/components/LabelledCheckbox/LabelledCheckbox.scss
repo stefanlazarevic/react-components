@@ -1,0 +1,28 @@
+.LabelledCheckbox {
+   box-sizing: border-box;
+
+   position: relative;
+
+   display: inline-flex;
+
+   align-items: flex-start;
+
+   label {
+      vertical-align: top;
+
+      line-height: 1.25;
+
+      cursor: pointer;
+   }
+
+   .Checkbox {
+      width: 1.25em;
+      height: 1.25em;
+      margin: 0;
+   }
+
+   label + .Checkbox,
+   .Checkbox + label {
+      margin-left: 10px;
+   }
+}

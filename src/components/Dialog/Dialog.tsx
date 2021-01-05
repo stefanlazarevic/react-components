@@ -8,7 +8,7 @@ import { DialogProps, DialogPropTypes } from "./DialogProps";
 
 import { keyboard, string } from "../../helpers";
 
-import { concatenate, isEmpty, lastIndex, not } from "../../utils";
+import { concatenate, isActiveElement, isEmpty, lastIndex, not } from "../../utils";
 
 const Dialog = forwardRef(function DialogComponent(
   props: DialogProps,
@@ -39,7 +39,7 @@ const Dialog = forwardRef(function DialogComponent(
         return;
       }
 
-      let focusedIndex = elements.current.findIndex(element => element === document.activeElement);
+      let focusedIndex = elements.current.findIndex(isActiveElement);
       let currentIndex = focusedIndex;
 
       if (

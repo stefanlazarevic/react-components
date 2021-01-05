@@ -4,14 +4,16 @@ import { IDescendantContext, ISelectable, ISelectableDetails } from "../../../in
 
 import { TabsProps } from "../TabsProps";
 import { useCallback, useRef } from "react";
-import { isFunction, isNumber, not } from "../../../utils";
+import { isFunction, isNumber } from "../../../utils";
 import { Orientation } from "../../../types";
 
-export interface ITabsContext extends IDescendantContext, ISelectable {
+export interface ITabsContext extends IDescendantContext {
 	orientation?: Orientation;
 	activation?: "manual" | "automatic";
 	onDelete: (event: React.SyntheticEvent, details: ISelectableDetails) => void;
 	getTabIndex: (index: number, props: any) => number;
+	selectedIndex?: number;
+	onSelect?: (event: React.SyntheticEvent, details: ISelectableDetails) => void;
 }
 
 const [TabsContextProvider, useTabsContext] = createNamedContext<ITabsContext>("TabsContext", {});
@@ -24,7 +26,7 @@ export function createTabsContext(props: TabsProps): ITabsContext {
 	
 	const onSelect = useCallback((event: React.SyntheticEvent, details: ISelectableDetails) => {
 		if (isFunction(props.onSelect)) {
-			props.onSelect(event, details);
+			props.onSelect(details, event);
 		}
 	}, [props.onSelect]);
 	
@@ -42,7 +44,7 @@ export function createTabsContext(props: TabsProps): ITabsContext {
 			return 0;
 		}
 
-		if (selectedIndex === -1 && not(props.disabled) && not(hasTabbableElement.current)) {
+		if (selectedIndex === -1 && !props.disabled && !hasTabbableElement.current) {
 			hasTabbableElement.current = true;
 			return 0;
 		}

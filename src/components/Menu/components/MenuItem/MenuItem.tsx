@@ -53,6 +53,12 @@ const MenuItem = forwardRef(function MenuItemComponent(props: MenuItemProps, ref
 
          focusNextDescendant(index);
       }
+
+      if (keyCode === keyboard.KeyCode.ENTER) {
+         if (isFunction(props.onClick)) {
+            props.onClick(event);
+         }
+      }
    }, [index, orientation]);
 
    const renderChildren = useCallback(function renderMenuItemChildren() {

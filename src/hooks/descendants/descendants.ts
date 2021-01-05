@@ -3,13 +3,10 @@ import { IDescendant } from "../../interfaces/Descendant";
 import { IDescendantContext } from "../../interfaces/DescentantContext";
 
 import {
-	find,
 	not,
 	findIndex,
 	isHTMLElement,
-	concat,
 	insertAt,
-	filter,
 	isAbsent,
 	getFirstDescendantIndex,
 	getLastDescendantIndex,
@@ -19,7 +16,6 @@ import {
 	isEmpty,
 	first,
 	last,
-	or,
 	getNextIndex,
 	getPreviousIndex,
 } from "../../utils";
@@ -36,20 +32,24 @@ export function useDescendants(): IDescendantContext {
 	 *
 	 */
 	const register = useCallback(function registerDescendant(descendant: IDescendant) {
-		if (not(descendant.element)) {
+		if (!descendant.element) {
 			return;
 		}
 
 		setDescendants(function updateDescendantsState(currentDescendants) {
-			if (isAbsent(find((currentDescendant) => currentDescendant.element === descendant.element, currentDescendants))) {
-				const index = findIndex((currentDescendant) => {
-					if (or(not(isHTMLElement(currentDescendant.element)), isAbsent(descendant.element))) return false;
+			const registeredDescendant = currentDescendants.find(currentDescendant => currentDescendant.element === descendant.element);
+		
+			if (isAbsent(registeredDescendant)) {
+				const index = currentDescendants.findIndex((currentDescendant) => {
+					if (!isHTMLElement(currentDescendant.element) || isAbsent(descendant.element)) {
+						return false;
+					} 
 
 					return Boolean(currentDescendant.element.compareDocumentPosition(descendant.element) & Node.DOCUMENT_POSITION_PRECEDING);
-				}, currentDescendants);
+				});
 
 				if (index === -1) {
-					return concat(currentDescendants, descendant);
+					return currentDescendants.concat(descendant);
 				}
 
 				return insertAt(index, descendant, currentDescendants);
@@ -64,7 +64,7 @@ export function useDescendants(): IDescendantContext {
 	 */
 	const unregister = useCallback(function unregisterDescendant(descendant: IDescendant) {
 		setDescendants(function updateDescendantsState(currentDescendants) {
-			return filter((currentDescendant) => currentDescendant.element !== descendant.element, currentDescendants);
+			return currentDescendants.filter((currentDescendant) => currentDescendant.element !== descendant.element);
 		});
 	}, []);
 

@@ -6,7 +6,7 @@ export default function Dynamic() {
    const [value, setValue] = useState("");
    const [hasError, setHasError] = useState(false);
 
-   const onChange = useCallback((event, d: CreditCardDetails) => {
+   const onChange = useCallback((d: CreditCardDetails) => {
       setValue(d.value);
 
       if (!d.isValid) {

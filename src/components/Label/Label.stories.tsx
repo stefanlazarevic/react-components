@@ -7,3 +7,6 @@ export default {
 };
 
 export const Template = (args: any) => <Label {...args} />;
+Template.args = {
+  content: "Form label"
+}

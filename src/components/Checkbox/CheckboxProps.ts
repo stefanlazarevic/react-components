@@ -1,4 +1,3 @@
-import { CSSProperties } from "react";
 import { IComponentBase } from "../../interfaces";
 
 export default interface CheckboxProps extends IComponentBase {
@@ -46,6 +45,10 @@ export default interface CheckboxProps extends IComponentBase {
 	 * 
 	 */
 	role?: string;
+	/**
+	 * 
+	 */
+	invalid?: boolean;
 	/**
 	 *
 	 */

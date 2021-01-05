@@ -2,7 +2,7 @@ import React, { forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./Button.scss";
 
-import { concatenate } from "../../utils";
+import { concatenate, extractAriaProperty, isFunction } from "../../utils";
 
 import { ButtonProps } from "./ButtonProps";
 
@@ -12,10 +12,10 @@ const Button = forwardRef(function ButtonComponent(
 ) {
   const className = concatenate("Button", props.className);
 
+  const ariaProp = extractAriaProperty(props);
+
   const onClick = useCallback(function ButtonClickCallback(event: React.MouseEvent<HTMLButtonElement>) {
-    if (typeof props.onClick === 'function') {
-      props.onClick(event, props.index);
-    }
+    props.onClick!(event, props.index);
   }, [props.index, props.onClick]);
 
   return (
@@ -25,26 +25,20 @@ const Button = forwardRef(function ButtonComponent(
       data-testid={props.testid}
       className={className}
       style={props.style}
-      aria-hidden={
-        typeof props.hidden === "boolean" ? props.hidden : props["aria-hidden"]
-      }
+      aria-hidden={ariaProp('hidden')}
       disabled={props.disabled}
       tabIndex={props.tabIndex}
       title={props.title}
       lang={props.lang}
       dir={props.dir}
       type={props.type}
-      aria-pressed={
-        typeof props.pressed === "boolean"
-          ? props.pressed
-          : props["aria-pressed"]
-      }
-      aria-expanded={typeof props.expanded === 'boolean' ? props.expanded : props['aria-expanded']}
-      aria-haspopup={typeof props.haspopup === 'boolean' ? props.haspopup : props['aria-haspopup']}
-      aria-controls={props.controls || props['aria-controls']}
-      aria-label={props.label || props['aria-label']}
+      aria-pressed={ariaProp('pressed')}
+      aria-expanded={ariaProp('expanded')}
+      aria-haspopup={ariaProp('haspopup')}
+      aria-controls={ariaProp('controls')}
+      aria-label={ariaProp('label')}
       autoFocus={props.autoFocus}
-      onClick={onClick}
+      onClick={isFunction(props.onClick) ? onClick : undefined}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
     >

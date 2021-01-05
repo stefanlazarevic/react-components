@@ -8,8 +8,8 @@ export default function ColoredSlider() {
 
 	const color = [244, 232, 10];
 
-	const onChange = useCallback((event, updatedValue) => {
-		setValue(updatedValue);
+	const onChange = useCallback(({value}) => {
+		setValue(value);
 	}, []);
 
 	return (

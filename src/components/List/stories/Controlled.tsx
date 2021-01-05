@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Listbox, ListboxOption } from "../components";
 import { List } from "../../List";
 import { ISelectableDetails } from "../../../interfaces";
-import { filterMap } from "../../../utils";
+import { pipe, reduce, toArray } from "../../../utils";
 
 export default function ControllableList() {
 	const INITIAL_STATE = [
@@ -57,10 +57,19 @@ export default function ControllableList() {
 	];
 
   const [selectedIndexes, setSelectedIndexes] = useState(
-		filterMap<any, number>((o, i) => o.selected ? i : undefined, INITIAL_STATE)
+	  pipe(
+		  reduce<number[], any>((acc, v: any, i: number) => {
+			  if (v.selected) {
+				  acc.push(i);
+			  }
+
+			  return acc;
+		  }, []),
+		  toArray()
+	  )(INITIAL_STATE)
 	);
 
-  function onSelect(event: React.SyntheticEvent, details: ISelectableDetails) {
+	function onSelect(details: ISelectableDetails) {
 		setSelectedIndexes(details.selectedIndexes as number[]);
   }
 

@@ -2,7 +2,7 @@ import React, { forwardRef, MutableRefObject, useCallback } from "react";
 
 import "./Label.scss";
 
-import { concatenate, focusElement } from "../../utils";
+import { concatenate, focusElement, isString } from "../../utils";
 
 import { LabelProps } from "./LabelProps";
 
@@ -13,7 +13,7 @@ const Label = forwardRef(function LabelComponent(
   const className = concatenate("Label", props.className);
 
   const onClick = useCallback(() => {
-    if (document && typeof props.htmlFor === 'string') {
+    if (document && isString(props.htmlFor)) {
       const connectedElement = document.getElementById(props.htmlFor);
 
       focusElement(connectedElement as HTMLElement);
@@ -32,6 +32,7 @@ const Label = forwardRef(function LabelComponent(
       htmlFor={props.htmlFor}
       title={props.title}
       onClick={props.native ? undefined : onClick}
+      aria-invalid={props.invalid}
     >
       {props.children || props.content}
     </label>

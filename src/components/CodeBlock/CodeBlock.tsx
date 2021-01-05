@@ -6,7 +6,7 @@ import { CodeBlockProps } from "./CodeBlockProps";
 
 import highlightjs from "highlight.js";
 
-import { concatenate } from "../../utils";
+import { concatenate, copyToClipboard, isAllowedCopy } from "../../utils";
 import { IconButton } from "../IconButton";
 import { ClipboardIcon } from "../Icon";
 
@@ -37,16 +37,9 @@ const CodeBlock = forwardRef(
 			[props.content, languageClassName]
 		);
 
-		const copyToClipboard = useCallback(async () => {
-			if (!navigator.clipboard) {
-				return;
-			}
-
-			 try {
-				const text = props.content!.trim();
-				await navigator.clipboard.writeText(text);
-			} catch (error) {
-				console.error("Copy to clipboard error:", error);
+		const copy = useCallback(async () => {
+			if (isAllowedCopy()) {
+				copyToClipboard(props.content);
 			}
 		}, [props.content]);
 
@@ -84,7 +77,7 @@ const CodeBlock = forwardRef(
 					/>
 				</pre>
 				<div className="CodeBlockFooter">
-					<IconButton onClick={copyToClipboard} title="Copy to clipboard">
+					<IconButton onClick={copy} title="Copy to clipboard">
 						<ClipboardIcon size={18} />
 					</IconButton>
 				</div>

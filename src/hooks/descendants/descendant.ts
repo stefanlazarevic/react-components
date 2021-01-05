@@ -2,9 +2,8 @@ import { useLayoutEffect } from "react";
 import { useForceUpdate } from "../forceUpdate";
 import { IDescendantContext } from "../../interfaces/DescentantContext";
 
-import { findIndex } from '../../utils/array';
+import { findIndex } from '../../utils';
 import { IDescendant } from "../../interfaces";
-import { not } from "../../utils";
 
 /**
  * A React hook used to control DOM reference of the component.
@@ -18,7 +17,7 @@ export function useDescendant(
 	const forceUpdate = useForceUpdate();
 
 	useLayoutEffect(function descendantLayoutEffect() {
-		if (not(descendant.element)) {
+		if (!descendant.element) {
 			forceUpdate();
 		}
 
@@ -29,5 +28,5 @@ export function useDescendant(
 		};
 	}, [descendant]);
 
-	return findIndex((currentDescendant) => currentDescendant.element === descendant.element, descendants);
+	return descendants.findIndex((currentDescendant) => currentDescendant.element === descendant.element);
 }

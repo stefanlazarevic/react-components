@@ -1,42 +1,32 @@
-import React, { forwardRef, MutableRefObject, useMemo } from "react";
+import React from "react";
 
 import "./Slider.scss";
 
-import { concatenate } from "../../utils";
+import { SliderProps } from "./SliderProps";
+import { Track } from "./components/Track/Track";
+import { createSliderContext, SliderContextProvider } from "./context/SliderContext";
+import { AfterSteps, BeforeSteps } from "./components/BeforeSteps/BeforeSteps";
 
-const Slider = forwardRef(function SliderComponent(
-	props: any,
-	ref: MutableRefObject<HTMLInputElement>
-) {
-	const className = concatenate('Slider', props.className);
-
-  const barStyle = useMemo(() => {
-    return {
-      width: `${props.value / props.max * 100}%` 
-    };
-  }, [props.value, props.max])
-
-	return (
-    <div ref={ref} className={className} data-testid={props.testid}>
-      <div className="Bar" style={barStyle} />
-      <input
-        id={props.id}
-        style={props.style}
-        type={props.type}
-        value={props.value}
-        max={props.max}
-        name={props.name}
-        disabled={props.disabled}
-        onChange={props.onChange}
-      />
-    </div>
-	);
-});
+function Slider(props: SliderProps) {
+  const context = createSliderContext(props);
+  
+  return (
+    <SliderContextProvider value={context}>
+      <div className="Slider" aria-orientation={props.orientation}>
+        <BeforeSteps />
+        <Track />
+        <AfterSteps />
+      </div>
+    </SliderContextProvider>
+  );
+};
 
 Slider.defaultProps = {
-  type: 'range',
-  value: 0,
-  max: 10
+  min: 0,
+  value: 5,
+  max: 10,
+  orientation: "horizontal",
+  steps: []
 }
 
 Slider.displayName = "Slider";

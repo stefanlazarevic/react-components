@@ -14,7 +14,7 @@ import { useCombinedRefs } from "../../hooks";
 import { AlphaChannelSliderProps } from "./AlphaChannelSliderProps";
 import { keyboard, dom } from "../../helpers";
 
-import { concatenate, isFunction } from "../../utils";
+import { concatenate, isFunction, isHTMLElement } from "../../utils";
 
 const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
 	props: AlphaChannelSliderProps,
@@ -43,13 +43,11 @@ const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
     }
   }, [props.value, props.max]);
 
-  const onChange = useCallback((event: Event, updatedValue: number) => {
-    if (isFunction(props.onChange)) {
-      props.onChange(event, updatedValue);
-    }
-  }, [props.onChange]);
+  const onChange = useCallback(function onChange(event: Event, updatedValue: number) {
+    props.onChange!({ value: updatedValue, rgba: `${props.red},${props.green},${props.blue},${updatedValue / 100}` }, event);
+  }, [props.onChange, props.red, props.green, props.blue]);
 
-  const onKeyDown = useCallback((event) => {
+  const onKeyDown = useCallback(function onKeyDown(event) {
     const {keyCode} = event;
     let value = props.value!;
 
@@ -70,10 +68,9 @@ const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
     }
 
     onChange(event, value);
-
   }, [onChange, props.value, props.min, props.max]);
 
-  const removeEventListeners = useCallback(() => {
+  const removeEventListeners = useCallback(function removeEventListeners() {
     if (dragListener.current) {
       dragListener.current.remove();
       dragListener.current = null;
@@ -85,13 +82,12 @@ const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
     }
   }, []);
 
-  const onDrop = useCallback(() => {
+  const onDrop = useCallback(function onDrop() {
     removeEventListeners();
   }, [removeEventListeners]);
 
-  const onDrag = useCallback((event: MouseEvent) => {
-    if (slider.current) {
-      const rect = slider.current.getBoundingClientRect();
+  const onDrag = useCallback(function onDrag(event: MouseEvent) {
+      const rect = slider.current.getBoundingClientRect();;
 			const {width} = rect;
 
 			let left = event.clientX - rect.left;
@@ -102,20 +98,19 @@ const AlphaChannelSlider = forwardRef(function AlphaChannelSliderComponent(
       const updatedValue = Math.round(left / width * 100);
       
       onChange(event, updatedValue);
-    }
   }, [onChange]);
 
-  const onMouseDown = useCallback((event) => {
+  const onMouseDown = useCallback(function onMouseDown(event) {
     onDrag(event);
 
-    if (document) {
+    if (document && isFunction(props.onChange)) {
       dragListener.current = dom.addEventListener(document, 'mousemove', onDrag);
       dropListener.current = dom.addEventListener(document, 'mouseup', onDrop);
     }
-  }, [onDrag, onDrop]);
+  }, [onDrag, onDrop, props.onChange]);
 
-  useEffect(() => {
-    return () => {
+  useEffect(function componentDidMount() {
+    return function componentWillUnmount() {
       removeEventListeners();
     }
   }, []);

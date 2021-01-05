@@ -9,7 +9,7 @@ export interface ISelectable {
 	/**
 	 *
 	 */
-	onSelect?: (event: React.SyntheticEvent, details: ISelectableDetails) => void;
+	onSelect?: (details: ISelectableDetails, event: React.SyntheticEvent) => void;
 }
 
 /**
@@ -23,7 +23,7 @@ export interface IMultiSelectable {
 	/**
 	 *
 	 */
-	onSelect?: (event: React.SyntheticEvent, details: ISelectableDetails) => void;
+	onSelect?: (details: ISelectableDetails, event: React.SyntheticEvent) => void;
 }
 
 /**

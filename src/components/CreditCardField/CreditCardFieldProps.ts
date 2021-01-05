@@ -37,5 +37,5 @@ export interface CreditCardFieldProps extends IComponentBase {
    /**
     * 
     */
-   onChange?: (event: React.SyntheticEvent, details: CreditCardDetails) => void;
+   onChange?: (details: CreditCardDetails, event: React.SyntheticEvent) => void;
 }

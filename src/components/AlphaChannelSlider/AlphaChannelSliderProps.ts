@@ -68,5 +68,5 @@ export interface AlphaChannelSliderProps {
 	/**
 	 *
 	 */
-	onChange?: (event: Event, updatedValue: number) => void;
+	onChange?: (details: {value: number, rgba: string }, event: Event) => void;
 }

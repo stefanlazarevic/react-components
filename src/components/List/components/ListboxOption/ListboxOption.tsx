@@ -3,7 +3,7 @@ import React, { forwardRef, MutableRefObject, useCallback, useMemo } from "react
 import "./ListboxOption.scss";
 
 import { ListboxOptionProps } from "./ListboxOptionProps";
-import { concatenate, not, contains, isFunction, scrollToActiveElement, or } from "../../../../utils";
+import { concatenate, not, isFunction, scrollToActiveElement, or } from "../../../../utils";
 import { useCombinedRefs, useDescendant } from "../../../../hooks";
 import { useListContext } from "../../context/ListContext";
 import { keyboard } from "../../../../helpers";
@@ -41,7 +41,7 @@ const ListboxOption = forwardRef(function ListboxOptionComponent(
 	const index = useDescendant(descendant, context);
 
 	const isSelected = useMemo(() => {
-		return multiselectable ? contains(index, selectedIndexes) : index === selectedIndex;
+		return multiselectable ? selectedIndexes!.includes(index) : index === selectedIndex;
 	}, [multiselectable, index, selectedIndexes, selectedIndex]);
 
 	function onKeyDown(event: React.KeyboardEvent) {

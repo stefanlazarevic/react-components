@@ -4,7 +4,7 @@ import './CreditCardField.scss';
 
 import { CreditCardFieldProps } from './CreditCardFieldProps';
 
-import { concatenate, isFunction, not, stripWhitespace } from '../../utils';
+import { concatenate, isFunction, isValidLuhnNumber, stripWhitespace, trim } from '../../utils';
 import { isNumericCharCode } from '../../utils';
 
 const CreditCardField = forwardRef(function CreditCardFieldComponent(props: CreditCardFieldProps, ref: MutableRefObject<HTMLInputElement>) {
@@ -12,48 +12,41 @@ const CreditCardField = forwardRef(function CreditCardFieldComponent(props: Cred
 
    const [internalValue, setInternalValue] = useState(format(props.value!));
 
-   useEffect(() => {
+   useEffect(function updateInternalValue() {
       setInternalValue(format(props.value!));
    }, [props.value]);
 
    const className = concatenate("CreditCardField", props.className);
 
+   /**
+    * Returns given value in "xxxx xxxx xxxx xxxx" format.
+    * 
+    * @param value 
+    */
    function format(value: string) {
-      return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim();
+      return trim(value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 '));
    }
 
    function onChange(event: React.ChangeEvent<HTMLInputElement>) {
-      if (isFunction(props.onChange)) {
-         props.onChange(event, { value: stripWhitespace(event.target.value), isValid: !invalid});
-      }
+      props.onChange!({ value: stripWhitespace(event.target.value), isValid: !invalid }, event);
    }
 
-   function validate(n: string) {
-      if (typeof n !== "string" || !n.length) {
-         return false;
-      }
-
-      let sum = 0;
-
-      for (let i = n.length - 1; i > -1; i--) {
-         let digit = n.charCodeAt(i) - 48;
-         if (!((n.length - i) & 1)) {
-            digit <<= 1;
-         }
-         sum += digit > 9 ? digit - 9 : digit;
-      }
-
-      return !(sum % 10);
+   /**
+    * Validate credit card number using the Luhn algorithm.
+    * 
+    * @see https://en.wikipedia.org/wiki/Luhn_algorithm
+    * @param n 
+    */
+   function validate(n: string | number) {
+      return isValidLuhnNumber(n);
    }
 
    function onBlur(event: React.FocusEvent<HTMLInputElement>) {
       const value = stripWhitespace(internalValue);
 
-      if (value.trim() === '') {
-         if (isFunction(props.onChange)) {
-            setInvalid(false);
-            props.onChange(event, { value, isValid: true });
-         }
+      if (trim(value) === '') {
+         setInvalid(false);
+         props.onChange!({ value, isValid: true }, event);
          return;
       }
 
@@ -65,15 +58,13 @@ const CreditCardField = forwardRef(function CreditCardFieldComponent(props: Cred
          setInvalid(false);
       }
 
-      if (isFunction(props.onChange)) {
-         props.onChange(event, { value, isValid });
-      }
+      props.onChange!({ value, isValid }, event);
    }
 
    function onKeyPress(event: React.KeyboardEvent) {
       const { charCode } = event;
 
-      if (not(isNumericCharCode(charCode))) {
+      if (!(isNumericCharCode(charCode))) {
          event.preventDefault();
       }
    }
@@ -93,8 +84,8 @@ const CreditCardField = forwardRef(function CreditCardFieldComponent(props: Cred
          placeholder={props.placeholder}
          aria-invalid={invalid}
          value={internalValue}
-         onChange={onChange}
-         onBlur={onBlur}
+         onChange={isFunction(props.onChange) ? onChange : undefined}
+         onBlur={isFunction(props.onChange) ? onBlur : undefined}
          onKeyPress={onKeyPress}
       />
    )

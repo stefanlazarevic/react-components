@@ -49,6 +49,7 @@ const Checkbox = forwardRef(function CheckboxComponent(
       onChange={props.onChange}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
+      aria-invalid={props.invalid}
     />
   );
 });

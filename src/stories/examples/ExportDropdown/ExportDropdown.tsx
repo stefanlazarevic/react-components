@@ -35,10 +35,10 @@ export default function ExportDropdown() {
 	const DropdownComponent = useMemo(() => {
 		const DropdownMenu = forwardRef((props: any, ref: any) => (
 			<Menu ref={ref} autoFocus={true} {...props}>
-				<MenuItem content="Excel" onClick={() => alert("Excel")} />
-				<MenuItem content="PDF" onClick={() => undefined} />
-				<MenuItem content="XML" onClick={() => undefined} />
-				<MenuItem content="Markdown" onClick={() => undefined} />
+				<MenuItem onClick={() => alert("Excel")}>Excel</MenuItem>
+				<MenuItem onClick={() => undefined}>PDF</MenuItem>
+				<MenuItem onClick={() => undefined}>XML</MenuItem>
+				<MenuItem onClick={() => undefined}>Markdown</MenuItem>
 			</Menu>
 		));
 

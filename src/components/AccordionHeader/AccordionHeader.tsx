@@ -26,10 +26,10 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 	const onClick = useCallback(
 		(event: React.SyntheticEvent) => {
 			if (isFunction(props.onClick)) {
-				props.onClick(event, { id: props.id });
+				props.onClick({ id: props.id, index: props.index }, event);
 			}
 		},
-		[props.onClick, props.id]
+		[props.onClick, props.id, props.index]
 	);
 
 	return (

@@ -18,10 +18,10 @@ export function Example() {
 
     return (
         <Tabs selectedIndex={selectedIndex} activation="automatic">
-            {/* <TabList style={{marginBottom: 10}}>
+            <TabList style={{marginBottom: 10}}>
                 {tabs.map(tab => <Heading><Tab>{tab}</Tab></Heading>)}
             </TabList>
-            <button onClick={insertTab}>Add random</button> */}
+            <button onClick={insertTab}>Add random</button>
         </Tabs>
     );
 }

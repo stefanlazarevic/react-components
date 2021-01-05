@@ -8,4 +8,8 @@
   color: currentColor;
 
   font-size: var(--app-base-font-size);
+
+  &[aria-invalid] {
+    color: var(--invalid-color);
+  }
 }

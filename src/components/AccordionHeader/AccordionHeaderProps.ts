@@ -1,23 +1,7 @@
-import { CSSProperties } from "react";
 import { ReactNodeLike } from "prop-types";
+import { IComponentBase } from "../../interfaces";
 
-export interface AccordionHeaderProps {
-	/**
-	 *
-	 */
-	id?: string;
-	/***
-	 *
-	 */
-	testid?: string;
-	/**
-	 *
-	 */
-	className?: string;
-	/**
-	 *
-	 */
-	style?: CSSProperties;
+export interface AccordionHeaderProps extends IComponentBase {
 	/**
 	 *
 	 */
@@ -58,6 +42,10 @@ export interface AccordionHeaderProps {
 	 *
 	 */
 	dir?: "auto" | "ltr" | "rtl";
+	/**
+	 * 
+	 */
+	index?: number;
 	/**
 	 *
 	 */

@@ -6,21 +6,23 @@ import { Orientation, ThreeStateBoolean } from "../../../types";
 import { useCallback, useRef } from "react";
 import {
 	forEach,
-	not,
 	isFunction,
-	filterMap,
 	size,
-	cloneArray,
 	isArray,
 	and,
-	getFirstDescendantIndex,
-	increment,
-	removeDuplicates,
 	getLastDescendantIndex,
-	decrement,
-	isAbsent,
 	isEmpty,
+	pipe,
+	reduce,
+	toArray,
+	getFirstDescendantIndex,
+	cloneArray,
+	increment,
+	decrement,
+	removeDuplicates,
+	isAbsent,
 } from "../../../utils";
+import { unique } from "../../../utils/functions/unique";
 
 export interface IListContext extends IDescendantContext, ISelectable, IMultiSelectable {
 	orientation?: Orientation;
@@ -62,13 +64,16 @@ export function createListContext(props: ListProps): IListContext {
 			return false;
 		}
 
-		const enabledDescendantIndexes = filterMap<IDescendant, number>(function filterOutDisabledDescendants(descendant, index) {
-			if (not(descendant.disabled)) {
-				return index;
-			}
+		const enabledDescendantIndexes = pipe<IDescendant[]>(
+			reduce<number[], IDescendant>((acc, descendant, index) => {
+				if (!descendant.disabled) {
+					acc.push(index);
+				}
 
-			return undefined;
-		}, descendants);
+				return acc;
+			}, []),
+			toArray()
+		)(descendants);
 
 		if (size(selectedIndexes) === size(enabledDescendantIndexes)) {
 			return true;
@@ -82,7 +87,7 @@ export function createListContext(props: ListProps): IListContext {
 	 */
 	const onSelect = useCallback(function onListSelectionChange(event: React.SyntheticEvent, details: ISelectableDetails) {
 		if (isFunction(props.onSelect)) {
-			props.onSelect(event, details);
+			props.onSelect(details, event);
 		}
 	}, [props.onSelect]);
 
@@ -127,16 +132,19 @@ export function createListContext(props: ListProps): IListContext {
 	 * **Note:** This function is used only in multiselectable list.
 	 */
 	const selectAllOptions = useCallback(function onListSelectAllOptions(event: React.SyntheticEvent) {
-		if (and(isArray(selectedIndexes), multiselectable)) {
+		if (isArray(selectedIndexes) && multiselectable) {
 			setMostRecentlySelectedIndex();
 
-			const enabledDescendantIndexes = filterMap<IDescendant, number>(function filterOutDisabledDescendants(descendant, index) {
-				if (not(descendant.disabled)) {
-					return index;
-				}
+			const enabledDescendantIndexes = pipe(
+				reduce<number[], IDescendant>((indexes, descendant, index) => {
+					if (!descendant.disabled) {
+						indexes.push(index);
+					}
 
-				return undefined;
-			}, descendants);
+					return indexes;
+				}, []),
+				toArray()
+			)(descendants) as number[];
 
 			if (size(selectedIndexes) === size(enabledDescendantIndexes)) {
 				return onSelect(event, { selectedIndexes: [] });
@@ -165,7 +173,7 @@ export function createListContext(props: ListProps): IListContext {
 				while (currentIndex <= index) {
 					const descendant = descendants[currentIndex];
 
-					if (not(descendant.disabled)) {
+					if (!descendant.disabled) {
 						output.push(currentIndex);
 					}
 
@@ -195,7 +203,7 @@ export function createListContext(props: ListProps): IListContext {
 				while (currentIndex >= index) {
 					const descendant = descendants[currentIndex];
 
-					if (not(descendant.disabled)) {
+					if (!descendant.disabled) {
 						output.push(currentIndex);
 					}
 
@@ -211,7 +219,8 @@ export function createListContext(props: ListProps): IListContext {
 	/**
 	 * 
 	 */
-	const setFromMostRecentlySelectedIndex = useCallback((event: React.SyntheticEvent, index: number) => {
+	const setFromMostRecentlySelectedIndex = useCallback(
+		function setFromMostRecentlySelectedIndex(event: React.SyntheticEvent, index: number) {
 		if (and(isArray(selectedIndexes), multiselectable)) {
 			let { current: currentIndex } = mostRecentlySelectedIndex;
 
@@ -226,7 +235,7 @@ export function createListContext(props: ListProps): IListContext {
 			while (currentIndex !== index) {
 				const descendant = descendants[currentIndex];
 
-				if (not(descendant.disabled)) {
+				if (!descendant.disabled) {
 					output.push(currentIndex);
 				}
 
@@ -239,7 +248,9 @@ export function createListContext(props: ListProps): IListContext {
 
 			onSelect(event, { selectedIndexes: removeDuplicates(output) });
 		}
-	}, [selectedIndexes, multiselectable]);
+		}, 
+		[selectedIndexes, multiselectable, descendants]
+	);
 
 	return {
 		...descendantsContext,

@@ -12,7 +12,7 @@ const AvatarGroup = forwardRef(function AvatarGroupComponent(
 ) {
 	const className = concatenate("AvatarGroup", props.className);
 
-	const renderChildren = useCallback(() => {
+	const renderChildren = useCallback(function renderChildren() {
 		return React.Children.map(props.children, (child) => {
 			return <li>{child}</li>;
 		});

@@ -21,9 +21,11 @@ const Listbox = forwardRef(function ListboxComponent(props: ListboxProps, ref: M
 
     switch (keyCode) {
       case keyboard.KeyCode.HOME:
+        event.preventDefault();
         focusFirstDescendant();
         break;
       case keyboard.KeyCode.END:
+        event.preventDefault();
         focusLastDescendant();
         break;
       case keyboard.KeyCode.LETTER_A:

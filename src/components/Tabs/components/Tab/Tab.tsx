@@ -10,7 +10,7 @@ import { useTabsContext } from "../../context/TabsContext";
 
 import { keyboard } from "../../../../helpers";
 
-import { concatenate, isFunction } from "../../../../utils";
+import { concatenate } from "../../../../utils";
 
 /**
  * An element in the tab list that serves as a label for one of the 
@@ -89,9 +89,7 @@ const Tab = forwardRef(function TabComponent(
 	}
 
 	function onClick(event: React.MouseEvent) {
-		if (isFunction(onSelect)) {
-			onSelect(event, { selectedIndex: index });
-		}
+		onSelect!(event, { selectedIndex: index });
 	}
 
 	return (

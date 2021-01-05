@@ -8,20 +8,38 @@ export default {
 
 export const Template = (args: any) => <Slider {...args} />;
 
-export const Twenty = Template.bind({});
-Twenty.args = {
-	value: 2,
-	max: 10,
-};
+export const Vertical = () => {
+	return (
+		<Slider orientation="vertical" />
+	)
+}
 
-export const Fifty = Template.bind({});
-Fifty.args = {
-	value: 5,
-	max: 10,
-};
+export const BeforeLabels = () => {
+	return (
+		<Slider 
+			orientation="vertical"
+			min={0}
+			max={10} 
+			steps={[
+				{label: '0', value: 0, placement: "before"},
+				{label: '4', value: 4, placement: "before"},
+				{label: '10', value: 10, placement: "before"}
+			]}
+		/>
+	)
+}
 
-export const Hundred = Template.bind({});
-Hundred.args = {
-	value: 10,
-	max: 10,
-};
+export const AfterLabels = () => {
+	return (
+		<Slider 
+			orientation="vertical"
+			min={0}
+			max={10}
+			steps={[
+				{ label: '0', value: 0, placement: "after" },
+				{ label: '6', value: 6, placement: "after" },
+				{ label: '10', value: 10, placement: "after" }
+			]}
+		/>
+	)
+}
