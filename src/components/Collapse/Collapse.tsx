@@ -25,6 +25,7 @@ const Collapse = forwardRef(function CollapseComponent(
 			style={props.style}
 			aria-hidden={props.hidden}
 			role={props.role}
+			dir={props.dir}
 		>
 			{!props.hidden && (props.children || props.content)}
 		</div>

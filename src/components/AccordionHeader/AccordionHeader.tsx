@@ -18,8 +18,9 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 
 	const context = useAccordionContext();
 
-	const expanded = useMemo(() => context ? context.expanded : props.expanded, [context.expanded, props.expanded]);
-	const controls = useMemo(() => context ? context.controls : props.controls, [context.controls, props.controls]);
+	const expanded = useMemo(() => isBoolean(context.expanded) ? context.expanded : props.expanded, [context.expanded, props.expanded]);
+	const controls = useMemo(() => context.controls ? context.controls : props.controls, [context.controls, props.controls]);
+	const dir = useMemo(() => context.dir ? context.dir : props.dir, [context.dir, props.dir]);
 
 	const content = useCallback(() => {
 		if (isFunction(props.content)) {
@@ -60,7 +61,7 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 				controls={controls}
 				disabled={props.disabled}
 				lang={props.lang}
-				dir={props.dir}
+				dir={dir}
 				title={props.title}
 				onClick={onClick}
 			>

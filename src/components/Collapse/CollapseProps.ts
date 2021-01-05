@@ -42,4 +42,8 @@ export interface CollapseProps {
 	 * @default 150
 	 */
 	duration?: number;
+	/**
+	 * 
+	 */
+	dir?: "auto" | "ltr" | "rtl";
 }
