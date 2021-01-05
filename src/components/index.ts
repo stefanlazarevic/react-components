@@ -1,4 +1,6 @@
+export * from './Accordion';
 export * from "./AccordionHeader";
+export * from "./AccordionPanel";
 export * from "./Alert";
 export * from "./AlertDialog";
 export * from "./AlphaChannelSlider";
