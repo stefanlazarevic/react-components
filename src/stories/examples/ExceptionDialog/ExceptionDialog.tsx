@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, memo } from "react";
+import React, { useMemo, memo } from "react";
 
 import "./ExceptionDialog.scss";
 
@@ -7,12 +7,6 @@ import { Dialog, DialogHeader, Heading, Paragraph } from "../../../components";
 import CodeBlockAccordion from './CodeBlockAccordion/CodeBlockAccordion';
 
 export default function ExceptionDialog() {
-  const [expanded, setExpanded] = useState(false);
-
-  const onClick = useCallback(() => {
-    setExpanded((expanded) => !expanded);
-    }, []);
-
   const errorMessage = `
     Error: Internal Server Error
         at K (http://dev.domain.com/js/app/Component:1:6849467)
@@ -37,7 +31,7 @@ export default function ExceptionDialog() {
 				className="error-text"
 			/>
 			<LocalParagraph content="For further assistance, please contact your Project Manager." />
-			<CodeBlockAccordion expanded={expanded} onClick={onClick} errorMessage={errorMessage} />
+			<CodeBlockAccordion errorMessage={errorMessage} />
 		</Dialog>
 	);
 }

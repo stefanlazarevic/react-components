@@ -13,7 +13,8 @@ export function createNamedContext<T>(displayName: string, defaultValue?: any) {
 		const context = useContextHook(Context);
 
 		if (!context) {
-			throw new Error(`Context is absent`);
+			console.debug("Component is running outside of context provider.");
+			return {};
 		}
 
 		return context;

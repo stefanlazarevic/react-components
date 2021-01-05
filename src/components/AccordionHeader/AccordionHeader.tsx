@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject, useCallback } from "react";
+import React, { forwardRef, MutableRefObject, useCallback, useMemo } from "react";
 
 import "./AccordionHeader.scss";
 
@@ -7,13 +7,20 @@ import { AccordionHeaderProps } from "./AccordionHeaderProps";
 import { Button } from "../Button";
 import { Heading } from "../Heading";
 
-import { concatenate, isFunction } from "../../utils";
+import { concatenate, isBoolean, isFunction } from "../../utils";
+import { useAccordionContext } from "../../context";
 
 const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 	props: AccordionHeaderProps,
 	ref: MutableRefObject<HTMLHeadingElement>
 ) {
 	const classNames = concatenate("AccordionHeader", props.className);
+
+	const context = useAccordionContext();
+
+	const expanded = useMemo(() => isBoolean(context.expanded) ? context.expanded : props.expanded, [context.expanded, props.expanded]);
+	const controls = useMemo(() => context.controls ? context.controls : props.controls, [context.controls, props.controls]);
+	const dir = useMemo(() => context.dir ? context.dir : props.dir, [context.dir, props.dir]);
 
 	const content = useCallback(() => {
 		if (isFunction(props.content)) {
@@ -25,11 +32,19 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 
 	const onClick = useCallback(
 		(event: React.SyntheticEvent) => {
-			if (isFunction(props.onClick)) {
-				props.onClick(event, { id: props.id });
+			if (!isBoolean(context.expanded)) {
+				if (isFunction(props.onClick)) {
+					props.onClick(event, { id: props.id });
+				}
+			} else {
+				if (context.expanded) {
+					context.collapse();
+				} else {
+					context.expand();
+				}
 			}
 		},
-		[props.onClick, props.id]
+		[props.onClick, props.id, context.expanded]
 	);
 
 	return (
@@ -42,11 +57,11 @@ const AccordionHeader = forwardRef(function AccordionHeaderComponent(
 			level={props.level}
 		>
 			<Button
-				expanded={props.expanded}
-				controls={props.controls}
+				expanded={expanded}
+				controls={controls}
 				disabled={props.disabled}
 				lang={props.lang}
-				dir={props.dir}
+				dir={dir}
 				title={props.title}
 				onClick={onClick}
 			>
