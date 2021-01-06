@@ -40,3 +40,11 @@ export function getWeekNumber(currentDate: Date): number {
    const ISOWeekday = (0 == currentDate.getDay()) ? 7 : currentDate.getDay();
    return Math.floor((((currentDate.getTime() - (new Date(currentDate.getFullYear(), 0, 1)).getTime()) / 86400000) - ISOWeekday + 10) / 7);
 }
+
+/**
+ * Extract ISO date from Date object. "YYYY-MM-DD"
+ * @param date 
+ */
+export function getISOStringDate(date: Date): string {
+   return date.toISOString().split('T')[0];
+}
