@@ -31,24 +31,28 @@ const MenuItem = forwardRef(function MenuItemComponent(props: MenuItemProps, ref
       const {keyCode} = event;
 
       if (keyCode === keyboard.KeyCode.ARROW_LEFT && orientation === 'horizontal') {
+         event.preventDefault();
          event.stopPropagation();
 
          focusPreviousDescendant(index);
       }
 
       if (keyCode === keyboard.KeyCode.ARROW_RIGHT && orientation === 'horizontal') {
+         event.preventDefault();
          event.stopPropagation();
 
          focusNextDescendant(index);
       }
 
       if (keyCode === keyboard.KeyCode.ARROW_UP && orientation === 'vertical') {
+         event.preventDefault();
          event.stopPropagation();
 
          focusPreviousDescendant(index);
       }
 
       if (keyCode === keyboard.KeyCode.ARROW_DOWN && orientation === 'vertical') {
+         event.preventDefault();
          event.stopPropagation();
 
          focusNextDescendant(index);

@@ -45,10 +45,10 @@ export const WithSubMenu = (args: any) => (
          <MenuItem>Back</MenuItem>
          <MenuItem>Forward</MenuItem>
          <MenuItem>Refresh</MenuItem>
-         <SubMenu>
+         <SubMenu content="Categories >">
             <MenuItem>Deluxe</MenuItem>
             <MenuItem>Programming</MenuItem>
-            <SubMenu>
+            <SubMenu content="Languages">
                <MenuItem>Javascript</MenuItem>
                <MenuItem>HTML</MenuItem>
                <MenuItem>CSS</MenuItem>

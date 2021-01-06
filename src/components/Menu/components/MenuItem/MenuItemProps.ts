@@ -21,6 +21,10 @@ export interface MenuItemProps extends IComponentBase {
    /**
     * 
     */
+   content?: ReactNodeLike;
+   /**
+    * 
+    */
    onClick?: (event: React.SyntheticEvent) => void;
    /**
     * 

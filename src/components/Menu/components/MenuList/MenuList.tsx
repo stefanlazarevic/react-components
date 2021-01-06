@@ -21,11 +21,13 @@ const MenuList = forwardRef(
             const {keyCode} = event;
 
             if (keyCode === keyboard.KeyCode.HOME) {
+                event.preventDefault();
                 event.stopPropagation();
                 focusFirstDescendant();
             }
 
             if (keyCode === keyboard.KeyCode.END) {
+                event.preventDefault();
                 event.stopPropagation();
                 focusLastDescendant();
             }

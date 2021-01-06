@@ -3,7 +3,7 @@ import React, { forwardRef, MutableRefObject, useState, useRef, useMemo, useLayo
 import './SubMenu.scss';
 
 import { MenuItemProps } from '../MenuItem/MenuItemProps';
-import { concatenate, focusElement, isDirectChild, debounce } from '../../../../utils';
+import { concatenate, focusElement, isDirectChild } from '../../../../utils';
 import { useCombinedRefs, useDescendant } from '../../../../hooks';
 import Menu from '../../Menu';
 import { MenuList } from '../MenuList';
@@ -199,7 +199,7 @@ const SubMenu = forwardRef(function SubMenuComponent(props: MenuItemProps, ref: 
          onKeyDown={onKeyDown}
          tabIndex={-1}
       >
-         Test
+         {props.content}
          {expanded && <Menu orientation="vertical" onClose={collapseAndFocusParent}>
             <MenuList ref={subMenu} className="SubMenuList">
                {props.children}
@@ -209,7 +209,9 @@ const SubMenu = forwardRef(function SubMenuComponent(props: MenuItemProps, ref: 
    );
 });
 
-SubMenu.defaultProps = {}
+SubMenu.defaultProps = {
+   content: "Undefined content"
+}
 
 SubMenu.displayName = "SubMenu";
 

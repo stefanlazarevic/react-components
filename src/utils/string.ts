@@ -34,7 +34,7 @@ export function concatenate(...args: (string | undefined | null)[]): string {
 
     for (let i = 0; i < args.length; i++) {
         if (isString(args[i])) {
-            output += args[i];
+            output += args[i] + (i !== args.length - 1 ? ' ' : '');
         }
     }
 
