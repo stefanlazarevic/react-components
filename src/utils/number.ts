@@ -1,39 +1,27 @@
 /**
  * 
- * @param value 
+ * @param input 
  * @param steps 
  */
-export function increment(value: number, steps: number = 1) {
-   return value + steps;
+export function increment(input: number, steps: number = 1) {
+   return input + steps;
 }
 
 /**
  * 
- * @param value 
+ * @param input 
  * @param steps 
  */
-export function decrement(value: number, steps: number = 1) {
-   return value - steps;
+export function decrement(input: number, steps: number = 1) {
+   return input - steps;
 }
 
 /**
  * 
- * @param value 
+ * @param input 
  * @param min 
  * @param max 
  */
-export function clump(value: number, min: number, max: number) {
-   if (min > max) {
-      return value;
-   }
-
-   if (value < min) {
-      return min;
-   }
-
-   if (value > max) {
-      return max;
-   }
-
-   return value;
+export function clump(input: number, min: number, max: number) {
+   return Math.min(max, Math.max(min, input))
 }
